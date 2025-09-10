@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+:root {
+    --background: #ffffff;
+    --foreground: #171717;
+    --blue: #007aff;
+    --gray: #9c9da4;
+    --yellow: #ffdc2c;
+    --green: #34c759;
+    --red: #ff0719;
+    --bg-red: #ffe2e7;
+    --bg-green: #d9eee7;
+    --bg-blue: #e0ebf9;
+    --white-15: rgba(255, 255, 255, 0.15);
+    --nav-bottom-height: 6rem;
+}
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+    }
+}
+.fs-vbig {
+    font-size: 3.5rem;
+    line-height: 130%;
+    font-weight: 600;
+}
+
+.fs-bold {
+    font-size: 2.5rem;
+    line-height: 130%;
+    font-weight: 600;
+}
+
+.fs-regular {
+    font-size: 1.6rem;
+    line-height: 130%;
+    font-weight: 400;
+}
+
+.fs-small {
+    font-size: 1.5rem;
+    line-height: 130%;
+    font-weight: 400;
+}
+
+.fs-very-small {
+    font-size: 1.2rem;
+    line-height: 1.3rem;
+    font-weight: 400;
+}
+
+.fs-very-small-bold {
+    font-size: 1.2rem;
+    line-height: 1.3rem;
+    font-weight: 600;
+}
+
+.fs-button {
+    font-size: 1.6rem;
+    line-height: 130%;
+    font-weight: 600;
+}
+
+.box-shadow {
+    box-shadow: 0.1px 0px 1rem 0px #0000001a;
+}
+
+html {
+    font-size: 10px;
+    scroll-behavior: smooth;
+    scroll-padding-top: 10rem;
+}
+
+@media screen and (max-width: 374px) {
+    html {
+        font-size: 10px;
+    }
+}
+
+@media screen and (min-width: 375px) and (max-width: 991px) {
+    html {
+        font-size: calc(10px + 10 * (100vw - 375px) / 392);
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    html {
+        font-size: calc(8px + 2.7 * (100vw - 768px) / 255);
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+    html {
+        font-size: calc(7.4px + 2 * (100vw - 1024px) / 256);
+    }
+}
+
+@media (min-width: 1280px) and (max-width: 1439px) {
+    html {
+        font-size: calc(9px + 0.5 * (100vw - 1280px) / 160);
+    }
+}
+
+@media (min-width: 1440px) {
+    html {
+        font-size: calc((10px * (100vw - 1600px) / 240));
+    }
+}
+
+body {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+}
