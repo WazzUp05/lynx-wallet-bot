@@ -52,7 +52,7 @@ const Onboarding: React.FC = () => {
 
     return (
         <div
-            className="flex flex-col bg-[url('/onboarding/bg.png')] bg-cover bg-center pt-[2rem]"
+            className="flex z-[1000] flex-col bg-[url('/onboarding/bg.png')] bg-cover bg-center pt-[2rem]"
             style={{
                 minHeight: "calc(100dvh)",
             }}
