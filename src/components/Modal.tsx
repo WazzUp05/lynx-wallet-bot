@@ -45,7 +45,7 @@ const Modal = ({ open, onClose, children }: ModalProps) => {
 
         return () => {
             window.visualViewport?.removeEventListener("resize", handleResize);
-            if (modalRef.current) modalRef.current.style.transform = "";
+            if (open && modalRef.current) modalRef.current.style.transform = "";
         };
     }, [open]);
 

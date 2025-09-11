@@ -51,7 +51,12 @@ const Onboarding: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-[url('/onboarding/bg.png')] bg-cover bg-center pt-[2rem]">
+        <div
+            className="flex flex-col bg-[url('/onboarding/bg.png')] bg-cover bg-center pt-[2rem]"
+            style={{
+                minHeight: "calc(100dvh)",
+            }}
+        >
             {/* Progress */}
             <div className="flex justify-center items-center gap-[0.5rem] mb-2">
                 {steps.map((_, i) => (
@@ -94,7 +99,7 @@ const Onboarding: React.FC = () => {
                             />
                         </motion.div>
                     </AnimatePresence>
-                    <div className="bg-white rounded-t-[2rem] box-shadow  w-full relative pt-[2.5rem] pb-[2rem] px-[1.6rem] flex flex-col items-center">
+                    <div className="bg-white rounded-t-[2rem]  w-full relative pt-[2.5rem] pb-[2rem] px-[1.6rem] flex flex-col items-center">
                         <h2
                             className="fs-bold text-center mb-[1rem]"
                             dangerouslySetInnerHTML={{ __html: steps[step].title }}
