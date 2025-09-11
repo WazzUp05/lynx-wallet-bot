@@ -8,11 +8,7 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { setOnboardingCompleted } from "@/lib/redux/slices/appSlice";
 import ArrowRight from "@/components/icons/right-arrow.svg";
 
-interface OnboardingProps {
-    // Define any props if needed
-}
-
-const Onboarding: React.FC<OnboardingProps> = () => {
+const Onboarding: React.FC = () => {
     const [step, setStep] = useState(0);
     const dispatch = useAppDispatch();
 

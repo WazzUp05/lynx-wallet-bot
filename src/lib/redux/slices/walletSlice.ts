@@ -1,51 +1,47 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface WalletState {
-  balance: number
-  isConnected: boolean
-  address: string | null
-  transactions: Transaction[]
+export type NetworkType = "TRC20" | "TON";
+
+export type CryptoType = "USDT" | "BTC" | "ETH" | "TON";
+
+export interface CryptoItem {
+    description: string;
+    iconUrl: string;
+    id: CryptoType;
+    label: CryptoType;
 }
-
-interface Transaction {
-  id: string
-  type: 'send' | 'receive'
-  amount: number
-  timestamp: string
-  from?: string
-  to?: string
+interface WalletState {
+    balance: number;
+    network: NetworkType;
+    crypto: CryptoItem;
 }
 
 const initialState: WalletState = {
-  balance: 0,
-  isConnected: false,
-  address: null,
-  transactions: [],
-}
+    balance: 0,
+    network: "TRC20",
+    crypto: {
+        description: "0.0 USDT",
+        iconUrl: "/icons/usdt.svg",
+        id: "USDT",
+        label: "USDT",
+    },
+};
 
 export const walletSlice = createSlice({
-  name: 'wallet',
-  initialState,
-  reducers: {
-    connectWallet: (state, action: PayloadAction<{ address: string; balance: number }>) => {
-      state.isConnected = true
-      state.address = action.payload.address
-      state.balance = action.payload.balance
+    name: "wallet",
+    initialState,
+    reducers: {
+        setBalance(state, action: PayloadAction<number>) {
+            state.balance = action.payload;
+        },
+        setNetwork(state, action: PayloadAction<NetworkType>) {
+            state.network = action.payload;
+        },
+        setCrypto(state, action: PayloadAction<CryptoItem>) {
+            state.crypto = action.payload;
+        },
     },
-    disconnectWallet: (state) => {
-      state.isConnected = false
-      state.address = null
-      state.balance = 0
-      state.transactions = []
-    },
-    updateBalance: (state, action: PayloadAction<number>) => {
-      state.balance = action.payload
-    },
-    addTransaction: (state, action: PayloadAction<Transaction>) => {
-      state.transactions.unshift(action.payload)
-    },
-  },
-})
+});
 
-export const { connectWallet, disconnectWallet, updateBalance, addTransaction } = walletSlice.actions
-export default walletSlice.reducer
+export const { setBalance, setNetwork, setCrypto } = walletSlice.actions;
+export default walletSlice.reducer;

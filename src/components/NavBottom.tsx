@@ -12,7 +12,7 @@ const NavBottom = () => {
 
     const navItems = [
         { href: "/", label: "Главная", icon: <HomeIcon /> },
-        { href: "/wallet", label: "Кошелек", icon: <QrIcon /> },
+        { href: "/qr", label: "Оплата по QR", icon: <QrIcon /> },
         { href: "/history", label: "История", icon: <ClockIcon /> },
         { href: "/profile", label: "Профиль", icon: <UserIcon /> },
     ];
