@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Toast } from "@/components/ui/Toast";
-import Html5QrcodePlugin from "@/components/HtmlQrScanner";
 import { Scanner } from "@yudiel/react-qr-scanner";
+import QrScanner from "@/components/QrScanner";
 
 export default function QrScanPage() {
     const [scanned, setScanned] = useState<string | null>(null);
@@ -11,6 +11,7 @@ export default function QrScanPage() {
 
     const handleCopy = async () => {
         if (scanned) {
+            alert("Адрес скопирован в буфер обмена: " + scanned);
             await navigator.clipboard.writeText(scanned);
             setToast(true);
             setTimeout(() => setToast(false), 2000);
@@ -26,13 +27,7 @@ export default function QrScanPage() {
             {!scanned ? (
                 <>
                     <div className="rounded-2xl overflow-hidden mb-4 bg-[#e5e5e5]">
-                        {/* <Html5QrcodePlugin
-                            fps={10}
-                            qrbox={250}
-                            disableFlip={false}
-                            qrCodeSuccessCallback={onNewScanResult}
-                        /> */}
-                        <Scanner onScan={(result) => alert(result)} />
+                        <QrScanner onResult={(result) => setScanned(result)} />
                     </div>
                     <p className="text-center text-gray-500 mb-2">Наведите камеру на QR-код</p>
                 </>
