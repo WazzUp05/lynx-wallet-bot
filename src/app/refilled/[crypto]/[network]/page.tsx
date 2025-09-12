@@ -8,6 +8,7 @@ import RightIcon from "@/components/icons/right-arrow.svg";
 
 import { useState } from "react";
 import TaxModal from "@/components/modals/TaxModal";
+import { Toast } from "@/components/ui/Toast";
 
 // Типизация для адресов
 type NetworkData = {
@@ -57,6 +58,8 @@ export default function RefilledQrPage() {
     const router = useRouter();
     const { crypto, network } = params as { crypto: string; network: string };
     const [showModal, setShowModal] = useState(false);
+    const [toastOpen, setToastOpen] = useState(false);
+    const [toastMsg, setToastMsg] = useState("");
 
     const srcQr = network === "TRC20" ? "/qr-trc20.png" : network === "TON" ? "/qr-ton.png" : "/qr-demo.png";
 
@@ -69,6 +72,12 @@ export default function RefilledQrPage() {
             ? ADDRESSES[upperCrypto][upperNetwork]
             : undefined;
 
+    const handleCopy = (text: string, msg: string) => {
+        navigator.clipboard.writeText(text);
+        setToastMsg(msg);
+        setToastOpen(true);
+    };
+
     if (!data) return <div className="p-8">Данные не найдены</div>;
 
     return (
@@ -78,6 +87,7 @@ export default function RefilledQrPage() {
                 paddingBottom: "calc(1rem + var(--nav-bottom-height))",
             }}
         >
+            <Toast open={toastOpen} onClose={() => setToastOpen(false)} message={toastMsg} />
             <div className="flex items-center justify-center relative text-[1.8rem] leading-[130%] mb-[3rem] font-semibold w-full">
                 <button className="absolute left-0 top-1/2 -translate-y-1/2" onClick={() => router.back()}>
                     <ArrowLeft />
@@ -126,7 +136,7 @@ export default function RefilledQrPage() {
                     </div>
                 </div>
             </div>
-            <Button className="w-full mb-[1rem]" onClick={() => navigator.clipboard.writeText(data.address)}>
+            <Button className="w-full mb-[1rem]" onClick={() => handleCopy(data.address, "Адрес скопирован")}>
                 Копировать адрес
             </Button>
             <Button className="w-full" variant="ghost" onClick={() => router.push("/")}>

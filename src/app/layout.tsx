@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: "Lynx Wallet Bot",
-    description: "Telegram wallet bot powered by Next.js",
+    description: "Telegram wallet bot.",
 };
 
 export default function RootLayout({

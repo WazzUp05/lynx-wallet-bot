@@ -10,7 +10,7 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ onTopUp }) => {
     return (
-        <div className="flex gap-[2rem] items-center justify-center mb-[3rem]">
+        <div className="flex gap-[2rem] items-center justify-center mb-[1rem]">
             <button className="fs-small text-white" onClick={onTopUp}>
                 <div className="bg-white text-black w-[6rem] h-[6rem] rounded-full flex items-center justify-center mb-[0.5rem]">
                     <PlusIcon />

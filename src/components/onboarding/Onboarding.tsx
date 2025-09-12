@@ -52,7 +52,7 @@ const Onboarding: React.FC = () => {
 
     return (
         <div
-            className="flex z-[1000] flex-col bg-[url('/onboarding/bg.png')] bg-cover bg-center pt-[2rem]"
+            className="flex z-[1000] relative flex-col bg-[url('/onboarding/bg.png')] bg-cover bg-center pt-[2rem]"
             style={{
                 minHeight: "calc(100dvh)",
             }}
@@ -85,7 +85,7 @@ const Onboarding: React.FC = () => {
                             initial={{ opacity: 0, y: 0 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 0 }}
-                            transition={{ duration: 0.4 }}
+                            transition={{ duration: 0.2 }}
                             className={`absolute top-[9.1rem] ${
                                 step === 0 ? "w-[32rem] h-[32rem]" : "w-[26rem] h-[37.4rem]"
                             } ${step === 2 || step === 3 ? "h-[53.8rem]" : ""} mb-[1rem]`}

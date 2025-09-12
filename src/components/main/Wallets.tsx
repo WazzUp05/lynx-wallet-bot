@@ -16,7 +16,7 @@ interface WalletsProps {
 
 const Wallets = ({ wallets }: WalletsProps) => {
     return (
-        <div className="p-[1.6rem] mt-[-2rem] bg-white rounded-t-[2rem] w-full box-shadow h-full">
+        <div className="p-[1.6rem] mt-[-2rem] bg-white rounded-t-[2rem] w-full h-full">
             <Offer />
             <div className="flex flex-col gap-[1rem]">
                 {wallets?.map((item, index) => (
