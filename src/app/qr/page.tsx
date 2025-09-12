@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Toast } from "@/components/ui/Toast";
 import Html5QrcodePlugin from "@/components/HtmlQrScanner";
+import { Scanner } from "@yudiel/react-qr-scanner";
 
 export default function QrScanPage() {
     const [scanned, setScanned] = useState<string | null>(null);
@@ -25,12 +26,13 @@ export default function QrScanPage() {
             {!scanned ? (
                 <>
                     <div className="rounded-2xl overflow-hidden mb-4 bg-[#e5e5e5]">
-                        <Html5QrcodePlugin
+                        {/* <Html5QrcodePlugin
                             fps={10}
                             qrbox={250}
                             disableFlip={false}
                             qrCodeSuccessCallback={onNewScanResult}
-                        />
+                        /> */}
+                        <Scanner onScan={(result) => alert(result)} />
                     </div>
                     <p className="text-center text-gray-500 mb-2">Наведите камеру на QR-код</p>
                 </>
