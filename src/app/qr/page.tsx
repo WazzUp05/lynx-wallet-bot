@@ -105,7 +105,7 @@ export default function QrScanPage() {
             });
             const data = await res.json();
             // обработай ответ, например, показать статус или перейти на страницу оплаты
-            console.log("Order response:", data);
+            alert(data);
         } catch (e) {
             console.error("Order error:", e);
         }
