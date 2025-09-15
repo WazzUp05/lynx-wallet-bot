@@ -91,24 +91,24 @@ export default function QrScanPage() {
             amount: rubAmount,
             amount_usdt: usdtAmount,
             merchant_id: 1,
-            rate: usdtRate,
+            rate: usdtRate.toFixed(2),
             url: scanned,
         };
 
-        alert("Симуляция оплаты:\n" + JSON.stringify(order, null, 2));
+        // alert("Симуляция оплаты:\n" + JSON.stringify(order, null, 2));
 
-        // try {
-        //     const res = await fetch("http://lynx-bot-backend.test/api/orders", {
-        //         method: "POST",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify(order),
-        //     });
-        //     const data = await res.json();
-        //     // обработай ответ, например, показать статус или перейти на страницу оплаты
-        //     console.log("Order response:", data);
-        // } catch (e) {
-        //     console.error("Order error:", e);
-        // }
+        try {
+            const res = await fetch("http://lynx-bot-backend.test/api/orders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(order),
+            });
+            const data = await res.json();
+            // обработай ответ, например, показать статус или перейти на страницу оплаты
+            console.log("Order response:", data);
+        } catch (e) {
+            console.error("Order error:", e);
+        }
     };
 
     return (
