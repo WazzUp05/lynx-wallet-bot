@@ -11,6 +11,7 @@ import SelectCrypto from "@/components/SelectCrypto";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getRatesQuoteRub } from "@/lib/redux/selectors/rateSelectors";
 import { fetchRates } from "@/lib/redux/thunks/rateThunks";
+import { useRouter } from "next/navigation";
 
 const MOCK_SELECT_CRYPTO = [
     {
@@ -33,6 +34,7 @@ export default function QrScanPage() {
     const [modalOpen, setModalOpen] = useState(false);
     const [timer, setTimer] = useState(30);
     const dispatch = useAppDispatch();
+    const router = useRouter();
 
     // Получаем курс USDT/RUB из редакса
     const usdtRate = useAppSelector(getRatesQuoteRub);
@@ -87,7 +89,6 @@ export default function QrScanPage() {
     }, [modalOpen]);
 
     const handlePay = async () => {
-        alert("Платеж в разработке");
         const order = {
             amount: rubAmount,
             amount_usdt: usdtAmount,
@@ -96,8 +97,6 @@ export default function QrScanPage() {
             url: scanned,
         };
 
-        // alert("Симуляция оплаты:\n" + JSON.stringify(order, null, 2));
-
         try {
             const res = await fetch("https://stage.lynx-wallet.com/api/orders", {
                 method: "POST",
@@ -105,8 +104,9 @@ export default function QrScanPage() {
                 body: JSON.stringify(order),
             });
             const data = await res.json();
-            // обработай ответ, например, показать статус или перейти на страницу оплаты
-            alert(data);
+            if (data.success && data.data?.uuid) {
+                router.push(`/qr/status/${data.data.uuid}`);
+            }
         } catch (e) {
             console.error("Order error:", e);
         }
