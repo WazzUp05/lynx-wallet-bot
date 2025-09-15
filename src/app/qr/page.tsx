@@ -89,13 +89,13 @@ export default function QrScanPage() {
     const handlePay = async () => {
         const order = {
             amount: 22,
-            amount_usdt: 0.001,
+            amount_usdt: 2,
             merchant_id: 1,
             rate: 22.22,
             url: "test.com",
         };
 
-        // alert("Симуляция оплаты:\n" + JSON.stringify(order, null, 2));
+        alert("Симуляция оплаты:\n" + JSON.stringify(order, null, 2));
 
         try {
             const res = await fetch("https://stage.lynx-wallet.com/api/orders", {
