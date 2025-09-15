@@ -100,7 +100,7 @@ export default function QrScanPage() {
         try {
             const res = await fetch("https://stage.lynx-wallet.com/api/orders", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", Accept: "application/json" },
                 body: JSON.stringify(order),
             });
             const data = await res.json();
