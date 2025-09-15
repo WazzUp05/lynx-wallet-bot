@@ -33,6 +33,7 @@ export default function QrScanPage() {
     const [toast, setToast] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [timer, setTimer] = useState(30);
+    const [toastMsg, setToastMsg] = useState("");
     const dispatch = useAppDispatch();
     const router = useRouter();
 
@@ -105,7 +106,13 @@ export default function QrScanPage() {
             });
             const data = await res.json();
 
-            alert("Order response:\n" + JSON.stringify(data, null, 2));
+            if (data.success === false) {
+                setToast(true);
+                setTimeout(() => setToast(false), 2000);
+                // Можно сохранить текст сообщения для Toast:
+                setToastMsg(data.message || "Ошибка при создании заявки");
+                return;
+            }
 
             if (data.success && data.data?.uuid) {
                 router.push(`/qr/status/${data.data.uuid}`);
@@ -117,6 +124,7 @@ export default function QrScanPage() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[80vh] px-4">
+            {toast && <Toast open={toast} message={toastMsg} type="error" onClose={() => setToast(false)} />}
             <div className="rounded-2xl overflow-hidden mb-4 bg-[#e5e5e5]">
                 <QrScanner onResult={handleScan} />
             </div>
