@@ -86,6 +86,31 @@ export default function QrScanPage() {
         if (modalOpen) setTimer(30);
     }, [modalOpen]);
 
+    const handlePay = async () => {
+        const order = {
+            amount: rubAmount,
+            amount_usdt: usdtAmount,
+            merchant_id: 1,
+            rate: usdtRate,
+            url: scanned,
+        };
+
+        alert("Симуляция оплаты:\n" + JSON.stringify(order, null, 2));
+
+        // try {
+        //     const res = await fetch("http://lynx-bot-backend.test/api/orders", {
+        //         method: "POST",
+        //         headers: { "Content-Type": "application/json" },
+        //         body: JSON.stringify(order),
+        //     });
+        //     const data = await res.json();
+        //     // обработай ответ, например, показать статус или перейти на страницу оплаты
+        //     console.log("Order response:", data);
+        // } catch (e) {
+        //     console.error("Order error:", e);
+        // }
+    };
+
     return (
         <div className="flex flex-col items-center justify-center min-h-[80vh] px-4">
             <div className="rounded-2xl overflow-hidden mb-4 bg-[#e5e5e5]">
@@ -133,7 +158,7 @@ export default function QrScanPage() {
                         </p>
                     </div>
                     <p className="break-all mb-4">{scanned}</p>
-                    <Button variant="primary" onClick={handleCopy} className="mb-2">
+                    <Button variant="primary" onClick={handlePay} className="mb-2">
                         Оплатить
                     </Button>
                 </div>
