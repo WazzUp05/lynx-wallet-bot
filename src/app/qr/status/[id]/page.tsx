@@ -12,13 +12,49 @@ import { useEffect, useState } from "react";
 import { Toast } from "@/components/ui/Toast";
 import Image from "next/image";
 
+interface Order {
+    id: number;
+    uuid: string;
+    status: string;
+    status_label: string;
+    amount: string;
+    amount_formatted: string;
+    amount_usdt: string;
+    amount_usdt_formatted: string;
+    rate: string;
+    rate_formatted: string;
+    url: string;
+    merchant: {
+        id: number;
+        name: string;
+        telegram_username: string;
+        is_active: boolean;
+    };
+    trader: {
+        id: number;
+        name: string;
+        login: string;
+        is_active: boolean;
+    };
+    receiver: {
+        id: number;
+        name: string;
+        uuid: string;
+        is_active: boolean;
+    };
+    created_at: string;
+    updated_at: string;
+    created_at_human: string;
+    updated_at_human: string;
+}
+
 export default function QrStatusPage() {
     const router = useRouter();
     const params = useParams();
     const { id } = params as { id: string };
     const [toastOpen, setToastOpen] = useState(false);
     const [toastMsg, setToastMsg] = useState("");
-    const [order, setOrder] = useState<any>(null);
+    const [order, setOrder] = useState<Order | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const dateFormatter = new Intl.DateTimeFormat("ru-RU", {
@@ -47,7 +83,7 @@ export default function QrStatusPage() {
                 const res = await fetch(`https://stage.lynx-wallet.com/api/order/${id}`);
                 const data = await res.json();
                 if (data.success && data.data) {
-                    setOrder((prev: any) => {
+                    setOrder((prev: Order | null) => {
                         if (!prev || prev.status !== data.data.status) {
                             return data.data;
                         }
