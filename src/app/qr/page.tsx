@@ -30,7 +30,7 @@ const MOCK_SELECT_CRYPTO = [
 export default function QrScanPage() {
     const [scanned, setScanned] = useState<string | null>(null);
     const [toast, setToast] = useState(false);
-    const [modalOpen, setModalOpen] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
     const [timer, setTimer] = useState(30);
     const dispatch = useAppDispatch();
 
@@ -87,18 +87,19 @@ export default function QrScanPage() {
     }, [modalOpen]);
 
     const handlePay = async () => {
+        alert("Платеж в разработке");
         const order = {
-            amount: 22,
-            amount_usdt: 2,
+            amount: rubAmount,
+            amount_usdt: usdtAmount,
             merchant_id: 1,
-            rate: 22.22,
-            url: "test.com",
+            rate: usdtRate.toFixed(2),
+            url: scanned,
         };
 
-        alert("Симуляция оплаты:\n" + JSON.stringify(order, null, 2));
+        // alert("Симуляция оплаты:\n" + JSON.stringify(order, null, 2));
 
         try {
-            const res = await fetch("https://stage.lynx-wallet.com/api/orders", {
+            const res = await fetch("http://stage.lynx-wallet.com/api/orders", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", Accept: "application/json" },
                 body: JSON.stringify(order),
@@ -107,7 +108,7 @@ export default function QrScanPage() {
             // обработай ответ, например, показать статус или перейти на страницу оплаты
             alert(data);
         } catch (e) {
-            alert("Ошибка при создании заказа: " + e);
+            console.error("Order error:", e);
         }
     };
 
