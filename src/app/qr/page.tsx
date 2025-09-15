@@ -104,6 +104,9 @@ export default function QrScanPage() {
                 body: JSON.stringify(order),
             });
             const data = await res.json();
+
+            alert("Order response:\n" + JSON.stringify(data, null, 2));
+
             if (data.success && data.data?.uuid) {
                 router.push(`/qr/status/${data.data.uuid}`);
             }
