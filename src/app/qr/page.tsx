@@ -106,6 +106,8 @@ export default function QrScanPage() {
             });
             const data = await res.json();
 
+            alert(JSON.stringify(data, null, 2));
+
             if (data.success === false) {
                 setToast(true);
                 setTimeout(() => setToast(false), 2000);
