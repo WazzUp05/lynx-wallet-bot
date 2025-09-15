@@ -49,7 +49,7 @@ const Main: React.FC = () => {
             <RefilledModal isTopUpOpen={isTopUpOpen} setTopUpOpen={setTopUpOpen} />
 
             {/* Для отладки: */}
-            {/* <pre>{JSON.stringify({ user, isReady, isInTelegram }, null, 2)}</pre> */}
+            <pre>{JSON.stringify({ user, isReady, isInTelegram }, null, 2)}</pre>
         </div>
     );
 };
