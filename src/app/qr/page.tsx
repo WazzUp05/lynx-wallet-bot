@@ -87,7 +87,6 @@ export default function QrScanPage() {
     }, [modalOpen]);
 
     const handlePay = async () => {
-        alert("Платеж в разработке");
         const order = {
             amount: 22,
             amount_usdt: 0.001,
