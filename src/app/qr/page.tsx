@@ -30,7 +30,7 @@ const MOCK_SELECT_CRYPTO = [
 export default function QrScanPage() {
     const [scanned, setScanned] = useState<string | null>(null);
     const [toast, setToast] = useState(false);
-    const [modalOpen, setModalOpen] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
     const [timer, setTimer] = useState(30);
     const dispatch = useAppDispatch();
 
@@ -89,11 +89,11 @@ export default function QrScanPage() {
     const handlePay = async () => {
         alert("Платеж в разработке");
         const order = {
-            amount: 22,
-            amount_usdt: 0.001,
+            amount: rubAmount,
+            amount_usdt: usdtAmount,
             merchant_id: 1,
-            rate: 22.22,
-            url: "test.com",
+            rate: usdtRate.toFixed(2),
+            url: scanned,
         };
 
         // alert("Симуляция оплаты:\n" + JSON.stringify(order, null, 2));
