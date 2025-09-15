@@ -15,19 +15,19 @@ export interface Rate {
 }
 
 interface RateState {
-    rate: Rate | null;
+    rates: Rate[];
 }
 
 const initialState: RateState = {
-    rate: null,
+    rates: [],
 };
 
 export const rateSlice = createSlice({
     name: "rate",
     initialState,
     reducers: {
-        setRates(state, action: PayloadAction<Rate | null>) {
-            state.rate = action.payload;
+        setRates(state, action: PayloadAction<Rate[]>) {
+            state.rates = action.payload;
         },
     },
 });

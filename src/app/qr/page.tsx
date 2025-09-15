@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Toast } from "@/components/ui/Toast";
 import QrScanner from "@/components/QrScanner";
@@ -8,7 +8,7 @@ import RubleIcon from "@/components/icons/ruble.svg";
 import UsdtIcon from "@/components/icons/usdt.svg";
 import ArrowRightIcon from "@/components/icons/right-arrow.svg";
 import SelectCrypto from "@/components/SelectCrypto";
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getRatesQuoteRub } from "@/lib/redux/selectors/rateSelectors";
 
 const MOCK_SELECT_CRYPTO = [
@@ -32,7 +32,11 @@ export default function QrScanPage() {
     const [modalOpen, setModalOpen] = useState(false);
 
     // 1. Получаем курс USDT/RUB из редакса
-    const usdtRate = useAppSelector(getRatesQuoteRub) ?? 0;
+    const usdtRate = useAppSelector(getRatesQuoteRub);
+
+    useEffect(() => {
+        console.log("usdtRate", usdtRate);
+    }, [usdtRate]);
 
     // 2. Парсим сумму из QR
     let rubAmount = 0;

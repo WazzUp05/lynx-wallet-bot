@@ -31,11 +31,6 @@ const WalletItemData = [
 
 const Main: React.FC = () => {
     const [isTopUpOpen, setTopUpOpen] = React.useState(false);
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        dispatch(fetchRates());
-    }, [dispatch]);
 
     // Используем хук для получения данных Telegram WebApp
     const { user, isReady, isInTelegram } = useTelegramWebApp();
