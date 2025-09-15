@@ -17,6 +17,7 @@ const WalletItemData = [
         walletIcon: "/icons/ton.svg",
         fiatBalance: 2000,
         cryptoBalance: 1.0,
+        soon: true,
     },
     {
         walletName: "BTC",

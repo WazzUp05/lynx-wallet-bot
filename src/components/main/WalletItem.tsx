@@ -17,7 +17,13 @@ const WalletItem: React.FC<WalletItemProps> = ({ walletName, walletIcon, fiatBal
             }  rounded-[1.5rem] flex items-center justify-between`}
         >
             <div className="flex items-center gap-[1rem]">
-                <Image src={walletIcon || "/wallet-icon.png"} alt="Wallet Icon" width={40} height={40} />
+                <Image
+                    src={walletIcon || "/wallet-icon.png"}
+                    alt="Wallet Icon"
+                    className={`${soon ? "filter grayscale " : ""}`}
+                    width={40}
+                    height={40}
+                />
                 <div className="flex flex-col ">
                     <p className="text-[1.5rem] leading-[130%] text-black font-bold">{walletName || "Wallet Name"}</p>
                     <p className="text-[1.5rem] leading-[130%] text-[var(--gray)]">{fiatBalance || "0.00"} ₽</p>

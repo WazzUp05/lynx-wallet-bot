@@ -17,13 +17,14 @@ const MOCK_SELECT_USDT = [
         description: "Комиссия 2.75 USDT",
         iconUrl: "/icons/trc20.svg",
     },
-    {
-        id: "TON",
-        label: "TON",
-        description: "Комиссия 2.75 USDT",
-        iconUrl: "/icons/ton.svg",
-    },
+    // {
+    //     id: "TON",
+    //     label: "TON",
+    //     description: "Комиссия 2.75 USDT",
+    //     iconUrl: "/icons/ton.svg",
+    // },
 ];
+
 const MOCK_SELECT_TON = [
     {
         id: "TON",
@@ -39,12 +40,6 @@ const MOCK_SELECT_CRYPTO = [
         label: "USDT",
         description: "0.0 USDT",
         iconUrl: "/icons/usdt.svg",
-    },
-    {
-        id: "TON",
-        label: "TON",
-        description: "0.0 TON",
-        iconUrl: "/icons/ton.svg",
     },
 ];
 
@@ -101,7 +96,7 @@ const Page = () => {
             <div className="mb-[3rem]">
                 <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[#08091C]">Скоро</p>
                 <div
-                    className={`flex items-center w-full gap-[1rem] py-[1rem] px-[1.6rem] rounded-[1.5rem] box-shadow transition
+                    className={`flex items-center mb-[1rem] w-full gap-[1rem] py-[1rem] px-[1.6rem] rounded-[1.5rem] box-shadow transition
                         bg-white
                         hover:border-blue-400`}
                 >
@@ -115,6 +110,23 @@ const Page = () => {
 
                     <div className="flex-1 text-left">
                         <div className="font-semibold text-black text-[1.5rem] leading-[130%]">BER-20</div>
+                    </div>
+                </div>
+                <div
+                    className={`flex items-center w-full gap-[1rem] py-[1rem] px-[1.6rem] rounded-[1.5rem] box-shadow transition
+                        bg-white
+                        hover:border-blue-400`}
+                >
+                    <Image
+                        src="/icons/ton.svg"
+                        alt="ton "
+                        width={40}
+                        height={40}
+                        className="w-[4rem] h-[4rem] rounded-full filter grayscale "
+                    />
+
+                    <div className="flex-1 text-left">
+                        <div className="font-semibold text-black text-[1.5rem] leading-[130%]">TON</div>
                     </div>
                 </div>
             </div>

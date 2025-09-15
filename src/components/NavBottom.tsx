@@ -14,7 +14,7 @@ const NavBottom = () => {
         { href: "/", label: "Главная", icon: <HomeIcon /> },
         { href: "/qr", label: "Оплата по QR", icon: <QrIcon /> },
         { href: "/history", label: "История", icon: <ClockIcon /> },
-        { href: "/profile", label: "Профиль", icon: <UserIcon /> },
+        { href: "/profile", label: "Профиль", icon: <UserIcon />, disabled: true },
     ];
 
     return (
@@ -26,7 +26,8 @@ const NavBottom = () => {
                     className={
                         pathname === item.href
                             ? "text-[var(--blue)] font-semibold flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] text-[1.2rem] leading-[1.3rem]"
-                            : "flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] text-[var(--gray)] text-[1.2rem] leading-[1.3rem]"
+                            : "flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] text-[var(--gray)] text-[1.2rem] leading-[1.3rem]" +
+                              (item.disabled ? " pointer-events-none opacity-50" : "")
                     }
                 >
                     {item.icon}
