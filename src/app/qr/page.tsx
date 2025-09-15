@@ -107,7 +107,7 @@ export default function QrScanPage() {
             // обработай ответ, например, показать статус или перейти на страницу оплаты
             alert(data);
         } catch (e) {
-            console.error("Order error:", e);
+            alert("Ошибка при создании заказа: " + e);
         }
     };
 
