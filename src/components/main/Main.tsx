@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 import Balance from "./Balance";
 import Navigation from "./Navigation";
 import Wallets from "./Wallets";
 import RefilledModal from "../refilled/RefilledModal";
 import { useTelegramWebApp } from "@/lib/telegram/hooks"; // импортируем хук
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { fetchRates } from "@/lib/redux/thunks/rateThunks";
 
 const WalletItemData = [
     {
@@ -29,6 +31,11 @@ const WalletItemData = [
 
 const Main: React.FC = () => {
     const [isTopUpOpen, setTopUpOpen] = React.useState(false);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(fetchRates());
+    }, [dispatch]);
 
     // Используем хук для получения данных Telegram WebApp
     const { user, isReady, isInTelegram } = useTelegramWebApp();

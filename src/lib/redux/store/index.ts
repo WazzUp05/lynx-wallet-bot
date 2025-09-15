@@ -3,6 +3,7 @@ import walletSlice from "../slices/walletSlice";
 import telegramSlice from "../slices/telegramSlice";
 import appSlice from "../slices/appSlice";
 import userSlice from "../slices/userSlice";
+import rateSlice from "../slices/rateSlice";
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         user: userSlice,
         wallet: walletSlice,
         telegram: telegramSlice,
+        rate: rateSlice,
     },
 });
 
