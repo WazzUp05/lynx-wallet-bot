@@ -118,12 +118,12 @@ export default function QrStatusPage() {
             <Toast open={toastOpen} message={toastMsg} onClose={() => setToastOpen(false)} />
             <div
                 className={`w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-33.4rem] ${
-                    order.status === "completed" ? "bg-[#CBF7E9]" : "bg-[#DEEEFF]"
+                    order.status === "success" ? "bg-[#CBF7E9]" : "bg-[#DEEEFF]"
                 } blur-[10rem] rounded-[50%] `}
             />
             <div
                 className={`w-[60rem] h-[50rem] absolute top-[7.4rem] right-[-33.4rem] ${
-                    order.status === "completed" ? "bg-[#CBF7E9]" : "bg-[#DEEEFF]"
+                    order.status === "success" ? "bg-[#CBF7E9]" : "bg-[#DEEEFF]"
                 } blur-[10rem] rounded-[50%] `}
             />
             <div className="w-full max-w-[400px] mx-auto relative ">
@@ -133,7 +133,7 @@ export default function QrStatusPage() {
                         {dateFormatter.format(new Date(order.created_at))}
                     </div>
                     <div className="w-[8rem] h-[8rem] rounded-full bg-[#E0EBF9] flex items-center justify-center mb-[1rem]">
-                        {order.status === "completed" ? (
+                        {order.status === "success" ? (
                             <Image src="/tick-circle-big.svg" alt="Paid" width={40} height={40} />
                         ) : (
                             <Image src="/loading.gif" alt="Waiting" width={100} height={100} />
@@ -146,7 +146,7 @@ export default function QrStatusPage() {
                                 <ClockIcon /> Ожидание
                             </span>
                         )}
-                        {order.status === "completed" && (
+                        {order.status === "success" && (
                             <span className="bg-white flex items-center gap-[0.5rem] font-semibold rounded-full p-[0.7rem] text-[1.2rem] box-shadow leading-[130%]">
                                 <CheckIcon /> Успешно
                             </span>

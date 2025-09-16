@@ -1,52 +1,41 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface TelegramUser {
+    id: number;
+    first_name: string;
+    last_name?: string;
+    username?: string;
+    language_code?: string;
+    photo_url?: string;
+}
+
 interface UserState {
-    id: string | null;
-    name: string | null;
-    email: string | null;
-    isAuthenticated: boolean;
-    balance: {
-        usdt: number;
-        btc: number;
-        eth: number;
-        ton: number;
-    };
+    data: TelegramUser | null;
+    loading: boolean;
 }
 
 const initialState: UserState = {
-    id: null,
-    name: null,
-    email: null,
-    isAuthenticated: false,
-    balance: {
-        usdt: 0,
-        btc: 0,
-        eth: 0,
-        ton: 0,
-    },
+    data: null,
+    loading: true,
 };
 
 const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        setUser(state, action: PayloadAction<{ id: string; name: string; email: string }>) {
-            state.id = action.payload.id;
-            state.name = action.payload.name;
-            state.email = action.payload.email;
-            state.isAuthenticated = true;
+        setUser: (state, action: PayloadAction<TelegramUser>) => {
+            state.data = action.payload;
+            state.loading = false;
         },
-        setBalance(state, action: PayloadAction<{ usdt: number; btc: number; eth: number; ton: number }>) {
-            state.balance = action.payload;
+        clearUser: (state) => {
+            state.data = null;
+            state.loading = false;
         },
-        clearUser(state) {
-            state.id = null;
-            state.name = null;
-            state.email = null;
-            state.isAuthenticated = false;
+        setLoading: (state, action: PayloadAction<boolean>) => {
+            state.loading = action.payload;
         },
     },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, setLoading } = userSlice.actions;
 export default userSlice.reducer;

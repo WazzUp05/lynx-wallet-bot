@@ -5,8 +5,8 @@ import Navigation from "./Navigation";
 import Wallets from "./Wallets";
 import RefilledModal from "../refilled/RefilledModal";
 import { useTelegramWebApp } from "@/lib/telegram/hooks"; // импортируем хук
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { fetchRates } from "@/lib/redux/thunks/rateThunks";
+import { useTelegramAuth } from "../../../hooks/hooks/useTelegramAuth";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 const WalletItemData = [
     {
@@ -30,10 +30,12 @@ const WalletItemData = [
 ];
 
 const Main: React.FC = () => {
+    useTelegramAuth(); // подгружаем юзера при старте
+    const { data: user, loading } = useAppSelector((state) => state.user);
     const [isTopUpOpen, setTopUpOpen] = React.useState(false);
 
-    // Используем хук для получения данных Telegram WebApp
-    const { user, isReady, isInTelegram } = useTelegramWebApp();
+    // // Используем хук для получения данных Telegram WebApp
+    // const { user, isReady, isInTelegram } = useTelegramWebApp();
 
     return (
         <div className="w-full min-h-[100dvh] flex flex-col items-center  text-[var(--text)] pb-[var(--nav-bottom-height)]">
@@ -51,7 +53,7 @@ const Main: React.FC = () => {
             <RefilledModal isTopUpOpen={isTopUpOpen} setTopUpOpen={setTopUpOpen} />
 
             {/* Для отладки: */}
-            <pre>{JSON.stringify({ user, isReady, isInTelegram }, null, 2)}</pre>
+            {user ? <pre>{JSON.stringify(user, null, 2)}</pre> : <p>Нет данных пользователя</p>}
         </div>
     );
 };
