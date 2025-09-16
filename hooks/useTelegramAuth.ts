@@ -1,38 +1,33 @@
 "use client";
 
-import { useRawInitData } from "@telegram-apps/sdk-react";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { clearUser, setLoading, setUser } from "@/lib/redux/slices/userSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { parse } from "@telegram-apps/init-data-node/web";
 import { checkAndSyncMerchant } from "@/lib/api/merchant";
+import { useRawInitData } from "@telegram-apps/sdk-react";
 
 export function useTelegramAuth() {
     const dispatch = useAppDispatch();
-    const [actualInitData, setActualInitData] = useState<string>("");
+    let rawInitData: string | null = null;
+    try {
+        const initData = useRawInitData();
+        rawInitData = typeof initData === "undefined" ? null : initData;
+    } catch (e) {
+        if (process.env.NODE_ENV === "development") {
+            rawInitData = null;
+        } else {
+            throw e;
+        }
+    }
 
     useEffect(() => {
-        let rawInitData: string | null = null;
-
-        try {
-            rawInitData = useRawInitData() ?? null;
-        } catch (e) {
-            // В dev-режиме игнорируем ошибку
-            if (process.env.NODE_ENV === "development") {
-                rawInitData = null;
-            } else {
-                console.error("useRawInitData error:", e);
-            }
-        }
-
         // Моковые данные для dev-режима
         const devInitData =
             "user=%7B%22id%22%3A123456%2C%22first_name%22%3A%22Dev%22%2C%22last_name%22%3A%22User%22%2C%22username%22%3A%22devuser%22%7D";
         const isDev = process.env.NODE_ENV === "development";
-        setActualInitData(rawInitData || (isDev ? devInitData : ""));
-    }, []);
+        const actualInitData = rawInitData || (isDev ? devInitData : "");
 
-    useEffect(() => {
         if (!actualInitData) {
             dispatch(setLoading(false));
             dispatch(clearUser());
@@ -85,5 +80,5 @@ export function useTelegramAuth() {
                 }
             })
             .finally(() => dispatch(setLoading(false)));
-    }, [actualInitData, dispatch]);
+    }, [rawInitData, dispatch]);
 }

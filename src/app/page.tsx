@@ -1,4 +1,5 @@
 "use client";
+import dynamic from "next/dynamic";
 import Main from "@/components/main/Main";
 import Onboarding from "@/components/onboarding/Onboarding";
 import Loader from "@/components/ui/Loader";
@@ -7,10 +8,10 @@ import { getOnboardingCompleted } from "@/lib/redux/selectors/appSelectors";
 import { setOnboardingCompleted } from "@/lib/redux/slices/appSlice";
 import { useEffect } from "react";
 import { getLoading } from "@/lib/redux/selectors/userSelectors";
-import { useTelegramAuth } from "../../hooks/useTelegramAuth";
+
+const TelegramAuthClient = dynamic(() => import("@/components/TelegramAuthClient"), { ssr: false });
 
 export default function Home() {
-    useTelegramAuth(); // подгружаем юзера при старте
     const onboardingCompleted = useAppSelector(getOnboardingCompleted);
     const loadingApp = useAppSelector(getLoading);
     const dispatch = useAppDispatch();
@@ -31,8 +32,12 @@ export default function Home() {
     }
 
     return (
-        <main>
-            {loadingApp && <Loader className="h-[100dvh]" />} <Main />
-        </main>
+        <>
+            <TelegramAuthClient />
+            <main>
+                {loadingApp && <Loader className="h-[100dvh]" />}
+                <Main />
+            </main>
+        </>
     );
 }
