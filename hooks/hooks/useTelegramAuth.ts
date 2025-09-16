@@ -11,6 +11,7 @@ export function useTelegramAuth() {
         const tg = (window as any).Telegram?.WebApp;
         const initData = tg?.initData;
         const initDataUnsafe = tg?.initDataUnsafe;
+        console.log("initData", initData, initDataUnsafe);
 
         if (initData && initDataUnsafe?.user) {
             dispatch(setLoading(true));

@@ -4,6 +4,8 @@ import crypto from "crypto";
 const BOT_TOKEN = process.env.BOT_TOKEN!; // токен бота из BotFather
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+    console.log("Telegram auth request:", req.method, req.body);
+
     if (req.method !== "POST") {
         return res.status(405).json({ ok: false, error: "Method not allowed" });
     }
