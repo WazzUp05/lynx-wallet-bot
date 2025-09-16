@@ -5,7 +5,7 @@ import Navigation from "./Navigation";
 import Wallets from "./Wallets";
 import RefilledModal from "../refilled/RefilledModal";
 import { TelegramUser } from "@/lib/telegram/types";
-import { getUser } from "@/lib/redux/selectors/userSelectors";
+import { getLoading, getUser } from "@/lib/redux/selectors/userSelectors";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { useTelegramAuth } from "../../../hooks/useTelegramAuth";
 import Loader from "../ui/Loader";
@@ -34,11 +34,12 @@ const WalletItemData = [
 const Main: React.FC = () => {
     useTelegramAuth(); // подгружаем юзера при старте
     const { data: user, loading } = useAppSelector(getUser);
+    const loadingApp = useAppSelector(getLoading);
     const [isTopUpOpen, setTopUpOpen] = React.useState(false);
 
     return (
         <div className="w-full min-h-[100dvh] flex flex-col items-center  text-[var(--text)] pb-[var(--nav-bottom-height)]">
-            {loading ? (
+            {loadingApp ? (
                 <Loader className="h-[100dvh]" />
             ) : (
                 <>

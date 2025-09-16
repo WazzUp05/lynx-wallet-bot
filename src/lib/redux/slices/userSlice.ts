@@ -10,12 +10,19 @@ interface TelegramUser {
 }
 
 interface UserState {
-    data: TelegramUser | null;
+    data: TelegramUser;
     loading: boolean;
 }
 
 const initialState: UserState = {
-    data: null,
+    data: {
+        id: 0,
+        first_name: "",
+        last_name: "",
+        username: "",
+        language_code: "",
+        photo_url: "",
+    },
     loading: true,
 };
 
@@ -28,7 +35,14 @@ const userSlice = createSlice({
             state.loading = false;
         },
         clearUser: (state) => {
-            state.data = null;
+            state.data = {
+                id: 0,
+                first_name: "",
+                last_name: "",
+                username: "",
+                language_code: "",
+                photo_url: "",
+            };
             state.loading = false;
         },
         setLoading: (state, action: PayloadAction<boolean>) => {

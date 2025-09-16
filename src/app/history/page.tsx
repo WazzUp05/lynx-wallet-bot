@@ -3,135 +3,54 @@ import HistoryDay from "@/components/history/HistoryDay";
 import { Button } from "@/components/ui/Button";
 import { Tabs } from "@/components/ui/Tabs";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import PlusIcon from "@/components/icons/plus.svg";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { fetchHistory } from "@/lib/redux/thunks/historyThunks";
+import { getHistory } from "@/lib/redux/selectors/historySelectors";
 
-// Mock data for history
-const history: Array<{
-    date: string;
-    items: Array<{
-        id: number;
-        type: string;
-        amount: number;
-        currency: string;
-        title: string;
-        text: string;
-        date: string;
-        time: string;
-        status: string;
-    }>;
-}> = [
-    {
-        date: "2023-10-01",
-        items: [
-            {
-                id: 1,
-                type: "withdrawal",
-                amount: 50,
-                currency: "USD",
-                title: "Withdrawal",
-                text: "Withdrawal of $50",
-                date: "2023-10-01",
-                time: "12:00",
-                status: "completed",
-            },
-        ],
-    },
-    {
-        date: "2023-10-02",
-        items: [
-            {
-                id: 2,
-                type: "qrcode",
-                amount: 200,
-                currency: "USD",
-                title: "qrcode",
-                text: "qrcode of $200",
-                date: "2023-10-02",
-                time: "14:00",
-                status: "completed",
-            },
-            {
-                id: 3,
-                type: "sale",
-                amount: 200,
-                currency: "USD",
-                title: "Sale",
-                text: "Sale of $200",
-                date: "2023-10-02",
-                time: "14:00",
-                status: "completed",
-            },
-            {
-                id: 4,
-                type: "replenishment",
-                amount: 200,
-                currency: "USD",
-                title: "Replenishment",
-                text: "Replenishment of $200",
-                date: "2023-10-02",
-                time: "14:00",
-                status: "completed",
-            },
-        ],
-    },
-    {
-        date: "2023-10-03",
-        items: [
-            {
-                id: 5,
-                type: "transfer",
-                amount: 300,
-                currency: "USD",
-                title: "Transfer",
-                text: "Transfer of $300",
-                date: "2023-10-03",
-                time: "16:00",
-                status: "completed",
-            },
-            {
-                id: 6,
-                type: "replenishment",
-                amount: 200,
-                currency: "USD",
-                title: "Replenishment",
-                text: "Replenishment of $200",
-                date: "2023-10-02",
-                time: "14:00",
-                status: "pending",
-            },
-        ],
-    },
-];
+const typeLabels: Record<string, string> = {
+    withdrawal: "Вывод",
+    qrcode: "Покупка",
+    sale: "Продажа",
+    replenishment: "Пополнение",
+    transfer: "Перевод",
+    topups: "Обмены",
+    payment: "Оплата",
+};
 
 const Page = () => {
-    // Собираем уникальные типы из истории
-    const typeLabels: Record<string, string> = {
-        withdrawal: "Вывод",
-        qrcode: "Покупка",
-        sale: "Продажа",
-        replenishment: "Пополнение",
-        transfer: "Перевод",
-        topups: "Обмены",
-        payment: "Оплата",
-    };
+    const dispatch = useAppDispatch();
+    const historyItems = useAppSelector(getHistory);
 
-    const allTypes = Array.from(new Set(history.flatMap((day) => day.items.map((item) => item.type))));
+    useEffect(() => {
+        dispatch(fetchHistory());
+    }, [dispatch]);
+
+    // Группировка по дням (пример, если API не группирует)
+    const historyByDay = React.useMemo(() => {
+        const map: Record<string, any[]> = {};
+        historyItems.forEach((item) => {
+            const date = item.created_at.split(" ")[0];
+            if (!map[date]) map[date] = [];
+            map[date].push(item);
+        });
+        return Object.entries(map).map(([date, items]) => ({ date, items }));
+    }, [historyItems]);
+
+    const allTypes = Array.from(new Set(historyItems.map((item) => item.type)));
     const tabs = [
         { label: "Все", value: "all" },
         ...allTypes.map((type) => ({ label: typeLabels[type] || type, value: type })),
     ];
 
     const [selectedTab, setSelectedTab] = React.useState("all");
-    const handleTabChange = (value: string) => {
-        setSelectedTab(value);
-    };
+    const handleTabChange = (value: string) => setSelectedTab(value);
 
-    // Фильтрация истории по выбранному табу
     const filteredHistory =
         selectedTab === "all"
-            ? history
-            : history
+            ? historyByDay
+            : historyByDay
                   .map((day) => ({
                       ...day,
                       items: day.items.filter((item) => item.type === selectedTab),
