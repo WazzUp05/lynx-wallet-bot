@@ -41,9 +41,13 @@ export function useTelegramAuth() {
         })
             .then((res) => res.json())
             .then(async (data) => {
+                console.log("Auth response data:", data);
+
                 let user = data.ok && data.user ? data.user : telegramUser;
                 if (user) {
                     dispatch(setUser(user));
+                    console.log("User set in Redux:", user);
+
                     // Проверка и регистрация мерчанта
                     try {
                         const merchantData = await checkAndSyncMerchant(user);
