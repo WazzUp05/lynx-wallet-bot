@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import walletSlice from "../slices/walletSlice";
-import telegramSlice from "../slices/telegramSlice";
 import appSlice from "../slices/appSlice";
 import userSlice from "../slices/userSlice";
 import rateSlice from "../slices/rateSlice";
@@ -10,7 +9,6 @@ export const store = configureStore({
         app: appSlice,
         user: userSlice,
         wallet: walletSlice,
-        telegram: telegramSlice,
         rate: rateSlice,
     },
 });

@@ -3,6 +3,7 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { clearUser, setLoading, setUser } from "@/lib/redux/slices/userSlice";
 import { useEffect } from "react";
 import { parse } from "@telegram-apps/init-data-node/web";
+import { checkAndSyncMerchant } from "@/lib/api/merchant";
 
 export function useTelegramAuth() {
     const dispatch = useAppDispatch();
@@ -50,11 +51,19 @@ export function useTelegramAuth() {
             body: JSON.stringify({ initData: actualInitData }),
         })
             .then((res) => res.json())
-            .then((data) => {
-                if (data.ok && data.user) {
-                    dispatch(setUser(data.user));
-                } else if (telegramUser) {
-                    dispatch(setUser(telegramUser));
+            .then(async (data) => {
+                let user = data.ok && data.user ? data.user : telegramUser;
+                if (user) {
+                    dispatch(setUser(user));
+                    // Проверка и регистрация мерчанта
+                    try {
+                        const merchantData = await checkAndSyncMerchant(user);
+                        // Можно сохранить merchantData в Redux или обработать по необходимости
+                        dispatch(setLoading(false));
+                        console.log("Merchant data:", merchantData);
+                    } catch (err) {
+                        console.error("Merchant sync error:", err);
+                    }
                 } else {
                     dispatch(clearUser());
                 }

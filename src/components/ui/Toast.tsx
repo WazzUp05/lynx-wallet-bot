@@ -30,7 +30,10 @@ export const Toast: React.FC<ToastProps> = ({ open, message, onClose, duration =
                         ${type === "error" ? "bg-[#FFEAEA] text-[#D32F2F]" : "bg-white text-black"}
                     `}
                 >
-                    {type === "error" ? <ErrorIcon /> : <CheckIcon />}
+                    <div className="flex items-center justify-center w-[2.4rem] h-[2.4rem]">
+                        {type === "error" ? <ErrorIcon /> : <CheckIcon />}
+                    </div>
+
                     {message}
                 </motion.div>
             )}

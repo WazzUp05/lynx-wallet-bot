@@ -55,15 +55,6 @@ export default function QrScanPage() {
         return { rubAmount: rub, usdtAmount: usdt };
     }, [scanned, usdtRate]);
 
-    // Обработка копирования
-    const handleCopy = async () => {
-        if (scanned) {
-            await navigator.clipboard.writeText(scanned);
-            setToast(true);
-            setTimeout(() => setToast(false), 2000);
-        }
-    };
-
     // Открываем модалку при сканировании
     const handleScan = (result: string) => {
         setScanned(result);
@@ -177,7 +168,6 @@ export default function QrScanPage() {
                     </Button>
                 </div>
             </Modal>
-            {toast && <Toast open={toast} message="Адрес скопирован" onClose={() => setToast(false)} />}
         </div>
     );
 }
