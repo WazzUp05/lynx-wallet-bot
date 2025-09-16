@@ -30,8 +30,8 @@ const WalletItemData = [
 ];
 
 const Main: React.FC = () => {
-    const [isTopUpOpen, setTopUpOpen] = React.useState(false);
     useTelegramAuth(); // подгружаем юзера при старте
+    const [isTopUpOpen, setTopUpOpen] = React.useState(false);
     const { data: user, loading } = useAppSelector(getUser);
 
     return (

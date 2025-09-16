@@ -8,6 +8,7 @@ import { checkAndSyncMerchant } from "@/lib/api/merchant";
 export function useTelegramAuth() {
     const dispatch = useAppDispatch();
     const rawInitData = useRawInitData(); // <-- только внутри хука!
+    console.log("useTelegramAuth rawInitData", rawInitData);
 
     // Моковые данные для dev-режима
     const devInitData =
