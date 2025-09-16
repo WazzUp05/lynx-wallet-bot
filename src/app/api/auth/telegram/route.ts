@@ -1,18 +1,15 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest } from "next/server";
 import crypto from "crypto";
 
-const BOT_TOKEN = process.env.BOT_TOKEN!; // токен бота из BotFather
+const BOT_TOKEN = process.env.BOT_TOKEN!;
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-    console.log("Telegram auth request:", req.method, req.body);
+export async function POST(req: NextRequest) {
+    const body = await req.json();
+    const { initData } = body;
+    console.log("initData", initData);
 
-    if (req.method !== "POST") {
-        return res.status(405).json({ ok: false, error: "Method not allowed" });
-    }
-
-    const { initData } = req.body;
     if (!initData) {
-        return res.status(400).json({ ok: false, error: "No initData" });
+        return Response.json({ ok: false, error: "No initData" }, { status: 400 });
     }
 
     const urlParams = new URLSearchParams(initData);
@@ -25,12 +22,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         .join("\n");
 
     const secretKey = crypto.createHmac("sha256", "WebAppData").update(BOT_TOKEN).digest();
-
     const calculatedHash = crypto.createHmac("sha256", secretKey).update(dataCheckString).digest("hex");
 
     if (calculatedHash !== hash) {
-        return res.status(403).json({ ok: false, error: "Invalid hash" });
+        return Response.json({ ok: false, error: "Invalid hash" }, { status: 403 });
     }
 
-    return res.json({ ok: true });
+    return Response.json({ ok: true });
 }
