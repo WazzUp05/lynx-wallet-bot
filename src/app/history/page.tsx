@@ -9,6 +9,26 @@ import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { fetchHistory } from "@/lib/redux/thunks/historyThunks";
 import { getHistory } from "@/lib/redux/selectors/historySelectors";
 
+interface HistoryItem {
+    id: number;
+    type: string;
+    amount: number;
+    sent_amount: number;
+    commission: number;
+    transaction_hash: string;
+    transaction_id: string;
+    receiver: string;
+    status: string;
+    merchant_id: number;
+    created_at: string;
+    updated_at: string;
+}
+
+interface HistoryDaySection {
+    date: string;
+    items: HistoryItem[];
+}
+
 const typeLabels: Record<string, string> = {
     withdrawal: "Вывод",
     qrcode: "Покупка",
@@ -21,15 +41,15 @@ const typeLabels: Record<string, string> = {
 
 const Page = () => {
     const dispatch = useAppDispatch();
-    const historyItems = useAppSelector(getHistory);
+    const historyItems = useAppSelector(getHistory) as HistoryItem[];
 
     useEffect(() => {
         dispatch(fetchHistory());
     }, [dispatch]);
 
-    // Группировка по дням (пример, если API не группирует)
-    const historyByDay = React.useMemo(() => {
-        const map: Record<string, any[]> = {};
+    // Группировка по дням
+    const historyByDay: HistoryDaySection[] = React.useMemo(() => {
+        const map: Record<string, HistoryItem[]> = {};
         historyItems.forEach((item) => {
             const date = item.created_at.split(" ")[0];
             if (!map[date]) map[date] = [];
@@ -47,7 +67,17 @@ const Page = () => {
     const [selectedTab, setSelectedTab] = React.useState("all");
     const handleTabChange = (value: string) => setSelectedTab(value);
 
-    const filteredHistory =
+    // Map HistoryItem to HistoryItemType
+    const mapToHistoryItemType = (item: HistoryItem) => ({
+        ...item,
+        currency: "RUB", // or derive from item if available
+        title: typeLabels[item.type] || item.type,
+        text: `ID транзакции: ${item.transaction_id}`,
+        date: item.created_at.split(" ")[0],
+        time: item.created_at.split(" ")[1] || "",
+    });
+
+    const filteredHistory: HistoryDaySection[] =
         selectedTab === "all"
             ? historyByDay
             : historyByDay
@@ -57,15 +87,21 @@ const Page = () => {
                   }))
                   .filter((day) => day.items.length > 0);
 
+    // Convert to HistoryDayType[]
+    const filteredHistoryDayType = filteredHistory.map((section) => ({
+        ...section,
+        items: section.items.map(mapToHistoryItemType),
+    }));
+
     return (
         <div className="px-[1.6rem] py-[2rem] w-full bg-white min-h-[100dvh] flex flex-col">
             <h1 className="text-[2.5rem] leading-[130%] font-semibold  mb-[2rem]">История транзакций</h1>
-            {filteredHistory?.length > 0 && (
+            {filteredHistoryDayType?.length > 0 && (
                 <Tabs tabs={tabs} value={selectedTab} onChange={handleTabChange} className="mb-[3rem]" />
             )}
-            {filteredHistory?.length > 0 ? (
+            {filteredHistoryDayType?.length > 0 ? (
                 <div className="flex flex-col gap-[3rem] overflow-y-auto h-full pb-[7rem] px-[0.2rem]">
-                    {filteredHistory.map((section) => (
+                    {filteredHistoryDayType.map((section) => (
                         <HistoryDay key={section.date} item={section} />
                     ))}
                 </div>
