@@ -6,7 +6,6 @@ const BOT_TOKEN = process.env.BOT_TOKEN!;
 export async function POST(req: NextRequest) {
     const body = await req.json();
     const { initData } = body;
-    console.log("BOT_TOKEN", BOT_TOKEN);
     console.log("initData", initData);
 
     if (!BOT_TOKEN) {

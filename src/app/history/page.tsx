@@ -8,6 +8,8 @@ import PlusIcon from "@/components/icons/plus.svg";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { fetchHistory } from "@/lib/redux/thunks/historyThunks";
 import { getHistory } from "@/lib/redux/selectors/historySelectors";
+import { getLoading } from "@/lib/redux/selectors/userSelectors";
+import Loader from "@/components/ui/Loader";
 
 interface HistoryItem {
     id: number;
@@ -42,6 +44,7 @@ const typeLabels: Record<string, string> = {
 const Page = () => {
     const dispatch = useAppDispatch();
     const historyItems = useAppSelector(getHistory) as HistoryItem[];
+    const loadingApp = useAppSelector(getLoading);
 
     useEffect(() => {
         dispatch(fetchHistory());
@@ -92,6 +95,10 @@ const Page = () => {
         ...section,
         items: section.items.map(mapToHistoryItemType),
     }));
+
+    if (loadingApp) {
+        return <Loader className="h-[100dvh]" />;
+    }
 
     return (
         <div className="px-[1.6rem] py-[2rem] w-full bg-white min-h-[100dvh] flex flex-col">

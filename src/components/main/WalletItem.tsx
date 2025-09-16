@@ -7,9 +7,10 @@ interface WalletItemProps {
     fiatBalance?: number;
     cryptoBalance?: number;
     soon?: boolean;
+    rate?: number | null;
 }
 
-const WalletItem: React.FC<WalletItemProps> = ({ walletName, walletIcon, fiatBalance, cryptoBalance, soon }) => {
+const WalletItem: React.FC<WalletItemProps> = ({ walletName, walletIcon, fiatBalance, cryptoBalance, soon, rate }) => {
     return (
         <div
             className={`py-[1rem] w-full px-[1.6rem] ${soon && "pointer-events-none"} ${!soon && "box-shadow"} ${
@@ -26,7 +27,7 @@ const WalletItem: React.FC<WalletItemProps> = ({ walletName, walletIcon, fiatBal
                 />
                 <div className="flex flex-col ">
                     <p className="text-[1.5rem] leading-[130%] text-black font-bold">{walletName || "Wallet Name"}</p>
-                    <p className="text-[1.5rem] leading-[130%] text-[var(--gray)]">{fiatBalance || "0.00"} ₽</p>
+                    {!soon && <p className="text-[1.5rem] leading-[130%] text-[var(--gray)]">{rate || "0.00"} ₽</p>}
                 </div>
             </div>
             <div className="flex flex-col">
@@ -37,7 +38,7 @@ const WalletItem: React.FC<WalletItemProps> = ({ walletName, walletIcon, fiatBal
                 ) : (
                     <>
                         <p className="text-[1.5rem] leading-[130%] text-black font-bold text-right">
-                            {cryptoBalance || "0.00"} ₽
+                            {fiatBalance || "0.00"} ₽
                         </p>
                         <p className="text-[1.5rem] leading-[130%] text-[var(--gray)] text-right">
                             {cryptoBalance || "0.00"} USDT

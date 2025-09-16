@@ -1,59 +1,59 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import Header from "./Header";
 import Balance from "./Balance";
 import Navigation from "./Navigation";
 import Wallets from "./Wallets";
 import RefilledModal from "../refilled/RefilledModal";
-import { getLoading, getUser } from "@/lib/redux/selectors/userSelectors";
+import { getUser, getWallet } from "@/lib/redux/selectors/userSelectors";
 import { useAppSelector } from "@/lib/redux/hooks";
-import Loader from "../ui/Loader";
-
-const WalletItemData = [
-    {
-        walletName: "USDT",
-        walletIcon: "/icons/usdt.svg",
-        fiatBalance: 1000,
-        cryptoBalance: 0.5,
-    },
-    {
-        walletName: "TON",
-        walletIcon: "/icons/ton.svg",
-        fiatBalance: 2000,
-        cryptoBalance: 1.0,
-        soon: true,
-    },
-    {
-        walletName: "BTC",
-        walletIcon: "/icons/btc.svg",
-        soon: true,
-    },
-];
+import { getRatesQuoteRub } from "@/lib/redux/selectors/rateSelectors";
 
 const Main: React.FC = () => {
-    const { data: user, loading } = useAppSelector(getUser);
-    const loadingApp = useAppSelector(getLoading);
+    const { data: user } = useAppSelector(getUser);
+    const wallet = useAppSelector(getWallet);
+    const rate = useAppSelector(getRatesQuoteRub);
+
+    const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
+    const convertedBalance = balance_usdt && rate ? Number((balance_usdt * rate).toFixed(2)) : 0;
+
     const [isTopUpOpen, setTopUpOpen] = React.useState(false);
+
+    const walletItemData = [
+        {
+            walletName: "USDT",
+            walletIcon: "/icons/usdt.svg",
+            fiatBalance: convertedBalance ?? 0,
+            cryptoBalance: wallet?.balance_usdt ?? 0,
+            rate: rate.toFixed(2),
+        },
+        {
+            walletName: "TON",
+            walletIcon: "/icons/ton-gray.svg",
+            soon: true,
+        },
+        {
+            walletName: "BTC",
+            walletIcon: "/icons/btc-gray.svg",
+            soon: true,
+        },
+    ];
 
     return (
         <div className="w-full min-h-[100dvh] flex flex-col items-center  text-[var(--text)] pb-[var(--nav-bottom-height)]">
-            {loadingApp ? (
-                <Loader className="h-[100dvh]" />
-            ) : (
-                <>
-                    <div className="px-[1.6rem] py-[2rem] w-full bg-[var(--blue)] pb-[4rem]">
-                        {/* Передаём имя и аватар из Telegram, если есть */}
-                        <Header
-                            avatar={user ? user.photo_url : "/avatar-placeholder.png"}
-                            name={user ? `${user.first_name}${user.last_name ? " " + user.last_name : ""}` : "..."}
-                        />
-                        <Balance balance={1234.56} />
-                        <Navigation onTopUp={() => setTopUpOpen(true)} />
-                    </div>
+            <>
+                <div className="px-[1.6rem] py-[2rem] w-full bg-[var(--blue)] pb-[4rem]">
+                    {/* Передаём имя и аватар из Telegram, если есть */}
+                    <Header
+                        avatar={user ? user.photo_url : "/avatar-placeholder.png"}
+                        name={user ? `${user.first_name}${user.last_name ? " " + user.last_name : ""}` : "..."}
+                    />
+                    <Balance balance={balance_usdt || 0} />
+                    <Navigation onTopUp={() => setTopUpOpen(true)} />
+                </div>
 
-                    <Wallets wallets={WalletItemData} />
-                    <RefilledModal isTopUpOpen={isTopUpOpen} setTopUpOpen={setTopUpOpen} />
-                </>
-            )}
+                <Wallets wallets={walletItemData} />
+                <RefilledModal isTopUpOpen={isTopUpOpen} setTopUpOpen={setTopUpOpen} />
+            </>
         </div>
     );
 };

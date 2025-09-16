@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import ArrowLeft from "@/components/icons/arrow-left.svg";
 import { SelectCustom } from "@/components/ui/SelectCustom";
 import SelectCrypto from "@/components/SelectCrypto";
@@ -9,6 +9,8 @@ import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { NetworkType, setNetwork } from "@/lib/redux/slices/walletSlice";
 import { useRouter } from "next/navigation";
+import { getLoading, getWallet } from "@/lib/redux/selectors/userSelectors";
+import Loader from "@/components/ui/Loader";
 
 const MOCK_SELECT_USDT = [
     {
@@ -34,21 +36,24 @@ const MOCK_SELECT_TON = [
     },
 ];
 
-const MOCK_SELECT_CRYPTO = [
-    {
-        id: "USDT",
-        label: "USDT",
-        description: "0.0 USDT",
-        iconUrl: "/icons/usdt.svg",
-    },
-];
-
 const Page = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const defaultNetwork = useAppSelector(getNetworkType);
     const [selectedNetwork, setSelectedNetwork] = useState<string>(defaultNetwork);
     const crypto = useAppSelector(getCrypto);
+    const wallet = useAppSelector(getWallet);
+    const loadingApp = useAppSelector(getLoading);
+    const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
+
+    const MOCK_SELECT_CRYPTO = [
+        {
+            id: "USDT",
+            label: "USDT",
+            description: balance_usdt ? `${balance_usdt} USDT` : "0.00 USDT",
+            iconUrl: "/icons/usdt.svg",
+        },
+    ];
 
     const handlerChangeNetwork = (network: string) => {
         setSelectedNetwork(network);
@@ -63,6 +68,10 @@ const Page = () => {
             router.push(`/refilled/${crypto.id}/${selectedNetwork}`);
         }
     };
+
+    if (loadingApp) {
+        return <Loader className="h-[100dvh]" />;
+    }
 
     return (
         <div
@@ -101,7 +110,7 @@ const Page = () => {
                         hover:border-blue-400`}
                 >
                     <Image
-                        src="/icons/ber-20.svg"
+                        src="/icons/ber-20-gray.svg"
                         alt="BER-20 "
                         width={40}
                         height={40}
@@ -118,7 +127,7 @@ const Page = () => {
                         hover:border-blue-400`}
                 >
                     <Image
-                        src="/icons/ton.svg"
+                        src="/icons/ton-gray.svg"
                         alt="ton "
                         width={40}
                         height={40}

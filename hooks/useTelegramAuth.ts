@@ -34,8 +34,6 @@ export function useTelegramAuth() {
             return;
         }
 
-        console.log("rawInitData", actualInitData);
-
         // Парсим пользователя из initData
         let telegramUser = null;
         try {
@@ -55,16 +53,16 @@ export function useTelegramAuth() {
         })
             .then((res) => res.json())
             .then(async (data) => {
-                console.log("Auth response data:", data);
-
                 let user = data.ok && data.user ? data.user : telegramUser;
                 if (user) {
-                    dispatch(setUser(user));
-                    console.log("User set in Redux:", user);
+                    // dispatch(setUser(user));
 
                     try {
                         const merchantData = await checkAndSyncMerchant(user);
-                        console.log("Merchant data:", merchantData);
+                        dispatch(setLoading(false));
+                        console.log("Merchant data:", merchantData.merchant);
+
+                        dispatch(setUser(merchantData.merchant));
                     } catch (err) {
                         console.error("Merchant sync error:", err);
                     }
@@ -73,12 +71,8 @@ export function useTelegramAuth() {
                 }
             })
             .catch(() => {
-                if (telegramUser) {
-                    dispatch(setUser(telegramUser));
-                } else {
-                    dispatch(clearUser());
-                }
-            })
-            .finally(() => dispatch(setLoading(false)));
+                dispatch(clearUser());
+            });
+        // .finally(() => dispatch(setLoading(false)));
     }, [rawInitData, dispatch]);
 }

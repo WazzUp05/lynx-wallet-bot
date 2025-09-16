@@ -1,28 +1,36 @@
+import { TelegramUser } from "@/lib/telegram/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface TelegramUser {
+interface Wallet {
     id: number;
+    network: string;
+    address: string;
+    balance: number;
+    balance_usdt: number;
+    created_at: string;
+}
+
+export interface UserProp extends TelegramUser {
+    id: number;
+    name: string;
+    telegram_id: string;
     first_name: string;
-    last_name?: string;
-    username?: string;
-    language_code?: string;
+    last_name: string;
+    username: string;
     photo_url?: string;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+    wallet?: Wallet;
 }
 
 interface UserState {
-    data: TelegramUser;
+    data: UserProp | null;
     loading: boolean;
 }
 
 const initialState: UserState = {
-    data: {
-        id: 0,
-        first_name: "",
-        last_name: "",
-        username: "",
-        language_code: "",
-        photo_url: "",
-    },
+    data: null,
     loading: true,
 };
 
@@ -30,20 +38,11 @@ const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        setUser: (state, action: PayloadAction<TelegramUser>) => {
+        setUser: (state, action: PayloadAction<UserProp>) => {
             state.data = action.payload;
-            state.loading = false;
         },
         clearUser: (state) => {
-            state.data = {
-                id: 0,
-                first_name: "",
-                last_name: "",
-                username: "",
-                language_code: "",
-                photo_url: "",
-            };
-            state.loading = false;
+            state.data = null;
         },
         setLoading: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload;

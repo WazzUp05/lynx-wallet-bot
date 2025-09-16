@@ -12,6 +12,8 @@ import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getRatesQuoteRub } from "@/lib/redux/selectors/rateSelectors";
 import { fetchRates } from "@/lib/redux/thunks/rateThunks";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/ui/Loader";
+import { getLoading } from "@/lib/redux/selectors/userSelectors";
 
 const MOCK_SELECT_CRYPTO = [
     {
@@ -33,6 +35,7 @@ export default function QrScanPage() {
     const [toast, setToast] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [timer, setTimer] = useState(30);
+    const loadingApp = useAppSelector(getLoading);
     const [toastMsg, setToastMsg] = useState("");
     const dispatch = useAppDispatch();
     const router = useRouter();
@@ -113,6 +116,10 @@ export default function QrScanPage() {
         }
     };
 
+    if (loadingApp) {
+        return <Loader className="h-[100dvh]" />;
+    }
+
     return (
         <div className="flex flex-col items-center justify-center min-h-[80vh] px-4">
             {toast && <Toast open={toast} message={toastMsg} type="error" onClose={() => setToast(false)} />}
@@ -120,10 +127,7 @@ export default function QrScanPage() {
                 <QrScanner onResult={handleScan} />
             </div>
             <p className="text-center text-gray-500 mb-2">Наведите камеру на QR-код</p>
-            <p className="text-center text-gray-400 text-sm mb-4 px-4">{usdtAmount ? usdtAmount.toFixed(4) : "--"}</p>
-            <span className="flex items-center gap-[0.4rem]">
-                <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : "--"} RUB
-            </span>
+
             <Modal title="Оплатить" closable swipeToClose={false} open={modalOpen} onClose={() => setModalOpen(false)}>
                 <div className="flex flex-col items-center w-full">
                     <div className="flex flex-col w-full mb-[1rem] gap-[1rem] box-shadow p-[1.6rem] rounded-[1.5rem] bg-white">

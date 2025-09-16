@@ -44,11 +44,11 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
             <div className="flex flex-col items-end justify-between flex-1">
                 {item.type !== "Пополнение" && (
                     <div className="text-[1.5rem] leading-[130%] font-semibold">
-                        {item.amount} {item.type === "Покупка" ? "RUB" : "USDT"}
+                        - {item.amount} {item.type === "Покупка" ? "RUB" : "USDT"}
                     </div>
                 )}
                 {item.type === "Пополнение" && (
-                    <div className="text-[1.5rem] leading-[130%] font-semibold">{item.sent_amount} USDT</div>
+                    <div className="text-[1.5rem] leading-[130%] font-semibold">+ {item.sent_amount} USDT</div>
                 )}
 
                 {item.status === "В обработке" ? (

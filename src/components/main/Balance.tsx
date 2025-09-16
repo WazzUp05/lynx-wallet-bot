@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import EyeIcon from "@/components/icons/eye.svg";
 import EyeHiddenIcon from "@/components/icons/eye-hidden.svg";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { getRatesQuoteRub } from "@/lib/redux/selectors/rateSelectors";
 
 interface BalanceProps {
     balance: number;
@@ -8,6 +10,8 @@ interface BalanceProps {
 
 const Balance = ({ balance }: BalanceProps) => {
     const [isVisible, setIsVisible] = useState(true);
+    const rate = useAppSelector(getRatesQuoteRub);
+    const convertedBalance = balance && rate ? (balance * rate).toFixed(2) : 0;
 
     return (
         <div className="text-center mb-[3rem]">
@@ -16,7 +20,7 @@ const Balance = ({ balance }: BalanceProps) => {
                 <button onClick={() => setIsVisible(!isVisible)}>{isVisible ? <EyeIcon /> : <EyeHiddenIcon />}</button>
             </p>
             <p className="fs-vbig text-white justify-center flex items-center">
-                {balance ? (isVisible ? `${balance} ₽` : "********") : 0}{" "}
+                {balance ? (isVisible ? `${convertedBalance} ₽` : "********") : 0}{" "}
             </p>
         </div>
     );

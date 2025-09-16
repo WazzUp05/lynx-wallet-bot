@@ -8,6 +8,7 @@ interface WalletItemDataProps {
     walletIcon?: string;
     fiatBalance?: number;
     cryptoBalance?: number;
+    soon?: boolean;
 }
 
 interface WalletsProps {

@@ -55,7 +55,7 @@ const Onboarding: React.FC = () => {
 
     return (
         <div
-            className="flex z-[1000] relative flex-col bg-[url('/onboarding/bg.png')] bg-cover bg-center pt-[2rem]"
+            className="flex z-[1000] relative flex-col bg-[url('/onboarding/bg.png')] bg-cover bg-center pt-[2rem] overflow-hidden"
             style={{
                 minHeight: "calc(100dvh)",
             }}
@@ -81,7 +81,7 @@ const Onboarding: React.FC = () => {
 
             {/* Main content */}
             <div className="flex-1 flex flex-col items-center justify-end ">
-                <div className="w-full flex flex-col items-center">
+                <div className="w-full flex flex-col items-center ">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={step}

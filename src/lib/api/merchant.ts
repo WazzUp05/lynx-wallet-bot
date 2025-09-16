@@ -16,6 +16,7 @@ export async function checkAndSyncMerchant(user: TelegramUser) {
             },
         });
         const meData = await meRes.json();
+
         return meData;
     } else {
         // 3. Если не найден, регистрируем мерчанта

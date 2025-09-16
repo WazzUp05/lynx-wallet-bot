@@ -18,23 +18,21 @@ const TaxModal = ({ showModal, onClose }: TaxModalProps) => {
                 <h2 className="text-[2.5rem] leading-[130%] text-center font-semibold mb-[3rem]">
                     Удобство + Безопасность
                 </h2>
-                <div className="mb-[3rem]">
-                    <p className="flex items-center gap-[1rem] mb-[1.5rem] text-[1.4rem] leading-[130%] font-semibold">
-                        <ProcentIcon /> Удобство
+                <div className="mb-[3rem] text-[1.4rem] leading-[130%]">
+                    <p className="flex items-center gap-[1rem] mb-[1.5rem]  font-semibold">
+                        <ProcentIcon width={20} height={20} /> Удобство
                     </p>
-                    <p className="text-[1.4rem] leading-[130%] font-semibold mb-[1rem]">
-                        Почему мы берём комиссию 2.5$?
-                    </p>
+                    <p className=" font-semibold mb-[1rem]">Почему мы берём комиссию 2.5$?</p>
                     <p>
                         Сеть Tron взимает комиссию за перевод USDT (14 TRX ≈ 2.5$). Вам не нужно пополнять баланс TRX —
                         мы сами оплачиваем эту комиссию, делая использование кошелька простым и удобным.
                     </p>
                 </div>
-                <div className="mb-[3rem]">
-                    <p className="flex items-center gap-[1rem] mb-[1.5rem] text-[1.4rem] leading-[130%] font-semibold">
-                        <GuadrdIcon /> Безопасность
+                <div className="mb-[3rem] text-[1.4rem] leading-[130%]">
+                    <p className="flex items-center gap-[1rem] mb-[1.5rem]  font-semibold">
+                        <GuadrdIcon width={20} height={20} /> Безопасность
                     </p>
-                    <p className="text-[1.4rem] leading-[130%] font-semibold mb-[1rem]">Зачем дополнительно 0.25$?</p>
+                    <p className=" font-semibold mb-[1rem]">Зачем дополнительно 0.25$?</p>
                     <p>Эти средства покрывают себестоимость AML-проверки, которая гарантирует безопасность.</p>
                 </div>
                 <p className="text-[1.2rem] leading-[130%] text-[var(--gray)]">
