@@ -1,36 +1,31 @@
-"use client";
-
 import { useRawInitData } from "@telegram-apps/sdk-react";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { clearUser, setLoading, setUser } from "@/lib/redux/slices/userSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { parse } from "@telegram-apps/init-data-node/web";
 import { checkAndSyncMerchant } from "@/lib/api/merchant";
 
 export function useTelegramAuth() {
     const dispatch = useAppDispatch();
-    const [actualInitData, setActualInitData] = useState<string>("");
+    let rawInitData: string | null;
 
-    useEffect(() => {
-        let rawInitData: string | null = null;
-
-        try {
-            rawInitData = useRawInitData() ?? null;
-        } catch (e) {
-            // В dev-режиме игнорируем ошибку
-            if (process.env.NODE_ENV === "development") {
-                rawInitData = null;
-            } else {
-                console.error("useRawInitData error:", e);
-            }
+    try {
+        rawInitData = useRawInitData() ?? null;
+    } catch (e) {
+        // В dev-режиме игнорируем ошибку
+        if (process.env.NODE_ENV === "development") {
+            rawInitData = null;
+        } else {
+            throw e;
         }
+    }
+    console.log("useTelegramAuth rawInitData", rawInitData);
 
-        // Моковые данные для dev-режима
-        const devInitData =
-            "user=%7B%22id%22%3A123456%2C%22first_name%22%3A%22Dev%22%2C%22last_name%22%3A%22User%22%2C%22username%22%3A%22devuser%22%7D";
-        const isDev = process.env.NODE_ENV === "development";
-        setActualInitData(rawInitData || (isDev ? devInitData : ""));
-    }, []);
+    // Моковые данные для dev-режима
+    const devInitData =
+        "user=%7B%22id%22%3A123456%2C%22first_name%22%3A%22Dev%22%2C%22last_name%22%3A%22User%22%2C%22username%22%3A%22devuser%22%7D";
+    const isDev = process.env.NODE_ENV === "development";
+    const actualInitData = rawInitData || (isDev ? devInitData : "");
 
     useEffect(() => {
         if (!actualInitData) {
@@ -38,7 +33,6 @@ export function useTelegramAuth() {
             dispatch(clearUser());
             return;
         }
-
         console.log("rawInitData", actualInitData);
 
         // Парсим пользователя из initData
@@ -52,7 +46,6 @@ export function useTelegramAuth() {
         }
 
         dispatch(setLoading(true));
-
         fetch("/api/auth/telegram", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -67,8 +60,11 @@ export function useTelegramAuth() {
                     dispatch(setUser(user));
                     console.log("User set in Redux:", user);
 
+                    // Проверка и регистрация мерчанта
                     try {
                         const merchantData = await checkAndSyncMerchant(user);
+                        // Можно сохранить merchantData в Redux или обработать по необходимости
+                        dispatch(setLoading(false));
                         console.log("Merchant data:", merchantData);
                     } catch (err) {
                         console.error("Merchant sync error:", err);
