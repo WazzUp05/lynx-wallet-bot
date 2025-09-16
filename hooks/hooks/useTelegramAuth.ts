@@ -1,40 +1,38 @@
+import { useRawInitData } from "@telegram-apps/sdk-react";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { clearUser, setLoading, setUser } from "@/lib/redux/slices/userSlice";
 import { useEffect } from "react";
 
 export function useTelegramAuth() {
     const dispatch = useAppDispatch();
+    const rawInitData = useRawInitData();
 
     useEffect(() => {
-        if (typeof window === "undefined") return;
-
-        const tg = (window as any).Telegram?.WebApp;
-        const initData = tg?.initData;
-        const initDataUnsafe = tg?.initDataUnsafe;
-        console.log("Telegram WebApp data:", tg);
-
-        console.log("initData", initData, initDataUnsafe);
-
-        if (initData && initDataUnsafe?.user) {
-            dispatch(setLoading(true));
-
-            fetch("/api/auth/telegram", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ initData }),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.ok) {
-                        dispatch(setUser(initDataUnsafe.user));
-                    } else {
-                        dispatch(clearUser());
-                    }
-                })
-                .catch(() => dispatch(clearUser()))
-                .finally(() => dispatch(setLoading(false)));
-        } else {
+        if (!rawInitData) {
             dispatch(setLoading(false));
+            return;
         }
-    }, [dispatch]);
+        console.log("rawInitData", rawInitData);
+
+        // Можно распарсить данные пользователя через @telegram-appс/init-data-node/web
+        // import { parse } from "@telegram-apps/init-data-node/web";
+        // const parsed = parse(rawInitData);
+
+        dispatch(setLoading(true));
+        fetch("/api/auth/telegram", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ initData: rawInitData }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.ok && data.user) {
+                    dispatch(setUser(data.user));
+                } else {
+                    dispatch(clearUser());
+                }
+            })
+            .catch(() => dispatch(clearUser()))
+            .finally(() => dispatch(setLoading(false)));
+    }, [rawInitData, dispatch]);
 }
