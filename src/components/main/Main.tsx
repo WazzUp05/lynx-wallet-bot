@@ -39,8 +39,8 @@ const Main: React.FC = () => {
             <div className="px-[1.6rem] py-[2rem] w-full bg-[var(--blue)] pb-[4rem]">
                 {/* Передаём имя и аватар из Telegram, если есть */}
                 <Header
-                    avatar={user ? user.photo_url : "/avatar.png"}
-                    name={user ? `${user.first_name}${user.last_name ? " " + user.last_name : ""}` : "Conor_McGregor"}
+                    avatar={user ? user.photo_url : "/avatar-placeholder.png"}
+                    name={user ? `${user.first_name}${user.last_name ? " " + user.last_name : ""}` : "..."}
                 />
                 <Balance balance={1234.56} />
                 <Navigation onTopUp={() => setTopUpOpen(true)} />
