@@ -7,12 +7,8 @@ import { getOnboardingCompleted } from "@/lib/redux/selectors/appSelectors";
 import { setOnboardingCompleted } from "@/lib/redux/slices/appSlice";
 import { useEffect } from "react";
 import { getLoading } from "@/lib/redux/selectors/userSelectors";
-import { getUser } from "@/lib/redux/selectors/userSelectors";
-import { useTelegramAuth } from "../../hooks/useTelegramAuth";
 
 export default function Home() {
-    useTelegramAuth(); // подгружаем юзера при старте
-    const { data: user, loading } = useAppSelector(getUser);
     const onboardingCompleted = useAppSelector(getOnboardingCompleted);
     const loadingApp = useAppSelector(getLoading);
     const dispatch = useAppDispatch();
@@ -34,7 +30,7 @@ export default function Home() {
 
     return (
         <main>
-            {loadingApp && <Loader className="h-[100dvh]" />} <Main user={user} />
+            {loadingApp && <Loader className="h-[100dvh]" />} <Main />
         </main>
     );
 }

@@ -5,6 +5,9 @@ import Navigation from "./Navigation";
 import Wallets from "./Wallets";
 import RefilledModal from "../refilled/RefilledModal";
 import { TelegramUser } from "@/lib/telegram/types";
+import { getUser } from "@/lib/redux/selectors/userSelectors";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { useTelegramAuth } from "../../../hooks/useTelegramAuth";
 
 const WalletItemData = [
     {
@@ -27,11 +30,9 @@ const WalletItemData = [
     },
 ];
 
-interface MainProps {
-    user: TelegramUser | null;
-}
-
-const Main: React.FC<MainProps> = ({ user }) => {
+const Main: React.FC = () => {
+    useTelegramAuth(); // подгружаем юзера при старте
+    const { data: user, loading } = useAppSelector(getUser);
     const [isTopUpOpen, setTopUpOpen] = React.useState(false);
 
     return (
