@@ -6,6 +6,7 @@ import Wallets from "./Wallets";
 import RefilledModal from "../refilled/RefilledModal";
 import { useTelegramAuth } from "../../../hooks/useTelegramAuth";
 import { useAppSelector } from "@/lib/redux/hooks";
+import { getUser } from "@/lib/redux/selectors/userSelectors";
 
 const WalletItemData = [
     {
@@ -30,7 +31,7 @@ const WalletItemData = [
 
 const Main: React.FC = () => {
     useTelegramAuth(); // подгружаем юзера при старте
-    const { data: user, loading } = useAppSelector((state) => state.user);
+    const { data: user, loading } = useAppSelector(getUser);
     const [isTopUpOpen, setTopUpOpen] = React.useState(false);
 
     return (
@@ -38,7 +39,7 @@ const Main: React.FC = () => {
             <div className="px-[1.6rem] py-[2rem] w-full bg-[var(--blue)] pb-[4rem]">
                 {/* Передаём имя и аватар из Telegram, если есть */}
                 <Header
-                    avatar={"/avatar.png"}
+                    avatar={user ? user.photo_url : "/avatar.png"}
                     name={user ? `${user.first_name}${user.last_name ? " " + user.last_name : ""}` : "Conor_McGregor"}
                 />
                 <Balance balance={1234.56} />
@@ -47,9 +48,6 @@ const Main: React.FC = () => {
 
             <Wallets wallets={WalletItemData} />
             <RefilledModal isTopUpOpen={isTopUpOpen} setTopUpOpen={setTopUpOpen} />
-
-            {/* Для отладки: */}
-            {user ? <pre>{JSON.stringify(user, null, 2)}</pre> : <p>Нет данных пользователя</p>}
         </div>
     );
 };
