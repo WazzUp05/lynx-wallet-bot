@@ -1,13 +1,15 @@
+import { API_URL } from "../helpers/url";
 import { TelegramUser } from "../telegram/types";
 
 export async function checkAndSyncMerchant(user: TelegramUser) {
     // 1. Проверяем наличие мерчанта
-    const checkRes = await fetch(`https://stage.lynx-wallet.com/api/check/${user.id}`);
+    const checkRes = await fetch(`${API_URL}/check/${user.id}`);
     const checkData = await checkRes.json();
+    console.log("checkData", checkData);
 
     if (checkData.success) {
         // 2. Если найден, получаем merchant/me
-        const meRes = await fetch("https://stage.lynx-wallet.com/api/merchant/me", {
+        const meRes = await fetch(`${API_URL}/merchant/me`, {
             headers: {
                 Accept: "application/json",
                 "X-Telegram-ID": String(user.id),
@@ -17,7 +19,7 @@ export async function checkAndSyncMerchant(user: TelegramUser) {
         return meData;
     } else {
         // 3. Если не найден, регистрируем мерчанта
-        const signupRes = await fetch("https://stage.lynx-wallet.com/api/merchant/signup", {
+        const signupRes = await fetch(`${API_URL}/merchant/signup`, {
             method: "POST",
             headers: {
                 Accept: "application/json",

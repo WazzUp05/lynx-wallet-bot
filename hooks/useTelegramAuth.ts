@@ -1,85 +1,89 @@
+"use client";
+
 import { useRawInitData } from "@telegram-apps/sdk-react";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { clearUser, setLoading, setUser } from "@/lib/redux/slices/userSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { parse } from "@telegram-apps/init-data-node/web";
 import { checkAndSyncMerchant } from "@/lib/api/merchant";
 
 export function useTelegramAuth() {
-    const dispatch = useAppDispatch();
-    let rawInitData: string | null;
+    const [user, setUser] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    try {
-        rawInitData = useRawInitData() ?? null;
-    } catch (e) {
-        // В dev-режиме игнорируем ошибку
-        if (process.env.NODE_ENV === "development") {
-            rawInitData = null;
-        } else {
-            throw e;
-        }
-    }
-    console.log("useTelegramAuth rawInitData", rawInitData);
-
-    // Моковые данные для dev-режима
-    const devInitData =
-        "user=%7B%22id%22%3A123456%2C%22first_name%22%3A%22Dev%22%2C%22last_name%22%3A%22User%22%2C%22username%22%3A%22devuser%22%7D";
-    const isDev = process.env.NODE_ENV === "development";
-    const actualInitData = rawInitData || (isDev ? devInitData : "");
+    // Данные от Telegram
+    const [initData, setInitData] = useState<string>("");
 
     useEffect(() => {
-        if (!actualInitData) {
-            dispatch(setLoading(false));
-            dispatch(clearUser());
+        try {
+            const rawInitData = useRawInitData() ?? null;
+            const devInitData =
+                "user=%7B%22id%22%3A123456%2C%22first_name%22%3A%22Dev%22%2C%22last_name%22%3A%22User%22%2C%22username%22%3A%22devuser%22%7D";
+
+            setInitData(rawInitData || (process.env.NODE_ENV === "development" ? devInitData : ""));
+        } catch (e) {
+            if (process.env.NODE_ENV === "development") {
+                setInitData("");
+            } else {
+                console.error("useRawInitData error:", e);
+                setError("Failed to read Telegram init data");
+                setLoading(false);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!initData) {
+            setLoading(false);
+            setUser(null);
             return;
         }
-        console.log("rawInitData", actualInitData);
 
-        // Парсим пользователя из initData
-        let telegramUser = null;
-        try {
-            const parsed = parse(actualInitData);
-            telegramUser = parsed.user || null;
-            console.log("Telegram user:", telegramUser);
-        } catch (e) {
-            console.error("Failed to parse Telegram user:", e);
-        }
+        async function auth() {
+            setLoading(true);
 
-        dispatch(setLoading(true));
-        fetch("/api/auth/telegram", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ initData: actualInitData }),
-        })
-            .then((res) => res.json())
-            .then(async (data) => {
-                console.log("Auth response data:", data);
+            try {
+                let telegramUser = null;
+                try {
+                    const parsed = parse(initData);
+                    telegramUser = parsed.user || null;
+                    console.log("Parsed Telegram user:", telegramUser);
+                } catch (e) {
+                    console.warn("Failed to parse Telegram user:", e);
+                }
 
-                let user = data.ok && data.user ? data.user : telegramUser;
-                if (user) {
-                    dispatch(setUser(user));
-                    console.log("User set in Redux:", user);
+                const res = await fetch("/api/auth/telegram", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ initData }),
+                });
 
-                    // Проверка и регистрация мерчанта
+                const data = await res.json();
+                const finalUser = data.ok && data.user ? data.user : telegramUser;
+                console.log("Auth user:", finalUser);
+
+                if (finalUser) {
+                    setUser(finalUser);
+
+                    // Проверка/синхронизация мерчанта
                     try {
-                        const merchantData = await checkAndSyncMerchant(user);
-                        // Можно сохранить merchantData в Redux или обработать по необходимости
-                        dispatch(setLoading(false));
-                        console.log("Merchant data:", merchantData);
+                        await checkAndSyncMerchant(finalUser);
                     } catch (err) {
                         console.error("Merchant sync error:", err);
                     }
                 } else {
-                    dispatch(clearUser());
+                    setUser(null);
                 }
-            })
-            .catch(() => {
-                if (telegramUser) {
-                    dispatch(setUser(telegramUser));
-                } else {
-                    dispatch(clearUser());
-                }
-            })
-            .finally(() => dispatch(setLoading(false)));
-    }, [actualInitData, dispatch]);
+            } catch (err: any) {
+                console.error("Auth error:", err);
+                setError(err.message || "Auth failed");
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        auth();
+    }, [initData]);
+
+    return { user, loading, error };
 }
