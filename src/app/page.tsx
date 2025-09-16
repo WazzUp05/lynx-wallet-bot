@@ -28,5 +28,9 @@ export default function Home() {
         return <Onboarding />;
     }
 
-    return <main>{loadingApp ? <Loader className="h-[100dvh]" /> : <Main />}</main>;
+    return (
+        <main>
+            {loadingApp && <Loader className="h-[100dvh]" />} <Main />
+        </main>
+    );
 }
