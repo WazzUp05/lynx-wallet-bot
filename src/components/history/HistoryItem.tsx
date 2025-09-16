@@ -15,38 +15,20 @@ type HistoryItemProps = {
 const HistoryItem = ({ item }: HistoryItemProps) => {
     const getTypeImage = (type: string) => {
         switch (type) {
-            case "withdrawal":
+            case "Вывод":
                 return <ArrowUpIcon />;
-            case "qrcode":
+            case "Покупка":
                 return <QrIcon />;
-            case "replenishment":
+            case "Пополнение":
                 return <PlusIcon />;
-            case "sale":
+            case "Продажа":
                 return <CardIcon />;
-            case "transfer":
+            case "Перевод":
                 return <SendIcon />;
             default:
                 return null;
         }
     };
-
-    const getTitle = (type: string) => {
-        switch (type) {
-            case "withdrawal":
-                return "Вывод";
-            case "qrcode":
-                return "Покупка";
-            case "replenishment":
-                return "Пополнение";
-            case "sale":
-                return "Продажа";
-            case "transfer":
-                return "Перевод";
-            default:
-                return null;
-        }
-    };
-
     return (
         <Link
             href={`/history/${item.id}`}
@@ -56,20 +38,27 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
                 {getTypeImage(item.type)}
             </div>
             <div className="flex flex-col ">
-                <p className="text-[1.5rem] leading-[130%] font-semibold">{getTitle(item.type)}</p>
-                <p className="text-[1.5rem] leading-[130%] text-[#9C9DA4] max-w-[12.3rem] truncate">{item.text}</p>
+                <p className="text-[1.5rem] leading-[130%] font-semibold">{item.type}</p>
+                <p className="text-[1.5rem] leading-[130%] text-[#9C9DA4] max-w-[12.3rem] truncate">{item.receiver}</p>
             </div>
             <div className="flex flex-col items-end justify-between flex-1">
-                <div className="text-[1.5rem] leading-[130%] font-semibold">
-                    {item.amount} {item.currency}
-                </div>
+                {item.type !== "Пополнение" && (
+                    <div className="text-[1.5rem] leading-[130%] font-semibold">
+                        {item.amount} {item.type === "Покупка" ? "RUB" : "USDT"}
+                    </div>
+                )}
+                {item.type === "Пополнение" && (
+                    <div className="text-[1.5rem] leading-[130%] font-semibold">{item.sent_amount} USDT</div>
+                )}
 
-                {item.status === "pending" ? (
+                {item.status === "В обработке" ? (
                     <div className="text-[1.2rem] flex items-center gap-[0.3rem] leading-[130%] text-[#FF9500]">
                         В обработке <ClockIcon />
                     </div>
-                ) : item.status === "completed" ? (
+                ) : item.status === "Успешно" ? (
                     <div className="text-[1.2rem] leading-[130%] text-[#34C759]">Успешно</div>
+                ) : item.status === "Отклонено" ? (
+                    <div className="text-[1.2rem] leading-[130%] text-[#FF3B30]">{item.status}</div>
                 ) : (
                     <div className="text-[1.2rem] leading-[130%] text-[#9C9DA4]">{item.status}</div>
                 )}

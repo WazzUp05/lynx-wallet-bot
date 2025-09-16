@@ -5,12 +5,15 @@ export type HistoryItemType = {
     id: number;
     type: string;
     amount: number;
-    currency: string;
-    title: string;
-    text: string;
-    date: string;
-    time: string;
+    sent_amount: number;
+    commission: number;
+    transaction_hash: string;
+    transaction_id: string;
+    receiver: string;
     status: string;
+    merchant_id: number;
+    created_at: string;
+    updated_at: string;
 };
 
 export type HistoryDayType = {

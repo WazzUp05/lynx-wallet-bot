@@ -7,11 +7,12 @@ export const fetchHistory = createAsyncThunk("history/fetchHistory", async (_, {
     const res = await fetch(`${API_URL}/merchant/history`, {
         headers: {
             Accept: "application/json",
-            "X-Telegram-ID": String(user.data.id),
+            "X-Telegram-ID": "445245650",
         },
     });
     const data = await res.json();
-    if (data.success && Array.isArray(data.data)) {
-        dispatch(setHistory(data.data));
+
+    if (data.success && Array.isArray(data.transactions)) {
+        dispatch(setHistory(data.transactions));
     }
 });
