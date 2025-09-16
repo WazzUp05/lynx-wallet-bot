@@ -9,35 +9,28 @@ import { useEffect } from "react";
 import { getLoading } from "@/lib/redux/selectors/userSelectors";
 import { getUser } from "@/lib/redux/selectors/userSelectors";
 import { useTelegramAuth } from "../../hooks/useTelegramAuth";
-import { clearUser, setLoading, setUser } from "@/lib/redux/slices/userSlice";
 
 export default function Home() {
-    const { user, loading, error } = useTelegramAuth();
+    useTelegramAuth(); // подгружаем юзера при старте
+    const { data: user, loading } = useAppSelector(getUser);
+    const onboardingCompleted = useAppSelector(getOnboardingCompleted);
+    const loadingApp = useAppSelector(getLoading);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(setLoading(loading));
-        if (user) {
-            dispatch(setUser(user));
-        } else {
-            dispatch(clearUser());
+        if (typeof window !== "undefined") {
+            const completed = localStorage.getItem("onboardingCompleted");
+            if (completed === "true") {
+                dispatch(setOnboardingCompleted(true));
+            } else {
+                dispatch(setOnboardingCompleted(false));
+            }
         }
-    }, [user, loading, dispatch]);
+    }, [dispatch]);
 
-    // useEffect(() => {
-    //     if (typeof window !== "undefined") {
-    //         const completed = localStorage.getItem("onboardingCompleted");
-    //         if (completed === "true") {
-    //             dispatch(setOnboardingCompleted(true));
-    //         } else {
-    //             dispatch(setOnboardingCompleted(false));
-    //         }
-    //     }
-    // }, [dispatch]);
+    if (!onboardingCompleted) {
+        return <Onboarding />;
+    }
 
-    if (loading) return <Loader />;
-    if (error) return <div>Error: {error}</div>;
-    if (!user) return <Onboarding />;
-
-    return <Main user={user} />;
+    return <main>{loadingApp ? <Loader className="h-[100dvh]" /> : <Main user={user} />}</main>;
 }

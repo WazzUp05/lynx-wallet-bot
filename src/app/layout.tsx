@@ -3,7 +3,6 @@ import "./globals.css";
 import { ReduxProvider } from "@/lib/providers/ReduxProvider";
 import { Inter } from "next/font/google";
 import NavBottom from "@/components/NavBottom";
-import TelegramInit from "@/lib/providers/TelegramInit";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,10 +19,8 @@ export default function RootLayout({
         <html lang="en">
             <body className={`antialiased ${inter.className} `}>
                 <ReduxProvider>
-                    <TelegramInit>
-                        {children}
-                        <NavBottom />
-                    </TelegramInit>
+                    {children}
+                    <NavBottom />
                 </ReduxProvider>
             </body>
         </html>
