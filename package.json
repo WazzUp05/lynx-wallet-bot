@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.9.0",
+    "@telegram-apps/init-data-node": "^2.0.10",
     "@telegram-apps/sdk-react": "^3.3.7",
     "@yudiel/react-qr-scanner": "^2.3.1",
     "framer-motion": "^12.23.12",

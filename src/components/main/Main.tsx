@@ -4,8 +4,7 @@ import Balance from "./Balance";
 import Navigation from "./Navigation";
 import Wallets from "./Wallets";
 import RefilledModal from "../refilled/RefilledModal";
-import { useTelegramWebApp } from "@/lib/telegram/hooks"; // импортируем хук
-import { useTelegramAuth } from "../../../hooks/hooks/useTelegramAuth";
+import { useTelegramAuth } from "../../../hooks/useTelegramAuth";
 import { useAppSelector } from "@/lib/redux/hooks";
 
 const WalletItemData = [
@@ -33,9 +32,6 @@ const Main: React.FC = () => {
     useTelegramAuth(); // подгружаем юзера при старте
     const { data: user, loading } = useAppSelector((state) => state.user);
     const [isTopUpOpen, setTopUpOpen] = React.useState(false);
-
-    // // Используем хук для получения данных Telegram WebApp
-    // const { user, isReady, isInTelegram } = useTelegramWebApp();
 
     return (
         <div className="w-full min-h-[100dvh] flex flex-col items-center  text-[var(--text)] pb-[var(--nav-bottom-height)]">
