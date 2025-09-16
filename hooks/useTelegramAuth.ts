@@ -7,18 +7,7 @@ import { checkAndSyncMerchant } from "@/lib/api/merchant";
 
 export function useTelegramAuth() {
     const dispatch = useAppDispatch();
-    let rawInitData: string | null = null;
-
-    try {
-        rawInitData = useRawInitData() ?? null;
-    } catch (e) {
-        // В dev-режиме игнорируем ошибку
-        if (process.env.NODE_ENV === "development") {
-            rawInitData = null;
-        } else {
-            throw e;
-        }
-    }
+    const rawInitData = useRawInitData(); // <-- только внутри хука!
 
     // Моковые данные для dev-режима
     const devInitData =
