@@ -126,7 +126,7 @@ export default function QrScanPage() {
         <div className="flex flex-col items-center justify-center min-h-[80vh] px-4">
             {toast && <Toast open={toast} message={toastMsg} type="error" onClose={() => setToast(false)} />}
             <div className="rounded-2xl overflow-hidden mb-4 bg-[#e5e5e5]">
-                <QrScanner onResult={handleScan} torch finder zoom />
+                <QrScanner onResult={handleScan} torch finder zoom={true} />
             </div>
             <p className="text-center text-gray-500 mb-2">Наведите камеру на QR-код</p>
 
