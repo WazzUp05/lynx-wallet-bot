@@ -172,7 +172,7 @@ export default function QrScanPage() {
                     <Button
                         variant="primary"
                         onClick={handlePay}
-                        disabled={balance_usdt ? balance_usdt < usdtAmount : true}
+                        // disabled={balance_usdt ? balance_usdt < usdtAmount : true}
                         className="mb-2"
                     >
                         Оплатить
