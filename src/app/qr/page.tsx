@@ -164,7 +164,7 @@ export default function QrScanPage() {
                             {usdtAmount ? usdtAmount : "--"} USDT
                         </p>
                     </div>
-                    {/* <p className="break-all mb-4">{scanned}</p> */}
+                    <p className="break-all mb-4">{scanned}</p>
                     <Button
                         variant="primary"
                         onClick={handlePay}
