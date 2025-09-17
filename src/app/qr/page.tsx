@@ -91,7 +91,7 @@ export default function QrScanPage() {
             url: scanned,
         };
 
-        alert(JSON.stringify(order, null, 2));
+        // alert(JSON.stringify(order, null, 2));
 
         try {
             const res = await fetch("https://stage.lynx-wallet.com/api/orders", {
@@ -128,9 +128,9 @@ export default function QrScanPage() {
                 <QrScanner onResult={handleScan} torch finder zoom={true} />
             </div>
             <p className="text-center text-gray-500 mb-2">Наведите камеру на QR-код</p>
-            <span className="flex items-center gap-[0.4rem]">
+            {/* <span className="flex items-center gap-[0.4rem]">
                 <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : "--"} RUB
-            </span>
+            </span> */}
             <Modal title="Оплатить" closable swipeToClose={false} open={modalOpen} onClose={() => setModalOpen(false)}>
                 <div className="flex flex-col items-center w-full">
                     <div className="flex flex-col w-full mb-[1rem] gap-[1rem] box-shadow p-[1.6rem] rounded-[1.5rem] bg-white">
@@ -167,7 +167,7 @@ export default function QrScanPage() {
                             {usdtAmount ? usdtAmount : "--"} USDT
                         </p>
                     </div>
-                    <p className="break-all mb-4">{scanned}</p>
+                    {/* <p className="break-all mb-4">{scanned}</p> */}
                     <Button
                         variant="primary"
                         onClick={handlePay}
