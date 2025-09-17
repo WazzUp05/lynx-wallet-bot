@@ -1,10 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { API_URL } from "@/lib/helpers/url";
-import { setHistory } from "../slices/historySlice";
+import { setUser } from "../slices/userSlice";
 
-export const fetchHistory = createAsyncThunk("history/fetchHistory", async (_, { dispatch, getState }) => {
+export const fetchUser = createAsyncThunk("me/fetchUser", async (_, { dispatch, getState }) => {
     const { user } = getState() as { user: { data: { id: number } } };
-    const res = await fetch(`${API_URL}/merchant/history`, {
+    const res = await fetch(`${API_URL}/merchant/me`, {
         headers: {
             Accept: "application/json",
             "X-Telegram-ID": user.data.id.toString(),
@@ -12,7 +12,7 @@ export const fetchHistory = createAsyncThunk("history/fetchHistory", async (_, {
     });
     const data = await res.json();
 
-    if (data.success && Array.isArray(data.transactions)) {
-        dispatch(setHistory(data.transactions));
+    if (data.success && data.merchant) {
+        dispatch(setUser(data.merchant));
     }
 });

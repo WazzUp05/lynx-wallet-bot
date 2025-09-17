@@ -13,7 +13,8 @@ import { Toast } from "@/components/ui/Toast";
 import Image from "next/image";
 import Loader from "@/components/ui/Loader";
 import { getLoading } from "@/lib/redux/selectors/userSelectors";
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { fetchUser } from "@/lib/redux/thunks/UserThunks";
 
 interface Order {
     id: number;
@@ -55,6 +56,7 @@ export default function QrStatusPage() {
     const router = useRouter();
     const params = useParams();
     const { id } = params as { id: string };
+    const dispatch = useAppDispatch();
     const loadingApp = useAppSelector(getLoading);
     const [toastOpen, setToastOpen] = useState(false);
     const [toastMsg, setToastMsg] = useState("");
@@ -77,7 +79,7 @@ export default function QrStatusPage() {
         setToastOpen(true);
     };
 
-    // Запрашиваем статус раз в 15 секунд
+    // Запрашиваем статус раз в 5 секунд
     useEffect(() => {
         let first = true;
         const fetchStatus = async () => {
@@ -114,11 +116,16 @@ export default function QrStatusPage() {
         // eslint-disable-next-line
     }, [id]);
 
-    if (loadingApp) {
+    useEffect(() => {
+        if (order?.status === "success") {
+            dispatch(fetchUser());
+        }
+    }, [order?.status]);
+
+    if (loadingApp || loading) {
         return <Loader className="h-[100dvh]" />;
     }
 
-    if (loading) return <div className="p-8">Загрузка...</div>;
     if (error || !order) return <div className="p-8">{error || "Заявка не найдена"}</div>;
 
     return (
