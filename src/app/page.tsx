@@ -25,10 +25,6 @@ export default function Home() {
         }
     }, [dispatch]);
 
-    useEffect(() => {
-        console.log(loadingApp, "loadingApp");
-    }, [loadingApp]);
-
     return (
         <>
             {!onboardingCompleted && <Onboarding />}

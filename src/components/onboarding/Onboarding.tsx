@@ -47,9 +47,9 @@ const Onboarding: React.FC = () => {
     };
 
     const handleSkip = () => {
-        // if (typeof window !== "undefined") {
-        //     localStorage.setItem("onboardingCompleted", "true");
-        // }
+        if (typeof window !== "undefined") {
+            localStorage.setItem("onboardingCompleted", "true");
+        }
         dispatch(setOnboardingCompleted(true));
     };
 
