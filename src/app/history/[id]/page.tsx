@@ -13,6 +13,9 @@ import QuestionIcon from "@/components/icons/question.svg";
 import { Toast } from "@/components/ui/Toast";
 import { useState } from "react";
 import TaxModal from "@/components/modals/TaxModal";
+import { getLoading } from "@/lib/redux/selectors/userSelectors";
+import { useAppSelector } from "@/lib/redux/hooks";
+import Loader from "@/components/ui/Loader";
 
 // Моковые данные для примера
 const MOCK_HISTORY = [
@@ -40,6 +43,7 @@ export default function HistoryDetailPage() {
     const router = useRouter();
     const { id } = params as { id: string };
     const tx = MOCK_HISTORY.find((item) => item.id === id);
+    const loadingApp = useAppSelector(getLoading);
     const [toastOpen, setToastOpen] = useState(false);
     const [toastMsg, setToastMsg] = useState("");
     const [showModal, setShowModal] = useState(false);
@@ -70,6 +74,10 @@ export default function HistoryDetailPage() {
     const handleLinkClick = (url: string) => {
         window.open(url, "_blank");
     };
+
+    if (loadingApp) {
+        return <Loader className="h-[100dvh]" />;
+    }
 
     if (!tx) return <div className="p-8">Транзакция не найдена</div>;
 

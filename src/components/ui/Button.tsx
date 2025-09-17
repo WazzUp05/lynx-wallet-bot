@@ -23,7 +23,16 @@ export const Button: React.FC<ButtonProps> = ({
     ...props
 }) => {
     return (
-        <button className={[base, variants[variant], fullWidth ? "w-full" : "", className].join(" ")} {...props}>
+        <button
+            className={[
+                base,
+                variants[variant],
+                fullWidth ? "w-full" : "",
+                "disabled:bg-[#E9EAEE] disabled:text-[#9D9DA5]  disabled:cursor-not-allowed",
+                className,
+            ].join(" ")}
+            {...props}
+        >
             {children}
         </button>
     );

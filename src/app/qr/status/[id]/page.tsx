@@ -11,6 +11,9 @@ import TickIcon from "@/components/icons/tick-circle-big.svg";
 import { useEffect, useState } from "react";
 import { Toast } from "@/components/ui/Toast";
 import Image from "next/image";
+import Loader from "@/components/ui/Loader";
+import { getLoading } from "@/lib/redux/selectors/userSelectors";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 interface Order {
     id: number;
@@ -52,6 +55,7 @@ export default function QrStatusPage() {
     const router = useRouter();
     const params = useParams();
     const { id } = params as { id: string };
+    const loadingApp = useAppSelector(getLoading);
     const [toastOpen, setToastOpen] = useState(false);
     const [toastMsg, setToastMsg] = useState("");
     const [order, setOrder] = useState<Order | null>(null);
@@ -109,6 +113,10 @@ export default function QrStatusPage() {
         return () => clearInterval(interval);
         // eslint-disable-next-line
     }, [id]);
+
+    if (loadingApp) {
+        return <Loader className="h-[100dvh]" />;
+    }
 
     if (loading) return <div className="p-8">Загрузка...</div>;
     if (error || !order) return <div className="p-8">{error || "Заявка не найдена"}</div>;

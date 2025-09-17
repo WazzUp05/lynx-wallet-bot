@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Toast } from "@/components/ui/Toast";
 import QrScanner from "@/components/QrScanner";
@@ -13,22 +13,7 @@ import { getRatesQuoteRub } from "@/lib/redux/selectors/rateSelectors";
 import { fetchRates } from "@/lib/redux/thunks/rateThunks";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/Loader";
-import { getLoading } from "@/lib/redux/selectors/userSelectors";
-
-const MOCK_SELECT_CRYPTO = [
-    {
-        id: "USDT",
-        label: "USDT",
-        description: "0.0 USDT",
-        iconUrl: "/icons/usdt.svg",
-    },
-    {
-        id: "TON",
-        label: "TON",
-        description: "0.0 TON",
-        iconUrl: "/icons/ton.svg",
-    },
-];
+import { getLoading, getWallet } from "@/lib/redux/selectors/userSelectors";
 
 export default function QrScanPage() {
     const [scanned, setScanned] = useState<string | null>(null);
@@ -39,6 +24,23 @@ export default function QrScanPage() {
     const [toastMsg, setToastMsg] = useState("");
     const dispatch = useAppDispatch();
     const router = useRouter();
+    const wallet = useAppSelector(getWallet);
+    const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
+
+    const MOCK_SELECT_CRYPTO = [
+        {
+            id: "USDT",
+            label: "USDT",
+            description: balance_usdt ? `${balance_usdt} USDT` : "0.00 USDT",
+            iconUrl: "/icons/usdt.svg",
+        },
+        // {
+        //     id: "TON",
+        //     label: "TON",
+        //     description: "0.0 TON",
+        //     iconUrl: "/icons/ton.svg",
+        // },
+    ];
 
     // Получаем курс USDT/RUB из редакса
     const usdtRate = useAppSelector(getRatesQuoteRub);
@@ -124,7 +126,7 @@ export default function QrScanPage() {
         <div className="flex flex-col items-center justify-center min-h-[80vh] px-4">
             {toast && <Toast open={toast} message={toastMsg} type="error" onClose={() => setToast(false)} />}
             <div className="rounded-2xl overflow-hidden mb-4 bg-[#e5e5e5]">
-                <QrScanner onResult={handleScan} />
+                <QrScanner onResult={handleScan} torch finder zoom />
             </div>
             <p className="text-center text-gray-500 mb-2">Наведите камеру на QR-код</p>
 
@@ -164,8 +166,13 @@ export default function QrScanPage() {
                             {usdtAmount ? usdtAmount : "--"} USDT
                         </p>
                     </div>
-                    <p className="break-all mb-4">{scanned}</p>
-                    <Button variant="primary" onClick={handlePay} className="mb-2">
+                    {/* <p className="break-all mb-4">{scanned}</p> */}
+                    <Button
+                        variant="primary"
+                        onClick={handlePay}
+                        disabled={balance_usdt ? balance_usdt < usdtAmount : true}
+                        className="mb-2"
+                    >
                         Оплатить
                     </Button>
                 </div>
