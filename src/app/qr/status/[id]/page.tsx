@@ -109,7 +109,7 @@ export default function QrStatusPage() {
         };
 
         fetchStatus();
-        const interval = setInterval(fetchStatus, 15000);
+        const interval = setInterval(fetchStatus, 5000);
         return () => clearInterval(interval);
         // eslint-disable-next-line
     }, [id]);
