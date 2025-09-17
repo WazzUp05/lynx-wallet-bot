@@ -26,6 +26,7 @@ export default function QrScanPage() {
     const router = useRouter();
     const wallet = useAppSelector(getWallet);
     const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
+    const usdtRate = useAppSelector(getRatesQuoteRub);
 
     const MOCK_SELECT_CRYPTO = [
         {
@@ -41,13 +42,6 @@ export default function QrScanPage() {
         //     iconUrl: "/icons/ton.svg",
         // },
     ];
-
-    // Получаем курс USDT/RUB из редакса
-    const usdtRate = useAppSelector(getRatesQuoteRub);
-
-    useEffect(() => {
-        console.log("usdtRate", usdtRate);
-    }, [usdtRate]);
 
     // Парсим сумму из QR и считаем итоговые значения
     const { rubAmount, usdtAmount } = useMemo(() => {
@@ -93,6 +87,8 @@ export default function QrScanPage() {
             rate: usdtRate.toFixed(2),
             url: scanned,
         };
+
+        alert(JSON.stringify(order, null, 2));
 
         try {
             const res = await fetch("https://stage.lynx-wallet.com/api/orders", {
