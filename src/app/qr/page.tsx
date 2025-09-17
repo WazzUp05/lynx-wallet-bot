@@ -13,7 +13,7 @@ import { getRatesQuoteRub } from "@/lib/redux/selectors/rateSelectors";
 import { fetchRates } from "@/lib/redux/thunks/rateThunks";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/Loader";
-import { getLoading, getWallet } from "@/lib/redux/selectors/userSelectors";
+import { getLoading, getUser, getWallet } from "@/lib/redux/selectors/userSelectors";
 
 export default function QrScanPage() {
     const [scanned, setScanned] = useState<string | null>(null);
@@ -21,12 +21,15 @@ export default function QrScanPage() {
     const [modalOpen, setModalOpen] = useState(false);
     const [timer, setTimer] = useState(30);
     const loadingApp = useAppSelector(getLoading);
+    const user = useAppSelector(getUser);
     const [toastMsg, setToastMsg] = useState("");
     const dispatch = useAppDispatch();
     const router = useRouter();
     const wallet = useAppSelector(getWallet);
     const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
     const usdtRate = useAppSelector(getRatesQuoteRub);
+
+    const merchant_id = user.data?.id;
 
     const MOCK_SELECT_CRYPTO = [
         {
@@ -83,7 +86,7 @@ export default function QrScanPage() {
         const order = {
             amount: rubAmount,
             amount_usdt: usdtAmount,
-            merchant_id: 1,
+            merchant_id,
             rate: usdtRate.toFixed(2),
             url: scanned,
         };
