@@ -31,7 +31,7 @@ export default function Home() {
 
     return (
         <>
-            {!onboardingCompleted && !loadingApp && !user.data && <Onboarding />}
+            {!onboardingCompleted && <Onboarding />}
             <main>{loadingApp ? <Loader className="h-[100dvh]" /> : <Main />}</main>
         </>
     );
