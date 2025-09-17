@@ -20,6 +20,8 @@ export default function QrScanPage() {
     const [toast, setToast] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [timer, setTimer] = useState(30);
+    const [loadingQr, setLoadingQr] = useState(false);
+    const [qrInfo, setQrInfo] = useState<{ rubAmount: number; usdtAmount: number } | null>(null);
     const loadingApp = useAppSelector(getLoading);
     const user = useAppSelector(getUser);
     const [toastMsg, setToastMsg] = useState("");
@@ -58,9 +60,49 @@ export default function QrScanPage() {
     }, [scanned, usdtRate]);
 
     // Открываем модалку при сканировании
-    const handleScan = (result: string) => {
+    const handleScan = async (result: string) => {
         setScanned(result);
-        setModalOpen(true);
+
+        // Проверяем, есть ли параметр sum
+        const sumMatch = result.match(/sum=(\d+)/);
+        if (sumMatch) {
+            // Вариант 1: сумма есть в ссылке
+            const rub = parseInt(sumMatch[1], 10) / 100;
+            const usdt = usdtRate && rub ? +(rub / usdtRate).toFixed(4) : 0;
+            setQrInfo({ rubAmount: rub, usdtAmount: usdt });
+            setModalOpen(true);
+            setLoadingQr(false);
+        } else {
+            // Вариант 2: суммы нет, нужно запросить prepare
+            setLoadingQr(true);
+            const codeMatch = result.match(/qr\.nspk\.ru\/([^?]+)/);
+            const code = codeMatch ? codeMatch[1] : null;
+            if (code) {
+                try {
+                    const res = await fetch(`https://qr.lynx-wallet.com/prepare/${code}`);
+                    const data = await res.json();
+                    if (data.success && data.amount_rub) {
+                        const rub = parseFloat(data.amount_rub);
+                        const usdt = usdtRate && rub ? +(rub / usdtRate).toFixed(4) : 0;
+                        setQrInfo({ rubAmount: rub, usdtAmount: usdt });
+                        setModalOpen(true);
+                    } else {
+                        setToastMsg("Не удалось получить сумму по QR");
+                        setToast(true);
+                        setTimeout(() => setToast(false), 2000);
+                    }
+                } catch (e) {
+                    setToastMsg("Ошибка запроса prepare");
+                    setToast(true);
+                    setTimeout(() => setToast(false), 2000);
+                }
+            } else {
+                setToastMsg("Некорректный QR-код");
+                setToast(true);
+                setTimeout(() => setToast(false), 2000);
+            }
+            setLoadingQr(false);
+        }
     };
 
     // Запуск таймера и обновление курса
@@ -83,9 +125,10 @@ export default function QrScanPage() {
     }, [modalOpen]);
 
     const handlePay = async () => {
+        if (!qrInfo) return;
         const order = {
-            amount: rubAmount,
-            amount_usdt: usdtAmount,
+            amount: qrInfo.rubAmount,
+            amount_usdt: qrInfo.usdtAmount,
             merchant_id,
             rate: usdtRate.toFixed(2),
             url: scanned,
@@ -133,49 +176,56 @@ export default function QrScanPage() {
             </span> */}
             <Modal title="Оплатить" closable swipeToClose={false} open={modalOpen} onClose={() => setModalOpen(false)}>
                 <div className="flex flex-col items-center w-full">
-                    <div className="flex flex-col w-full mb-[1rem] gap-[1rem] box-shadow p-[1.6rem] rounded-[1.5rem] bg-white">
-                        <div className="flex items-center justify-between w-full">
-                            <p className="text-[1.4rem] leading-[130%] text-[var(--gray)]">Сумма</p>
-                            <p className="text-[1.4rem] font-semibold leading-[130%]">
-                                {rubAmount ? rubAmount.toFixed(2) : "--"} RUB
-                            </p>
-                        </div>
-                        <div className="flex items-center justify-between w-full">
-                            <p className="text-[1.4rem] leading-[130%] text-[var(--gray)]">Курс обмена</p>
-                            <p className="text-[1.4rem] font-semibold leading-[130%] flex items-center gap-[0.4rem]">
-                                <span className="flex items-center gap-[0.4rem]">
-                                    <UsdtIcon /> 1 USDT
-                                </span>
-                                <ArrowRightIcon />
-                                <span className="flex items-center gap-[0.4rem]">
-                                    <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : "--"} RUB
-                                </span>
-                            </p>
-                        </div>
-                        <div className="flex items-center justify-between w-full">
-                            <p className="text-[1.4rem] leading-[130%] text-[var(--gray)]">Обновится через</p>
-                            <p className="text-[1.4rem] font-semibold leading-[130%] text-[#007AFF]">{timer} сек</p>
-                        </div>
-                    </div>
-                    <SelectCrypto cryptos={MOCK_SELECT_CRYPTO} />
-                    <div className="flex items-center justify-between w-full mt-[2rem] mb-[3rem]">
-                        <div className="flex flex-col text-[1.5rem] leading-[130%]">
-                            <p className="font-semibold">Итого:</p>
-                            <p className="text-[var(--gray)]">Комиссия 0%</p>
-                        </div>
-                        <p className="text-[2.5rem] font-semibold leading-[130%]">
-                            {usdtAmount ? usdtAmount : "--"} USDT
-                        </p>
-                    </div>
-                    {/* <p className="break-all mb-4">{scanned}</p> */}
-                    <Button
-                        variant="primary"
-                        onClick={handlePay}
-                        disabled={balance_usdt ? balance_usdt < usdtAmount : true}
-                        className="mb-2"
-                    >
-                        Оплатить
-                    </Button>
+                    {loadingQr || !qrInfo ? (
+                        <Loader className="h-[10rem]" />
+                    ) : (
+                        <>
+                            <div className="flex flex-col w-full mb-[1rem] gap-[1rem] box-shadow p-[1.6rem] rounded-[1.5rem] bg-white">
+                                <div className="flex items-center justify-between w-full">
+                                    <p className="text-[1.4rem] leading-[130%] text-[var(--gray)]">Сумма</p>
+                                    <p className="text-[1.4rem] font-semibold leading-[130%]">
+                                        {qrInfo.rubAmount ? qrInfo.rubAmount.toFixed(2) : "--"} RUB
+                                    </p>
+                                </div>
+                                <div className="flex items-center justify-between w-full">
+                                    <p className="text-[1.4rem] leading-[130%] text-[var(--gray)]">Курс обмена</p>
+                                    <p className="text-[1.4rem] font-semibold leading-[130%] flex items-center gap-[0.4rem]">
+                                        <span className="flex items-center gap-[0.4rem]">
+                                            <UsdtIcon /> 1 USDT
+                                        </span>
+                                        <ArrowRightIcon />
+                                        <span className="flex items-center gap-[0.4rem]">
+                                            <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : "--"} RUB
+                                        </span>
+                                    </p>
+                                </div>
+                                <div className="flex items-center justify-between w-full">
+                                    <p className="text-[1.4rem] leading-[130%] text-[var(--gray)]">Обновится через</p>
+                                    <p className="text-[1.4rem] font-semibold leading-[130%] text-[#007AFF]">
+                                        {timer} сек
+                                    </p>
+                                </div>
+                            </div>
+                            <SelectCrypto cryptos={MOCK_SELECT_CRYPTO} />
+                            <div className="flex items-center justify-between w-full mt-[2rem] mb-[3rem]">
+                                <div className="flex flex-col text-[1.5rem] leading-[130%]">
+                                    <p className="font-semibold">Итого:</p>
+                                    <p className="text-[var(--gray)]">Комиссия 0%</p>
+                                </div>
+                                <p className="text-[2.5rem] font-semibold leading-[130%]">
+                                    {qrInfo.usdtAmount ? qrInfo.usdtAmount : "--"} USDT
+                                </p>
+                            </div>
+                            <Button
+                                variant="primary"
+                                onClick={handlePay}
+                                disabled={balance_usdt ? balance_usdt < qrInfo.usdtAmount : true}
+                                className="mb-2"
+                            >
+                                Оплатить
+                            </Button>
+                        </>
+                    )}
                 </div>
             </Modal>
         </div>
