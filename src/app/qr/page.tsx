@@ -92,7 +92,11 @@ export default function QrScanPage() {
                         setTimeout(() => setToast(false), 2000);
                     }
                 } catch (e) {
-                    setToastMsg("Ошибка запроса prepare");
+                    let errorMsg = "Ошибка запроса prepare";
+                    if (e instanceof Error && e.message) {
+                        errorMsg += `: ${e.message}`;
+                    }
+                    setToastMsg(errorMsg);
                     setToast(true);
                     setTimeout(() => setToast(false), 2000);
                 }
