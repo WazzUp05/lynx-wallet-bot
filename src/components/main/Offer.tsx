@@ -15,8 +15,8 @@ const Offer = () => {
             <Image
                 src="/offer-robot.png"
                 alt="Offer Image"
-                width={134}
-                height={99}
+                width={234}
+                height={199}
                 className="mx-auto w-[13.4rem] h-[9.9rem] absolute right-0 top-[0.5rem] z-10"
             />
             <div className="absolute top-0 right-0  h-[12.8rem] w-[12.8rem] bg-white blur-[5rem] rounded-full" />

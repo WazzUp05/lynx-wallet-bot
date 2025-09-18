@@ -115,10 +115,10 @@ const Page = () => {
             ) : (
                 <div className="flex flex-col justify-center items-center h-full flex-1">
                     <Image
-                        src="/history-img.png"
+                        src="/history-img-1.png"
                         alt="No data"
-                        width={293}
-                        height={85}
+                        width={593}
+                        height={105}
                         className="mb-[4.4rem] w-[29.3rem] h-[8.5rem]"
                     />
                     <h2 className="text-[2.5rem] leading-[130%] font-semibold text-center mb-[1rem]">

@@ -25,9 +25,12 @@ export default function Home() {
         }
     }, [dispatch]);
 
+    if (!onboardingCompleted) {
+        return <Onboarding />;
+    }
+
     return (
         <>
-            {!onboardingCompleted && <Onboarding />}
             <main>{loadingApp ? <Loader className="h-[100dvh]" /> : <Main />}</main>
         </>
     );

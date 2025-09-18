@@ -38,7 +38,7 @@ const NavBottom = () => {
     }
 
     return (
-        <div className="flex items-center h-[var(--nav-bottom-height)] fixed bottom-0 left-0 border-t border-[#00000026] w-full py-[0.45] bg-white">
+        <div className="flex items-center h-[var(--nav-bottom-height)] fixed bottom-0 left-0 border-t border-[#00000026] w-full py-[0.45]  bg-white z-10">
             {navItems.map((item) => (
                 <Link
                     key={item.href}

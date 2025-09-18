@@ -39,21 +39,17 @@ const Main: React.FC = () => {
     ];
 
     return (
-        <div className="w-full min-h-[100dvh] flex flex-col items-center  text-[var(--text)] pb-[var(--nav-bottom-height)]">
-            <>
-                <div className="px-[1.6rem] py-[2rem] w-full bg-[var(--blue)] pb-[4rem]">
-                    {/* Передаём имя и аватар из Telegram, если есть */}
-                    <Header
-                        avatar={user ? user.photo_url : "/avatar-placeholder.png"}
-                        name={user ? `${user.first_name}${user.last_name ? " " + user.last_name : ""}` : "..."}
-                    />
-                    <Balance balance={balance_usdt || 0} />
-                    <Navigation onTopUp={() => setTopUpOpen(true)} />
-                </div>
-
-                <Wallets wallets={walletItemData} />
-                <RefilledModal isTopUpOpen={isTopUpOpen} setTopUpOpen={setTopUpOpen} />
-            </>
+        <div className="w-full min-h-[100dvh] flex flex-col items-center  text-[var(--text)] " style={{paddingBottom: "calc(1rem + var(--nav-bottom-height))"}}>
+            <div className="px-[1.6rem] py-[2rem] w-full bg-[var(--blue)] pb-[4rem]">
+                <Header
+                    avatar={user ? user.photo_url : "/avatar-placeholder.png"}
+                    name={user ? `${user.first_name}${user.last_name ? " " + user.last_name : ""}` : "..."}
+                />
+                <Balance balance={balance_usdt || 0} />
+                <Navigation onTopUp={() => setTopUpOpen(true)} />
+            </div>
+            <Wallets wallets={walletItemData} />
+            <RefilledModal isTopUpOpen={isTopUpOpen} setTopUpOpen={setTopUpOpen} />
         </div>
     );
 };

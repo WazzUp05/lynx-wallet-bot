@@ -172,12 +172,13 @@ export default function QrScanPage() {
         <div className="flex flex-col items-center justify-center min-h-[80vh] px-4">
             {toast && <Toast open={toast} message={toastMsg} type="error" onClose={() => setToast(false)} />}
             <div className="rounded-2xl overflow-hidden mb-4 bg-[#e5e5e5]">
-                <QrScanner onResult={handleScan} torch finder zoom={true} />
+                <QrScanner onResult={handleScan} paused={loadingQr} torch finder zoom={true} />
             </div>
             <p className="text-center text-gray-500 mb-2">Наведите камеру на QR-код</p>
             {/* <span className="flex items-center gap-[0.4rem]">
                 <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : "--"} RUB
             </span> */}
+            {loadingQr && <Loader className="h-[4rem]" />}
             <Modal title="Оплатить" closable swipeToClose={false} open={modalOpen} onClose={() => setModalOpen(false)}>
                 <div className="flex flex-col items-center w-full">
                     {loadingQr || !qrInfo ? (

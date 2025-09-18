@@ -93,13 +93,7 @@ const Onboarding: React.FC = () => {
                                 step === 0 ? "w-[32rem] h-[32rem]" : "w-[26rem] h-[37.4rem]"
                             } ${step === 2 || step === 3 ? "h-[53.8rem]" : ""} mb-[1rem]`}
                         >
-                            <Image
-                                src={steps[step].image}
-                                alt={steps[step].title}
-                                fill
-                                className="object-contain"
-                                priority
-                            />
+                            <Image src={steps[step].image} alt={steps[step].title} fill loading="lazy" />
                         </motion.div>
                     </AnimatePresence>
                     <div className="bg-white rounded-t-[2rem]  w-full relative pt-[2.5rem] pb-[2rem] px-[1.6rem] flex flex-col items-center">
