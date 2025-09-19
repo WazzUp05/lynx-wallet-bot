@@ -4,6 +4,7 @@ import "./globals.css";
 import { ReduxProvider } from "@/lib/providers/ReduxProvider";
 import { Inter } from "next/font/google";
 import NavBottom from "@/components/NavBottom";
+import UserAutoUpdater from "@/components/UserAutoUpdater";
 const inter = Inter({ subsets: ["latin"] });
 
 const TelegramAuthClient = dynamic(() => import("@/components/TelegramAuthClient"), { ssr: false });
@@ -18,6 +19,7 @@ export default function RootLayout({
             <body className={`antialiased ${inter.className} `}>
                 <ReduxProvider>
                     <TelegramAuthClient />
+                    <UserAutoUpdater />
                     {children}
                     <NavBottom />
                 </ReduxProvider>

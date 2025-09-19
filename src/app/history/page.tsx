@@ -46,10 +46,15 @@ const Page = () => {
     const dispatch = useAppDispatch();
     const historyItems = useAppSelector(getHistory) as HistoryItem[];
     const loadingApp = useAppSelector(getLoading);
+    const user = useAppSelector((state) => state.user.data);
+    const [historyLoading, setHistoryLoading] = React.useState(true);
 
     useEffect(() => {
-        dispatch(fetchHistory());
-    }, [dispatch]);
+        if (user && user.id) {
+            setHistoryLoading(true);
+            dispatch(fetchHistory()).finally(() => setHistoryLoading(false));
+        }
+    }, [dispatch, user?.id]);
 
     // Группировка по дням
     const historyByDay: HistoryDaySection[] = React.useMemo(() => {
@@ -97,7 +102,7 @@ const Page = () => {
         items: section.items.map(mapToHistoryItemType),
     }));
 
-    if (loadingApp) {
+    if (loadingApp || historyLoading) {
         return <Loader className="h-[100dvh]" />;
     }
 

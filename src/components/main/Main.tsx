@@ -39,7 +39,10 @@ const Main: React.FC = () => {
     ];
 
     return (
-        <div className="w-full min-h-[100dvh] flex flex-col items-center  text-[var(--text)] " style={{paddingBottom: "calc(1rem + var(--nav-bottom-height))"}}>
+        <div
+            className="w-full min-h-[100dvh] flex flex-col items-center  text-[var(--text)] "
+            style={{ paddingBottom: "calc(1rem + var(--nav-bottom-height))" }}
+        >
             <div className="px-[1.6rem] py-[2rem] w-full bg-[var(--blue)] pb-[4rem]">
                 <Header
                     avatar={user ? user.photo_url : "/avatar-placeholder.png"}
