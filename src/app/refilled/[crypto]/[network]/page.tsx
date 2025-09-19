@@ -69,7 +69,8 @@ export default function RefilledQrPage() {
         },
     };
 
-    const srcQr = network === "TRC20" ? "/qr-trc20.png" : network === "TON" ? "/qr-ton.png" : "/qr-demo.png";
+    const srcQr =
+        network === "TRC20" ? "/icons/USDT-TRC20.svg" : network === "TON" ? "/icons/TON-TON.svg" : "/qr-demo.png";
 
     const upperCrypto = crypto?.toUpperCase();
     const upperNetwork = network?.toUpperCase();
@@ -81,9 +82,30 @@ export default function RefilledQrPage() {
             : undefined;
 
     const handleCopy = (text: string, msg: string) => {
-        navigator.clipboard.writeText(text);
-        setToastMsg(msg);
-        setToastOpen(true);
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                setToastMsg(msg);
+                setToastOpen(true);
+            });
+        } else {
+            // Fallback для Safari/WebView
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            try {
+                document.execCommand("copy");
+                setToastMsg(msg);
+                setToastOpen(true);
+            } catch (err) {
+                setToastMsg("Не удалось скопировать");
+                setToastOpen(true);
+            }
+            document.body.removeChild(textarea);
+        }
     };
 
     if (loadingApp) {
@@ -117,7 +139,7 @@ export default function RefilledQrPage() {
                         value={data.address}
                         size={180}
                         imageSettings={{
-                            src: "/icons/usdt.svg", // путь к твоей иконке
+                            src: srcQr, // путь к твоей иконке
                             x: undefined, // автоматически по центру
                             y: undefined,
                             height: 40,

@@ -74,9 +74,30 @@ export default function QrStatusPage() {
 
     // Функция для копирования
     const handleCopy = (text: string, msg: string) => {
-        navigator.clipboard.writeText(text);
-        setToastMsg(msg);
-        setToastOpen(true);
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                setToastMsg(msg);
+                setToastOpen(true);
+            });
+        } else {
+            // Fallback для Safari/WebView
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            try {
+                document.execCommand("copy");
+                setToastMsg(msg);
+                setToastOpen(true);
+            } catch (err) {
+                setToastMsg("Не удалось скопировать");
+                setToastOpen(true);
+            }
+            document.body.removeChild(textarea);
+        }
     };
 
     // Запрашиваем статус раз в 5 секунд

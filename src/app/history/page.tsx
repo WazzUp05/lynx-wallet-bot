@@ -10,6 +10,7 @@ import { fetchHistory } from "@/lib/redux/thunks/historyThunks";
 import { getHistory } from "@/lib/redux/selectors/historySelectors";
 import { getLoading } from "@/lib/redux/selectors/userSelectors";
 import Loader from "@/components/ui/Loader";
+import Link from "next/link";
 
 interface HistoryItem {
     id: number;
@@ -127,9 +128,11 @@ const Page = () => {
                     <p className="text-[1.6rem] leading-[130%]  text-center mb-[3rem]">
                         Здесь вы увидите все свои финансовые операции.
                     </p>
-                    <Button variant="primary" className="flex items-center justify-center gap-[0.5rem]">
-                        <PlusIcon /> Пополнить кошелёк
-                    </Button>
+                    <Link href="/refilled">
+                        <Button variant="primary" className="flex items-center justify-center gap-[0.5rem]">
+                            <PlusIcon /> Пополнить кошелёк
+                        </Button>
+                    </Link>
                 </div>
             )}
         </div>
