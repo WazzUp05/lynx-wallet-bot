@@ -108,7 +108,7 @@ export default function RefilledQrPage() {
         }
     };
 
-    if (loadingApp) {
+    if (loadingApp || !wallet?.address) {
         return <Loader className="h-[100dvh]" />;
     }
 

@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { parse } from "@telegram-apps/init-data-node/web";
 import { checkAndSyncMerchant } from "@/lib/api/merchant";
 import { useRawInitData } from "@telegram-apps/sdk-react";
+import { fetchUser } from "@/lib/redux/thunks/UserThunks";
 
 export function useTelegramAuth() {
     const dispatch = useAppDispatch();
@@ -59,10 +60,9 @@ export function useTelegramAuth() {
 
                     try {
                         const merchantData = await checkAndSyncMerchant(user);
-                        dispatch(setLoading(false));
-                        console.log("Merchant data:", merchantData.merchant);
-
                         dispatch(setUser(merchantData.merchant));
+                        dispatch(fetchUser());
+                        dispatch(setLoading(false));
                     } catch (err) {
                         console.error("Merchant sync error:", err);
                     }

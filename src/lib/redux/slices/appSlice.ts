@@ -6,7 +6,7 @@ interface AppState {
 }
 
 const initialState: AppState = {
-    onboardingCompleted: false,
+    onboardingCompleted: true,
 };
 
 const appSlice = createSlice({
