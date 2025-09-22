@@ -6,13 +6,14 @@ import ArrowLeft from "@/components/icons/arrow-left.svg";
 import WarrningLeftIcon from "@/components/icons/warrning-mark.svg";
 import RightIcon from "@/components/icons/right-arrow.svg";
 import { QRCodeSVG } from "qrcode.react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaxModal from "@/components/modals/TaxModal";
 import { Toast } from "@/components/ui/Toast";
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getLoading, getWallet } from "@/lib/redux/selectors/userSelectors";
 import Loader from "@/components/ui/Loader";
 import MinAmountModal from "@/components/modals/MinAmountModal";
+import { fetchUser } from "@/lib/redux/thunks/UserThunks";
 
 // Типизация для адресов
 type NetworkData = {
@@ -31,6 +32,7 @@ type Addresses = {
 export default function RefilledQrPage() {
     const params = useParams();
     const router = useRouter();
+    const dispatch = useAppDispatch();
     const wallet = useAppSelector(getWallet);
     const loadingApp = useAppSelector(getLoading);
     const { crypto, network } = params as { crypto: string; network: string };
@@ -39,6 +41,10 @@ export default function RefilledQrPage() {
 
     const [toastOpen, setToastOpen] = useState(false);
     const [toastMsg, setToastMsg] = useState("");
+
+    // useEffect(() => {
+    //     dispatch(fetchUser());
+    // }, [dispatch]);
 
     // Моковые данные для примера
     const ADDRESSES: Addresses = {
