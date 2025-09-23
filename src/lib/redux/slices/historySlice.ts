@@ -13,6 +13,9 @@ interface HistoryItem {
     merchant_id: number;
     created_at: string;
     updated_at: string;
+    // Необязательные поля:
+    url?: string | null;
+    // Добавь другие необязательные поля, если появятся
 }
 
 interface HistoryState {

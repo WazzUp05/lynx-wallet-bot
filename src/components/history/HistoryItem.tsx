@@ -31,7 +31,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
     };
     return (
         <Link
-            href={`/history/${item.id}`}
+            href={`/history/${item.transaction_hash}`}
             className="py-[1rem] px-[1.6rem] items-center bg-white rounded-[1.5rem] box-shadow flex  gap-[1rem]"
         >
             <div className="w-[4rem] h-[4rem] text-[#007AFF] bg-[#E5F0FF] rounded-full flex items-center justify-center">
