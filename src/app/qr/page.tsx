@@ -64,7 +64,7 @@ export default function QrScanPage() {
         setScanned(result);
 
         // Проверяем, есть ли параметр sum
-        const sumMatch = result.match(/sum=(\d+)/);
+        const sumMatch = result.match(/sum=(\d+)/) || result.match(/amount=(\d+)/);
         if (sumMatch) {
             // Вариант 1: сумма есть в ссылке
             const rub = parseInt(sumMatch[1], 10) / 100;
