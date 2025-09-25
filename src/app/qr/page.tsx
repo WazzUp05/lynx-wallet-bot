@@ -52,8 +52,14 @@ export default function QrScanPage() {
     const { rubAmount, usdtAmount } = useMemo(() => {
         let rub = 0;
         if (scanned) {
-            const match = scanned.match(/sum=(\d+)/);
-            if (match) rub = parseInt(match[1], 10) / 100;
+            const sumMatch = scanned.match(/sum=(\d+)/);
+            const amountMatch = scanned.match(/amount=([\d.]+)/);
+
+            if (sumMatch) {
+                rub = parseInt(sumMatch[1], 10) / 100; // копейки → рубли
+            } else if (amountMatch) {
+                rub = parseFloat(amountMatch[1]); // уже в рублях
+            }
         }
         const usdt = usdtRate && rub ? +(rub / usdtRate).toFixed(4) : 0;
         return { rubAmount: rub, usdtAmount: usdt };
@@ -63,11 +69,22 @@ export default function QrScanPage() {
     const handleScan = async (result: string) => {
         setScanned(result);
 
-        // Проверяем, есть ли параметр sum
-        const sumMatch = result.match(/sum=(\d+)/) || result.match(/amount=(\d+)/);
-        if (sumMatch) {
+        // Проверяем sum (в копейках) или amount (в рублях)
+        const sumMatch = result.match(/sum=(\d+)/);
+        const amountMatch = result.match(/amount=([\d.]+)/);
+
+        if (sumMatch || amountMatch) {
             // Вариант 1: сумма есть в ссылке
-            const rub = parseInt(sumMatch[1], 10) / 100;
+            let rub = 0;
+
+            if (sumMatch) {
+                // sum - в копейках, делим на 100
+                rub = parseInt(sumMatch[1], 10) / 100;
+            } else if (amountMatch) {
+                // amount - в рублях (может быть с точкой), не делим
+                rub = parseFloat(amountMatch[1]);
+            }
+
             const usdt = usdtRate && rub ? +(rub / usdtRate).toFixed(4) : 0;
             setQrInfo({ rubAmount: rub, usdtAmount: usdt });
             setModalOpen(true);
