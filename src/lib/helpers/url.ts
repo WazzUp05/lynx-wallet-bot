@@ -1,1 +1,1 @@
-export const API_URL = "https://stage.lynx-wallet.com/api";
+export const API_URL = "https://stage.lynxrussia.ru/api";

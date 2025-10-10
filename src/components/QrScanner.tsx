@@ -18,6 +18,8 @@ const QrScanner: React.FC<IScannerComponents> = (props) => {
             components={{ finder, onOff, torch, zoom, tracker }}
             sound={true}
             paused={paused}
+            allowMultiple={true}
+            scanDelay={500}
             onScan={(results: IDetectedBarcode[]) => {
                 if (onResult && results && results.length > 0) {
                     onResult(results[0].rawValue); // передаём строку

@@ -5,7 +5,8 @@
     --foreground: #171717;
     --blue: #007aff;
     --gray: #9c9da4;
-    --yellow: #ffdc2c;
+    --yellow: #ffbe00;
+    --yellow-secondary: #f1b90c26;
     --green: #34c759;
     --red: #ff0719;
     --bg-red: #ffe2e7;
@@ -13,6 +14,18 @@
     --bg-blue: #e0ebf9;
     --white-15: rgba(255, 255, 255, 0.15);
     --nav-bottom-height: 6rem;
+    --bg-secondary: #1c1c1e;
+    --bg-main: #161616;
+    --dark-gray-main: #2a2e36;
+    --dark-gray-secondary: #33373d;
+    --dark-gray-optional: #2a2a2a;
+    --text-main: #ebecef;
+    --text-secondary: #939eb1;
+    --text-optional: #58606d;
+    --green-main: #34c85a;
+    --green-secondary: #34c85a26;
+    --red-main: #ff0719;
+    --red-secondary: #ff071926;
 }
 
 @theme inline {

@@ -15,6 +15,7 @@ import Loader from "@/components/ui/Loader";
 import { getLoading } from "@/lib/redux/selectors/userSelectors";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { fetchUser } from "@/lib/redux/thunks/UserThunks";
+import { API_URL } from "@/lib/helpers/url";
 
 interface Order {
     id: number;
@@ -107,7 +108,7 @@ export default function QrStatusPage() {
             if (first) setLoading(true);
             try {
                 setError(null);
-                const res = await fetch(`https://stage.lynx-wallet.com/api/order/${id}`);
+                const res = await fetch(`${API_URL}/order/${id}`);
                 const data = await res.json();
                 if (data.success && data.data) {
                     setOrder((prev: Order | null) => {

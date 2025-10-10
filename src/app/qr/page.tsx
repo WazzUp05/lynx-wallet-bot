@@ -14,6 +14,7 @@ import { fetchRates } from "@/lib/redux/thunks/rateThunks";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/Loader";
 import { getLoading, getUser, getWallet } from "@/lib/redux/selectors/userSelectors";
+import { API_URL } from "@/lib/helpers/url";
 
 export default function QrScanPage() {
     const [scanned, setScanned] = useState<string | null>(null);
@@ -151,14 +152,14 @@ export default function QrScanPage() {
             amount: qrInfo.rubAmount,
             amount_usdt: qrInfo.usdtAmount,
             merchant_id,
-            rate: usdtRate.toFixed(2),
+            rate: usdtRate ? usdtRate.toFixed(2) : "0.00",
             url: scanned,
         };
 
         // alert(JSON.stringify(order, null, 2));
 
         try {
-            const res = await fetch("https://stage.lynx-wallet.com/api/orders", {
+            const res = await fetch(`${API_URL}/orders`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", Accept: "application/json" },
                 body: JSON.stringify(order),
