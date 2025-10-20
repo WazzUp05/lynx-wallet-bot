@@ -123,7 +123,7 @@ export default function RefilledQrPage() {
     return (
         <div className=" bg-[var(--bg-optional)] flex flex-col items-center p-[1.6rem] min-h-[100dvh] ">
             <Toast open={toastOpen} onClose={() => setToastOpen(false)} message={toastMsg} />
-            <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[3rem] font-semibold w-full">
+            <div className="h-[3.6rem] center relative text-[1.8rem] leading-[130%] mb-[3rem] font-semibold w-full">
                 <button
                     className="absolute left-0 top-1/2 -translate-y-1/2 bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
                     onClick={() => router.back()}
