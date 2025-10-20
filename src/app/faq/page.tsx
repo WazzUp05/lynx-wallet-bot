@@ -16,7 +16,7 @@ const Page = () => {
                 <div className="flex gap-[1rem] items-center mb-[3.2rem]">
                     <Link
                         href="/profile"
-                        className="w-[3.5rem] h-[3.5rem] bg-[var(--bg-secondary)] text-[var(--text-secondary)] rounded-[1rem] center"
+                        className="w-[3.5rem] h-[3.5rem] bg-[var(--bg-secondary)] text-[var(--text-secondary)] rounded-[1rem] flex items-center justify-center"
                     >
                         <ArrowLeftIcon width={16} height={16} className="w-[1.6rem] h-[1.6rem]" />
                     </Link>
@@ -37,7 +37,7 @@ const Page = () => {
                             className="flex items-center gap-[1rem] justify-between bg-[var(--bg-main)] p-[1.6rem] text-[var(--text-secondary)] rounded-[1.5rem] text-[1.5rem] leading-[130%] font-semibold"
                         >
                             Приложение{' '}
-                            <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] center">
+                            <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] flex items-center justify-center">
                                 <MobileIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                             </div>
                         </a>
@@ -46,7 +46,7 @@ const Page = () => {
                             className="flex items-center gap-[1rem] justify-between bg-[var(--bg-main)] p-[1.6rem] text-[var(--text-secondary)] rounded-[1.5rem] text-[1.5rem] leading-[130%] font-semibold"
                         >
                             Безопасность{' '}
-                            <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] center">
+                            <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] flex items-center justify-center">
                                 <LockIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                             </div>
                         </a>
@@ -55,7 +55,7 @@ const Page = () => {
                             className="flex items-center gap-[1rem] justify-between bg-[var(--bg-main)] p-[1.6rem] text-[var(--text-secondary)] rounded-[1.5rem] text-[1.5rem] leading-[130%] font-semibold"
                         >
                             Платежи и переводы{' '}
-                            <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] center">
+                            <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] flex items-center justify-center">
                                 <QrIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                             </div>
                         </a>
@@ -64,7 +64,7 @@ const Page = () => {
                             className="flex items-center gap-[1rem] justify-between bg-[var(--bg-main)] p-[1.6rem] text-[var(--text-secondary)] rounded-[1.5rem] text-[1.5rem] leading-[130%] font-semibold"
                         >
                             Наши планы{' '}
-                            <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] center">
+                            <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] flex items-center justify-center">
                                 <TimeIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                             </div>
                         </a>
@@ -73,7 +73,7 @@ const Page = () => {
                             className="flex items-center gap-[1rem] justify-between bg-[var(--bg-main)] p-[1.6rem] text-[var(--text-secondary)] rounded-[1.5rem] text-[1.5rem] leading-[130%] font-semibold"
                         >
                             Реферальная программа{' '}
-                            <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] center">
+                            <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] flex items-center justify-center">
                                 <Profile2UserIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                             </div>
                         </a>

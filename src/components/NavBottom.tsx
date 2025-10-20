@@ -73,21 +73,21 @@ const NavBottom = () => {
     }
 
     return (
-        <div className="nav-bottom-container center mix-blend-plus-lighter h-[var(--nav-bottom-height)] rounded-[10rem] bg-[var(--bg-secondary)]  fixed bottom-[0.5rem] left-1/2 -translate-x-1/2 border-t border-[#00000026] z-10 glass py-[0.45rem] px-[0.3rem] w-[calc(100%-3.2rem)] ">
+        <div className="flex items-center mix-blend-plus-lighter h-[var(--nav-bottom-height)] rounded-[10rem] bg-[var(--bg-secondary)]  fixed bottom-[0.5rem] left-1/2 -translate-x-1/2 border-t border-[#00000026] z-10 glass py-[0.45rem] px-[0.3rem] w-[calc(100%-3.2rem)] ">
             {navItems.map((item) => (
                 <Link
                     key={item.href}
                     href={item.href}
                     className={
                         pathname === item.href
-                            ? 'text-[var(--yellow)] font-semibold center-column gap-[0.4rem] flex-1 py-[0.6rem] text-[1rem] leading-[1.2rem] relative'
-                            : 'center-column gap-[0.4rem] flex-1 py-[0.6rem] text-[var(--text-secondary)] text-[1rem] leading-[1.2rem] relative'
+                            ? 'text-[var(--yellow)] font-semibold flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] text-[1rem] leading-[1.2rem] relative'
+                            : 'flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] text-[var(--text-secondary)] text-[1rem] leading-[1.2rem] relative'
                     }
                 >
                     <div
                         className={`w-[8rem] h-[5.2rem] transition-all duration-300 ${
                             pathname === item.href ? 'bg-[#303030CC]' : 'bg-transparent'
-                        } rounded-[10rem] center-absolute z-[-1]`}
+                        } rounded-[10rem] flex items-center justify-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]`}
                     />
 
                     {item.icon}

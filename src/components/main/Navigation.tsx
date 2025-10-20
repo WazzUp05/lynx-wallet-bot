@@ -13,7 +13,7 @@ const Navigation: React.FC<NavigationProps> = ({ onTopUp }) => {
     return (
         <div className="flex gap-[2rem] items-center justify-center mb-[2.4rem]">
             <button className=" text-[var(--text-main)] " onClick={onTopUp}>
-                <div className="bg-[#2A2E3633] glass text-[var(--yellow)] w-[7.3rem] h-[5.5rem] rounded-[2rem] center mb-[0.5rem]">
+                <div className="bg-[#2A2E3633] glass text-[var(--yellow)] w-[7.3rem] h-[5.5rem] rounded-[2rem] flex items-center justify-center mb-[0.5rem]">
                     <PlusIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
                 </div>
                 <p className="text-[1.1rem] leading-[130%] font-medium">
@@ -24,7 +24,7 @@ const Navigation: React.FC<NavigationProps> = ({ onTopUp }) => {
                 <p className="absolute right-0 top-0  z-10 rounded-[2rem] translate-y-[-50%] text-[1.2rem] font-medium leading-[130%] bg-[var(--bg-secondary)] py-[0.2rem] text-[var(--text-optional)] px-[0.7rem] ">
                     Скоро
                 </p>
-                <div className="bg-[#2A2E3633] glass text-[var(--dark-gray-secondary)]  w-[7.3rem] h-[5.5rem] rounded-[2rem] center mb-[0.5rem]">
+                <div className="bg-[#2A2E3633] glass text-[var(--dark-gray-secondary)]  w-[7.3rem] h-[5.5rem] rounded-[2rem] flex items-center justify-center mb-[0.5rem]">
                     <P2PIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
                 </div>
                 <p className="text-[1.1rem] text-[var(--text-optional)] leading-[130%] font-medium">
@@ -32,7 +32,7 @@ const Navigation: React.FC<NavigationProps> = ({ onTopUp }) => {
                 </p>
             </button>
             <Link href="/qr" className=" text-[var(--text-main)] text-center relative">
-                <div className="bg-[#2A2E3633] glass  text-[var(--yellow)] w-[7.3rem] h-[5.5rem] rounded-[2rem] center  mb-[0.5rem]">
+                <div className="bg-[#2A2E3633] glass  text-[var(--yellow)] w-[7.3rem] h-[5.5rem] rounded-[2rem] flex items-center justify-center  mb-[0.5rem]">
                     <QrIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
                 </div>
                 <p className="text-[1.1rem] leading-[130%] font-medium">
@@ -43,7 +43,7 @@ const Navigation: React.FC<NavigationProps> = ({ onTopUp }) => {
                 <p className="absolute right-0 top-0  z-10 rounded-[2rem] translate-y-[-50%] text-[1.2rem] font-medium leading-[130%] bg-[var(--bg-secondary)] py-[0.2rem] text-[var(--text-optional)] px-[0.7rem] ">
                     Скоро
                 </p>
-                <div className="bg-[#2A2E3633] glass text-[var(--dark-gray-secondary)] w-[7.3rem] h-[5.5rem] rounded-[2rem] center mb-[0.5rem]">
+                <div className="bg-[#2A2E3633] glass text-[var(--dark-gray-secondary)] w-[7.3rem] h-[5.5rem] rounded-[2rem] flex items-center justify-center mb-[0.5rem]">
                     <LinkIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
                 </div>
                 <p className="text-[1.1rem] leading-[130%] font-medium">
