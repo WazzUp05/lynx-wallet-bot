@@ -10,7 +10,7 @@ interface MinAmountModalProps {
 
 const MinAmountModal = ({ showModal, onClose }: MinAmountModalProps) => {
     return (
-        <Modal closable open={showModal} onClose={onClose}>
+        <Modal swipeToClose={false} closable open={showModal} onClose={onClose}>
             <div>
                 <h2 className="text-[2.5rem] leading-[130%]  font-semibold mb-[2.5rem]">
                     Минимальная сумма для зачисления

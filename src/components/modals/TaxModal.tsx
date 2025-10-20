@@ -10,7 +10,7 @@ interface TaxModalProps {
 
 const TaxModal = ({ showModal, onClose }: TaxModalProps) => {
     return (
-        <Modal closable open={showModal} onClose={onClose}>
+        <Modal closable swipeToClose={false} open={showModal} onClose={onClose}>
             <div>
                 <p className="mb-[1.2rem] text-[var(--bg-main)] w-fit text-[1.6rem] leading-[130%] font-semibold py-[0.4rem] px-[0.8rem] rounded-[0.7rem] bg-[var(--yellow)]">
                     2.5 + 0.25 =

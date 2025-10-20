@@ -190,7 +190,7 @@ export default function RefilledQrPage() {
                 </div>
             </div>
             <Button
-                className="w-full mb-[1rem]"
+                className="w-full mt-auto mb-[1rem]"
                 variant="yellow"
                 onClick={() => handleCopy(data.address, 'Адрес скопирован')}
             >
