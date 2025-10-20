@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import CheckIcon from "@/components/icons/check-green.svg";
-import ErrorIcon from "@/components/icons/error.svg"; // добавь иконку ошибки
+import React, { useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import CheckIcon from '@/components/icons/check-green.svg';
+import ErrorIcon from '@/components/icons/error.svg'; // добавь иконку ошибки
 
 interface ToastProps {
     open: boolean;
     message: string;
     onClose: () => void;
     duration?: number; // ms
-    type?: "success" | "error";
+    type?: 'success' | 'error';
 }
 
-export const Toast: React.FC<ToastProps> = ({ open, message, onClose, duration = 2000, type = "success" }) => {
+export const Toast: React.FC<ToastProps> = ({ open, message, onClose, duration = 2000, type = 'success' }) => {
     useEffect(() => {
         if (!open) return;
         const timer = setTimeout(onClose, duration);
@@ -26,12 +26,16 @@ export const Toast: React.FC<ToastProps> = ({ open, message, onClose, duration =
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -60, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className={`fixed top-[1.4rem] left-1/2 -translate-x-1/2 z-[9999] box-shadow rounded-[1.5rem] flex items-center gap-[0.5rem] p-[1.05rem] text-[1.2rem] leading-[130%] font-semibold
-                        ${type === "error" ? "bg-[#FFEAEA] text-[#D32F2F]" : "bg-white text-black"}
+                    className={`fixed top-[1.4rem] left-1/2 -translate-x-1/2 z-[9999] box-shadow rounded-[1.5rem] flex items-center gap-[0.5rem] py-[0.55rem] px-[0.7rem] text-[1.2rem] leading-[130%] font-semibold
+                        ${
+                            type === 'error'
+                                ? 'bg-[#FFEAEA] text-[#D32F2F]'
+                                : 'bg-[var(--dark-gray-secondary)] text-[var(--text-main)]'
+                        }
                     `}
                 >
                     <div className="flex items-center justify-center w-[2.4rem] h-[2.4rem]">
-                        {type === "error" ? <ErrorIcon /> : <CheckIcon />}
+                        {type === 'error' ? <ErrorIcon width={20} height={20} /> : <CheckIcon width={20} height={20} />}
                     </div>
 
                     {message}

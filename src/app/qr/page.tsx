@@ -1,20 +1,20 @@
-"use client";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Button } from "@/components/ui/Button";
-import { Toast } from "@/components/ui/Toast";
-import QrScanner from "@/components/QrScanner";
-import Modal from "@/components/Modal";
-import RubleIcon from "@/components/icons/ruble.svg";
-import UsdtIcon from "@/components/icons/usdt.svg";
-import ArrowRightIcon from "@/components/icons/right-arrow.svg";
-import SelectCrypto from "@/components/SelectCrypto";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { getRatesQuoteRub } from "@/lib/redux/selectors/rateSelectors";
-import { fetchRates } from "@/lib/redux/thunks/rateThunks";
-import { useRouter } from "next/navigation";
-import Loader from "@/components/ui/Loader";
-import { getLoading, getUser, getWallet } from "@/lib/redux/selectors/userSelectors";
-import { API_URL } from "@/lib/helpers/url";
+'use client';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Button } from '@/components/ui/Button';
+import { Toast } from '@/components/ui/Toast';
+import QrScanner from '@/components/QrScanner';
+import Modal from '@/components/Modal';
+import RubleIcon from '@/components/icons/ruble.svg';
+import UsdtIcon from '@/components/icons/usdt.svg';
+import ArrowRightIcon from '@/components/icons/right-arrow.svg';
+import SelectCrypto from '@/components/SelectCrypto';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { getRatesQuoteRub } from '@/lib/redux/selectors/rateSelectors';
+import { fetchRates } from '@/lib/redux/thunks/rateThunks';
+import { useRouter } from 'next/navigation';
+import Loader from '@/components/ui/Loader';
+import { getLoading, getUser, getWallet } from '@/lib/redux/selectors/userSelectors';
+import { API_URL } from '@/lib/helpers/url';
 
 export default function QrScanPage() {
     const [scanned, setScanned] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export default function QrScanPage() {
     const [qrInfo, setQrInfo] = useState<{ rubAmount: number; usdtAmount: number } | null>(null);
     const loadingApp = useAppSelector(getLoading);
     const user = useAppSelector(getUser);
-    const [toastMsg, setToastMsg] = useState("");
+    const [toastMsg, setToastMsg] = useState('');
     const dispatch = useAppDispatch();
     const router = useRouter();
     const wallet = useAppSelector(getWallet);
@@ -36,10 +36,10 @@ export default function QrScanPage() {
 
     const MOCK_SELECT_CRYPTO = [
         {
-            id: "USDT",
-            label: "USDT",
-            description: balance_usdt ? `${balance_usdt} USDT` : "0.00 USDT",
-            iconUrl: "/icons/usdt.svg",
+            id: 'USDT',
+            label: 'USDT',
+            description: balance_usdt ? `${balance_usdt} USDT` : '0.00 USDT',
+            iconUrl: '/icons/usdt.svg',
         },
         // {
         //     id: "TON",
@@ -105,12 +105,12 @@ export default function QrScanPage() {
                         setQrInfo({ rubAmount: rub, usdtAmount: usdt });
                         setModalOpen(true);
                     } else {
-                        setToastMsg("Не удалось получить сумму по QR");
+                        setToastMsg('Не удалось получить сумму по QR');
                         setToast(true);
                         setTimeout(() => setToast(false), 2000);
                     }
                 } catch (e) {
-                    let errorMsg = "Ошибка запроса prepare";
+                    let errorMsg = 'Ошибка запроса prepare';
                     if (e instanceof Error && e.message) {
                         errorMsg += `: ${e.message}`;
                     }
@@ -119,7 +119,7 @@ export default function QrScanPage() {
                     setTimeout(() => setToast(false), 2000);
                 }
             } else {
-                setToastMsg("Некорректный QR-код");
+                setToastMsg('Некорректный QR-код');
                 setToast(true);
                 setTimeout(() => setToast(false), 2000);
             }
@@ -152,7 +152,7 @@ export default function QrScanPage() {
             amount: qrInfo.rubAmount,
             amount_usdt: qrInfo.usdtAmount,
             merchant_id,
-            rate: usdtRate ? usdtRate.toFixed(2) : "0.00",
+            rate: usdtRate ? usdtRate.toFixed(2) : '0.00',
             url: scanned,
         };
 
@@ -160,8 +160,8 @@ export default function QrScanPage() {
 
         try {
             const res = await fetch(`${API_URL}/orders`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json", Accept: "application/json" },
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
                 body: JSON.stringify(order),
             });
             const data = await res.json();
@@ -170,7 +170,7 @@ export default function QrScanPage() {
                 setToast(true);
                 setTimeout(() => setToast(false), 2000);
                 // Можно сохранить текст сообщения для Toast:
-                setToastMsg(data.message || "Ошибка при создании заявки");
+                setToastMsg(data.message || 'Ошибка при создании заявки');
                 return;
             }
 
@@ -178,7 +178,7 @@ export default function QrScanPage() {
                 router.push(`/qr/status/${data.data.uuid}`);
             }
         } catch (e) {
-            console.error("Order error:", e);
+            console.error('Order error:', e);
         }
     };
 
@@ -192,7 +192,7 @@ export default function QrScanPage() {
             <div className="rounded-2xl overflow-hidden mb-4 bg-[#e5e5e5]">
                 <QrScanner onResult={handleScan} paused={loadingQr || qrInfo ? true : false} torch finder zoom={true} />
             </div>
-            <p className="text-center text-gray-500 mb-2">Наведите камеру на QR-код</p>
+            <p className="text-center text-[var(--text-secondary)] mb-2">Наведите камеру на QR-код</p>
             {/* <span className="flex items-center gap-[0.4rem]">
                 <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : "--"} RUB
             </span> */}
@@ -203,44 +203,48 @@ export default function QrScanPage() {
                         <Loader className="h-[10rem]" />
                     ) : (
                         <>
-                            <div className="flex flex-col w-full mb-[1rem] gap-[1rem] box-shadow p-[1.6rem] rounded-[1.5rem] bg-white">
+                            <div className="flex flex-col w-full mb-[1rem] gap-[1rem]  p-[1.6rem] rounded-[1.5rem] bg-[var(--bg-secondary)]">
                                 <div className="flex items-center justify-between w-full">
-                                    <p className="text-[1.4rem] leading-[130%] text-[var(--gray)]">Сумма</p>
+                                    <p className="text-[1.4rem] leading-[130%] text-[var(--[var(--text-secondary)])]">
+                                        Сумма
+                                    </p>
                                     <p className="text-[1.4rem] font-semibold leading-[130%]">
-                                        {qrInfo.rubAmount ? qrInfo.rubAmount.toFixed(2) : "--"} RUB
+                                        {qrInfo.rubAmount ? qrInfo.rubAmount.toFixed(2) : '--'} RUB
                                     </p>
                                 </div>
                                 <div className="flex items-center justify-between w-full">
-                                    <p className="text-[1.4rem] leading-[130%] text-[var(--gray)]">Курс обмена</p>
+                                    <p className="text-[1.4rem] leading-[130%] text-[var(--[var(--text-secondary)])]">
+                                        Курс обмена
+                                    </p>
                                     <p className="text-[1.4rem] font-semibold leading-[130%] flex items-center gap-[0.4rem]">
-                                        <span className="flex items-center gap-[0.4rem]">
+                                        <span className="flex items-center gap-[0.4rem] text-[var(--text-main)]">
                                             <UsdtIcon /> 1 USDT
                                         </span>
-                                        <ArrowRightIcon />
-                                        <span className="flex items-center gap-[0.4rem]">
-                                            <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : "--"} RUB
+                                        <ArrowRightIcon className="text-[var(--text-secondary)]" />
+                                        <span className="flex items-center gap-[0.4rem] text-[var(--text-main)]">
+                                            <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : '--'} RUB
                                         </span>
                                     </p>
                                 </div>
-                                <div className="flex items-center justify-between w-full">
-                                    <p className="text-[1.4rem] leading-[130%] text-[var(--gray)]">Обновится через</p>
+                                {/* <div className="flex items-center justify-between w-full">
+                                    <p className="text-[1.4rem] leading-[130%] text-[var(--[var(--text-secondary)])]">Обновится через</p>
                                     <p className="text-[1.4rem] font-semibold leading-[130%] text-[#007AFF]">
                                         {timer} сек
                                     </p>
-                                </div>
+                                </div> */}
                             </div>
                             <SelectCrypto cryptos={MOCK_SELECT_CRYPTO} />
                             <div className="flex items-center justify-between w-full mt-[2rem] mb-[3rem]">
                                 <div className="flex flex-col text-[1.5rem] leading-[130%]">
-                                    <p className="font-semibold">Итого:</p>
-                                    <p className="text-[var(--gray)]">Комиссия 0%</p>
+                                    <p className="font-semibold text-[var(--text-main)]">Итого:</p>
+                                    <p className="text-[var(--[var(--text-secondary)])]">Комиссия 0%</p>
                                 </div>
-                                <p className="text-[2.5rem] font-semibold leading-[130%]">
-                                    {qrInfo.usdtAmount ? qrInfo.usdtAmount : "--"} USDT
+                                <p className="text-[2.5rem] font-semibold leading-[130%] text-[var(--text-main)]">
+                                    {qrInfo.usdtAmount ? qrInfo.usdtAmount : '--'} USDT
                                 </p>
                             </div>
                             <Button
-                                variant="primary"
+                                variant="yellow"
                                 onClick={handlePay}
                                 disabled={balance_usdt ? balance_usdt < qrInfo.usdtAmount : true}
                                 className="mb-2"

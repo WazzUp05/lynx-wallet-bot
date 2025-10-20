@@ -1,9 +1,9 @@
-import React from "react";
-import PlusIcon from "@/components/icons/plus.svg";
-import SendIcon from "@/components/icons/send.svg";
-import BankIcon from "@/components/icons/bank.svg";
-import BagIcon from "@/components/icons/bag.svg";
-import Link from "next/link";
+import React from 'react';
+import PlusIcon from '@/components/icons/plus.svg';
+import P2PIcon from '@/components/icons/p2p.svg';
+import QrIcon from '@/components/icons/qr.svg';
+import LinkIcon from '@/components/icons/link.svg';
+import Link from 'next/link';
 
 interface NavigationProps {
     onTopUp?: () => void;
@@ -11,36 +11,44 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ onTopUp }) => {
     return (
-        <div className="flex gap-[2rem] items-center justify-center mb-[1rem]">
-            <button className="fs-small text-white" onClick={onTopUp}>
-                <div className="bg-white text-black w-[6rem] h-[6rem] rounded-full flex items-center justify-center mb-[0.5rem]">
+        <div className="flex gap-[2rem] items-center justify-center mb-[2.4rem]">
+            <button className=" text-[var(--text-main)] " onClick={onTopUp}>
+                <div className="bg-[#2A2E3633] glass text-[var(--yellow)] w-[7.3rem] h-[5.5rem] rounded-[2rem] flex items-center justify-center mb-[0.5rem]">
                     <PlusIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
                 </div>
-                <span className="text-[1.1rem] leading-[130%]">Пополнить</span>
+                <p className="text-[1.1rem] leading-[130%] font-medium">
+                    Пополнить <br /> кошелёк
+                </p>
             </button>
-            <button className="fs-small text-white pointer-events-none  relative">
-                <span className="absolute left-1/2 top-0 translate-x-[-50%] rounded-[1.5rem] translate-y-[-50%] text-[1.2rem] font-medium leading-[130%] bg-white py-[0.2rem] text-black px-[0.7rem] ">
+            <button className=" text-[var(--text-main)] pointer-events-none  relative">
+                <p className="absolute right-0 top-0  z-10 rounded-[2rem] translate-y-[-50%] text-[1.2rem] font-medium leading-[130%] bg-[var(--bg-secondary)] py-[0.2rem] text-[var(--text-optional)] px-[0.7rem] ">
                     Скоро
-                </span>
-                <div className="bg-[#D9D9DD] text-[#9C9DA4] w-[6rem] h-[6rem] rounded-full flex items-center justify-center mb-[0.5rem]">
-                    <SendIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
+                </p>
+                <div className="bg-[#2A2E3633] glass text-[var(--dark-gray-secondary)]  w-[7.3rem] h-[5.5rem] rounded-[2rem] flex items-center justify-center mb-[0.5rem]">
+                    <P2PIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
                 </div>
-                <span className="text-[1.1rem] leading-[130%]">Отправить</span>
+                <p className="text-[1.1rem] text-[var(--text-optional)] leading-[130%] font-medium">
+                    Продать <br /> P2P
+                </p>
             </button>
-            <button className="fs-small text-white relative">
-                <span className="absolute left-1/2 top-0 translate-x-[-50%] rounded-[1.5rem] translate-y-[-50%] text-[1.2rem] font-medium leading-[130%] bg-white py-[0.2rem] text-black px-[0.7rem] ">
+            <Link href="/qr" className=" text-[var(--text-main)] text-center relative">
+                <div className="bg-[#2A2E3633] glass  text-[var(--yellow)] w-[7.3rem] h-[5.5rem] rounded-[2rem] flex items-center justify-center  mb-[0.5rem]">
+                    <QrIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
+                </div>
+                <p className="text-[1.1rem] leading-[130%] font-medium">
+                    Сканировать <br /> QR-код
+                </p>
+            </Link>
+            <Link href="/qr" className=" text-[var(--text-main)] pointer-events-none relative text-center">
+                <p className="absolute right-0 top-0  z-10 rounded-[2rem] translate-y-[-50%] text-[1.2rem] font-medium leading-[130%] bg-[var(--bg-secondary)] py-[0.2rem] text-[var(--text-optional)] px-[0.7rem] ">
                     Скоро
-                </span>
-                <div className="bg-[#D9D9DD] text-[#9C9DA4] w-[6rem] h-[6rem] rounded-full flex items-center justify-center  mb-[0.5rem]">
-                    <BankIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
+                </p>
+                <div className="bg-[#2A2E3633] glass text-[var(--dark-gray-secondary)] w-[7.3rem] h-[5.5rem] rounded-[2rem] flex items-center justify-center mb-[0.5rem]">
+                    <LinkIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
                 </div>
-                <span className="text-[1.1rem] leading-[130%]">Продать</span>
-            </button>
-            <Link href="/qr" className="fs-small text-white text-center">
-                <div className="bg-white text-black w-[6rem] h-[6rem] rounded-full flex items-center justify-center mb-[0.5rem]">
-                    <BagIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
-                </div>
-                <span className="text-[1.1rem] leading-[130%]">Оплатить</span>
+                <p className="text-[1.1rem] leading-[130%] font-medium">
+                    Оплатить <br /> по ссылке
+                </p>
             </Link>
         </div>
     );

@@ -1,7 +1,7 @@
-"use client";
-import Image from "next/image";
-import React from "react";
-import CheckIcon from "@/components/icons/check.svg";
+'use client';
+import Image from 'next/image';
+import React from 'react';
+import CheckIcon from '@/components/icons/check.svg';
 
 interface SelectCustomOption {
     id: string;
@@ -17,7 +17,7 @@ interface SelectCustomProps {
     className?: string;
 }
 
-export const SelectCustom: React.FC<SelectCustomProps> = ({ options, value, onChange, className = "" }) => {
+export const SelectCustom: React.FC<SelectCustomProps> = ({ options, value, onChange, className = '' }) => {
     return (
         <div className={`flex flex-col gap-[1rem] w-full ${className}`}>
             {options.map((option) => (
@@ -26,8 +26,8 @@ export const SelectCustom: React.FC<SelectCustomProps> = ({ options, value, onCh
                     type="button"
                     onClick={() => onChange(option.id)}
                     className={`flex items-center gap-[1rem] py-[1rem] px-[1.6rem] rounded-[1.5rem] box-shadow transition
-                        bg-white
-                        hover:border-blue-400`}
+                        bg-[var(--bg-secondary)]
+                       `}
                 >
                     {option.iconUrl && (
                         <Image
@@ -39,19 +39,25 @@ export const SelectCustom: React.FC<SelectCustomProps> = ({ options, value, onCh
                         />
                     )}
                     <div className="flex-1 text-left">
-                        <div className="font-semibold text-black text-[1.5rem] leading-[130%]">{option.label}</div>
+                        <div className="font-semibold text-[var(--text-main)] text-[1.5rem] leading-[130%]">
+                            {option.label}
+                        </div>
                         {option.description && (
-                            <div className="text-[1.5rem] text-gray-400 leading-[130%]">{option.description}</div>
+                            <div className="text-[1.5rem] text-[var(--text-secondary)] leading-[130%]">
+                                {option.description}
+                            </div>
                         )}
                     </div>
 
-                    <div
+                    {/* <div
                         className={`flex items-center transition justify-center w-[2.5rem] h-[2.5rem] ${
-                            value === option.id ? "bg-blue-500 text-white" : "bg-[#F2F3F4] text-transparent"
+                            value === option.id
+                                ? 'bg-[var(--yellow)] text-[var(--bg-secondary)]'
+                                : 'bg-[var(--bg-optional)] text-transparent'
                         } rounded-full`}
                     >
                         <CheckIcon />
-                    </div>
+                    </div> */}
                 </button>
             ))}
         </div>

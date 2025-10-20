@@ -1,12 +1,12 @@
-import Image from "next/image";
-import RightArrowIcon from "@/components/icons/right-arrow.svg";
-import CloseIcon from "@/components/icons/close.svg";
-import Modal from "./Modal";
-import { useState } from "react";
-import { SelectCustom } from "./ui/SelectCustom";
-import { CryptoItem, setCrypto } from "@/lib/redux/slices/walletSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { getCrypto } from "@/lib/redux/selectors/walletSelectors";
+import Image from 'next/image';
+import RightArrowIcon from '@/components/icons/right-arrow.svg';
+import CloseIcon from '@/components/icons/close.svg';
+import Modal from './Modal';
+import { useState } from 'react';
+import { SelectCustom } from './ui/SelectCustom';
+import { CryptoItem, setCrypto } from '@/lib/redux/slices/walletSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { getCrypto } from '@/lib/redux/selectors/walletSelectors';
 
 interface TypeCryptoProps {
     cryptos: {
@@ -39,8 +39,8 @@ const SelectCrypto = ({ cryptos }: TypeCryptoProps) => {
         <>
             <button
                 type="button"
-                onClick={() => setModalOpen(true)}
-                className={`flex items-center w-full gap-[1rem] py-[1rem] px-[1.6rem] rounded-[1.5rem] box-shadow transition bg-white `}
+                // onClick={() => setModalOpen(true)}
+                className={`flex items-center w-full gap-[1rem] py-[1rem] px-[1.6rem] rounded-[1.5rem] box-shadow transition bg-[var(--bg-secondary)] `}
             >
                 {selected?.iconUrl && (
                     <Image
@@ -52,17 +52,18 @@ const SelectCrypto = ({ cryptos }: TypeCryptoProps) => {
                     />
                 )}
                 <div className="flex-1 text-left">
-                    <div className="font-semibold text-black text-[1.5rem] leading-[130%]">{selected?.label}</div>
-                    <div className="text-[1.5rem] text-gray-400 leading-[130%]">{selected?.description}</div>
+                    <div className="font-semibold text-[var(--text-main)] text-[1.5rem] leading-[130%]">
+                        {selected?.label}
+                    </div>
+                    <div className="text-[1.5rem] text-[var(--text-secondary)] leading-[130%]">
+                        {selected?.description}
+                    </div>
                 </div>
-                <RightArrowIcon />
+                {/* <RightArrowIcon /> */}
             </button>
-            <Modal open={modalOpen} onClose={closeModal}>
+            <Modal swipeToClose={false} open={modalOpen} onClose={closeModal}>
                 <div className="flex items-center justify-between w-full mb-[3rem] text-[1.8rem] font-semibold">
                     Выберите криптовалюту
-                    <div onClick={closeModal} className="cursor-pointer">
-                        <CloseIcon />
-                    </div>
                 </div>
                 <SelectCustom options={cryptos} value={selectedId} onChange={handleSelect} />
             </Modal>

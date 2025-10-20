@@ -1,5 +1,5 @@
-import React from "react";
-import HistoryItem from "./HistoryItem";
+import React from 'react';
+import HistoryItem from './HistoryItem';
 
 export type HistoryItemType = {
     id: number;
@@ -26,11 +26,11 @@ type HistoryDayProps = {
 };
 
 function HistoryDay({ item }: HistoryDayProps) {
-    const dateConverter = new Intl.DateTimeFormat("ru-RU", { dateStyle: "long" });
+    const dateConverter = new Intl.DateTimeFormat('ru-RU', { dateStyle: 'long' });
 
     return (
         <div>
-            <div className="text-[1.8rem] leading-[130%] font-semibold text-[var(--gray)] mb-[1rem]">
+            <div className="text-[1.8rem] leading-[130%] font-semibold text-[var(--text-secondary)] mb-[1.6rem]">
                 {dateConverter.format(new Date(item.date))}
             </div>
             <div className="flex flex-col gap-[1rem]">

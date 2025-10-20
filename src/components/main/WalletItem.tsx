@@ -1,5 +1,9 @@
-import Image from "next/image";
-import React from "react";
+import Image from 'next/image';
+import React from 'react';
+import RateUpIcon from '@/components/icons/rate-up.svg';
+import RateDownIcon from '@/components/icons/rate-down.svg';
+import { getHideBalance } from '@/lib/redux/selectors/appSelectors';
+import { useAppSelector } from '@/lib/redux/hooks';
 
 interface WalletItemProps {
     walletName?: string;
@@ -8,41 +12,71 @@ interface WalletItemProps {
     cryptoBalance?: number;
     soon?: boolean;
     rate?: number | null;
+    rateChange?: number | null;
 }
 
-const WalletItem: React.FC<WalletItemProps> = ({ walletName, walletIcon, fiatBalance, cryptoBalance, soon, rate }) => {
+const WalletItem: React.FC<WalletItemProps> = ({
+    walletName,
+    walletIcon,
+    fiatBalance,
+    cryptoBalance,
+    soon,
+    rate,
+    rateChange,
+}) => {
+    const hideBalance = useAppSelector(getHideBalance);
+    const isPositiveChange = rateChange !== null && rateChange !== undefined && rateChange > 0;
+    const isNegativeChange = rateChange !== null && rateChange !== undefined && rateChange < 0;
+    const hasChange = rateChange !== null && rateChange !== undefined && rateChange !== 0;
+
     return (
         <div
-            className={`py-[1rem] w-full px-[1.6rem] ${soon && "pointer-events-none"} ${!soon && "box-shadow"} ${
-                soon ? "bg-[#F2F3F4]" : "bg-white"
-            }  rounded-[1.5rem] flex items-center justify-between`}
+            className={`p-[1.6rem] min-w-[23rem]  ${soon && 'pointer-events-none'} bg-[var(--bg-main)]
+              rounded-[2rem] flex flex-col gap-[1.6rem] items-center justify-center first:ml-[1.6rem] last:mr-[1.6rem]`}
         >
-            <div className="flex items-center gap-[1rem]">
+            <div className="flex w-full gap-[1rem]">
                 <Image
-                    src={walletIcon || "/wallet-icon.png"}
+                    src={walletIcon || '/wallet-icon.png'}
                     alt="Wallet Icon"
-                    className={`${soon ? "filter grayscale " : ""}`}
+                    className={` w-[4rem] h-[4rem] ${soon ? 'filter grayscale ' : ''}`}
                     width={40}
                     height={40}
                 />
-                <div className="flex flex-col ">
-                    <p className="text-[1.5rem] leading-[130%] text-black font-bold">{walletName || "Wallet Name"}</p>
-                    {!soon && <p className="text-[1.5rem] leading-[130%] text-[var(--gray)]">{rate || "0.00"} ₽</p>}
+                <div className="flex flex-col w-full">
+                    <p className="text-[1.8rem] leading-[130%] text-[var(--text-main)] font-bold ">
+                        {!hideBalance ? fiatBalance || '0.00' : '********'} ₽
+                    </p>
+                    <p className="text-[1.4rem] leading-[130%] text-[var(--gray)] ">
+                        {!hideBalance ? cryptoBalance || '0.00' : '********'} {walletName}
+                    </p>
                 </div>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col w-full min-h-[6.4rem] bg-[var(--bg-secondary)] rounded-[2rem] px-[1.6rem] py-[1.2rem]">
                 {soon ? (
-                    <div className="bg-[#D9D9DD] text-white text-[1.4rem] leading-[130%] px-[1rem] py-[0.4rem] rounded-[1.5rem] text-center">
+                    <div className=" text-[1.5rem] text-[var(--text-optional)] leading-[130%] text-center m-auto">
                         Скоро
                     </div>
                 ) : (
                     <>
-                        <p className="text-[1.5rem] leading-[130%] text-black font-bold text-right">
-                            {fiatBalance || "0.00"} ₽
+                        <p className="text-[1.5rem] leading-[130%] text-[var(--text-secondary)] font-semibold mb-[0.3rem]">
+                            {walletName || 'Wallet Name'}
                         </p>
-                        <p className="text-[1.5rem] leading-[130%] text-[var(--gray)] text-right">
-                            {cryptoBalance || "0.00"} USDT
-                        </p>
+
+                        <div className="flex items-center gap-[1rem]">
+                            <p className="text-[1.4rem] leading-[130%] text-[var(--text-main)]">
+                                {rate ? Number(rate).toFixed(2) : '0.00'} ₽
+                            </p>
+                            {hasChange && isPositiveChange && (
+                                <span className="flex text-[1.4rem] leading-[130%] items-center gap-[0.3rem] text-[var(--green-main)]">
+                                    <RateUpIcon /> {Math.abs(rateChange).toFixed(2)}%
+                                </span>
+                            )}
+                            {hasChange && isNegativeChange && (
+                                <span className="flex text-[1.4rem] leading-[130%] items-center gap-[0.3rem] text-[var(--red-main)]">
+                                    <RateDownIcon /> {Math.abs(rateChange).toFixed(2)}%
+                                </span>
+                            )}
+                        </div>
                     </>
                 )}
             </div>
