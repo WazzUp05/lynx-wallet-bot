@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
     /* config options here */
@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
             test: /\.svg$/,
             use: [
                 {
-                    loader: "@svgr/webpack",
+                    loader: '@svgr/webpack',
                     options: {
                         icon: true,
                     },
@@ -19,17 +19,20 @@ const nextConfig: NextConfig = {
     experimental: {
         turbo: {
             rules: {
-                "*.svg": {
-                    loaders: ["@svgr/webpack"],
-                    as: "*.js",
+                '*.svg': {
+                    loaders: ['@svgr/webpack'],
+                    as: '*.js',
                 },
             },
         },
     },
-    allowedDevOrigins: [
-        "http://192.168.0.101:3000", // или твой IP и порт
-        "http://192.168.0.101:3001", // или твой IP и порт
-        "http://localhost:3000",
-    ],
+    // Убираем allowedDevOrigins для продакшена
+    ...(process.env.NODE_ENV === 'development' && {
+        allowedDevOrigins: ['http://192.168.0.101:3000', 'http://192.168.0.101:3001', 'http://localhost:3000'],
+    }),
+    // Дополнительные настройки для стабильности
+    output: 'standalone',
+    poweredByHeader: false,
+    compress: true,
 };
 export default nextConfig;

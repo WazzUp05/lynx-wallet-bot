@@ -1,39 +1,40 @@
 {
-  "name": "lynx-wallet-bot",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "@reduxjs/toolkit": "^2.9.0",
-    "@telegram-apps/init-data-node": "^2.0.10",
-    "@telegram-apps/sdk-react": "^3.3.7",
-    "@yudiel/react-qr-scanner": "^2.3.1",
-    "framer-motion": "^12.23.12",
-    "html5-qrcode": "^2.3.8",
-    "next": "15.5.2",
-    "qrcode.react": "^4.2.0",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "react-redux": "^9.2.0",
-    "react-slick": "^0.31.0",
-    "slick-carousel": "^1.8.1"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@svgr/webpack": "^8.1.0",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@types/react-slick": "^0.23.13",
-    "eslint": "^9",
-    "eslint-config-next": "15.5.2",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+    "name": "lynx-wallet-bot",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev --turbopack",
+        "build": "next build",
+        "build:vercel": "next build",
+        "start": "next start",
+        "lint": "eslint"
+    },
+    "dependencies": {
+        "@reduxjs/toolkit": "^2.9.0",
+        "@telegram-apps/init-data-node": "^2.0.10",
+        "@telegram-apps/sdk-react": "^3.3.7",
+        "@yudiel/react-qr-scanner": "^2.3.1",
+        "framer-motion": "^12.23.12",
+        "html5-qrcode": "^2.3.8",
+        "next": "15.5.2",
+        "qrcode.react": "^4.2.0",
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
+        "react-redux": "^9.2.0",
+        "react-slick": "^0.31.0",
+        "slick-carousel": "^1.8.1"
+    },
+    "devDependencies": {
+        "@eslint/eslintrc": "^3",
+        "@svgr/webpack": "^8.1.0",
+        "@tailwindcss/postcss": "^4",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "@types/react-slick": "^0.23.13",
+        "eslint": "^9",
+        "eslint-config-next": "15.5.2",
+        "tailwindcss": "^4",
+        "typescript": "^5"
+    }
 }
