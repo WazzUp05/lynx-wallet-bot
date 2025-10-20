@@ -1,7 +1,8 @@
-import React from "react";
-
-import WalletItem from "./WalletItem";
-import Offer from "./Offer";
+import React from 'react';
+import Navigation from './Navigation';
+import WalletItem from './WalletItem';
+import Offer from './Offer';
+import RefilledModal from '../refilled/RefilledModal';
 
 interface WalletItemDataProps {
     walletName?: string;
@@ -9,6 +10,8 @@ interface WalletItemDataProps {
     fiatBalance?: number;
     cryptoBalance?: number;
     soon?: boolean;
+    rate?: number | null;
+    rateChange?: number | null;
 }
 
 interface WalletsProps {
@@ -16,10 +19,15 @@ interface WalletsProps {
 }
 
 const Wallets = ({ wallets }: WalletsProps) => {
+    const [isTopUpOpen, setTopUpOpen] = React.useState(false);
+
     return (
-        <div className="p-[1.6rem] mt-[-2rem] bg-white rounded-t-[2rem] w-full h-full">
+        <div className="mt-[-2rem] bg-[var(--bg-optional)] rounded-t-[2rem] w-full h-full relative">
             <Offer />
-            <div className="flex flex-col gap-[1rem]">
+            <Navigation onTopUp={() => setTopUpOpen(true)} />
+            <RefilledModal isTopUpOpen={isTopUpOpen} setTopUpOpen={setTopUpOpen} />
+
+            <div className="flex  gap-[1rem] flew-nowrap overflow-x-auto">
                 {wallets?.map((item, index) => (
                     <WalletItem key={index} {...item} />
                 ))}

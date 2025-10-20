@@ -1,19 +1,19 @@
-"use client";
-import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
-import { Button } from "@/components/ui/Button";
-import ArrowLeft from "@/components/icons/arrow-left.svg";
-import WarrningLeftIcon from "@/components/icons/warrning-mark.svg";
-import RightIcon from "@/components/icons/right-arrow.svg";
-import { QRCodeSVG } from "qrcode.react";
-import { useEffect, useState } from "react";
-import TaxModal from "@/components/modals/TaxModal";
-import { Toast } from "@/components/ui/Toast";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { getLoading, getWallet } from "@/lib/redux/selectors/userSelectors";
-import Loader from "@/components/ui/Loader";
-import MinAmountModal from "@/components/modals/MinAmountModal";
-import { fetchUser } from "@/lib/redux/thunks/UserThunks";
+'use client';
+import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { Button } from '@/components/ui/Button';
+import ArrowLeft from '@/components/icons/arrow-left.svg';
+import WarrningLeftIcon from '@/components/icons/warrning-mark.svg';
+import RightIcon from '@/components/icons/right-arrow.svg';
+import { QRCodeSVG } from 'qrcode.react';
+import { useEffect, useState } from 'react';
+import TaxModal from '@/components/modals/TaxModal';
+import { Toast } from '@/components/ui/Toast';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { getLoading, getWallet } from '@/lib/redux/selectors/userSelectors';
+import Loader from '@/components/ui/Loader';
+import MinAmountModal from '@/components/modals/MinAmountModal';
+import { fetchUser } from '@/lib/redux/thunks/UserThunks';
 
 // Типизация для адресов
 type NetworkData = {
@@ -40,7 +40,7 @@ export default function RefilledQrPage() {
     const [showTaxModal, setShowTaxModal] = useState(false);
 
     const [toastOpen, setToastOpen] = useState(false);
-    const [toastMsg, setToastMsg] = useState("");
+    const [toastMsg, setToastMsg] = useState('');
 
     // useEffect(() => {
     //     dispatch(fetchUser());
@@ -50,33 +50,33 @@ export default function RefilledQrPage() {
     const ADDRESSES: Addresses = {
         USDT: {
             TRC20: {
-                address: wallet?.address || "",
-                fee: "2.75 USDT",
-                min: "5 USDT",
-                networkLabel: "TRC20",
-                icon: "/icons/trc20.svg",
+                address: wallet?.address || '',
+                fee: '2.75 USDT',
+                min: '5 USDT',
+                networkLabel: 'TRC20',
+                icon: '/icons/usdt.svg',
             },
             TON: {
-                address: "UQ...TONADDRESS",
-                fee: "2.75 USDT",
-                min: "1 USDT",
-                networkLabel: "TON",
-                icon: "/icons/ton.svg",
+                address: 'UQ...TONADDRESS',
+                fee: '2.75 USDT',
+                min: '1 USDT',
+                networkLabel: 'TON',
+                icon: '/icons/ton.svg',
             },
         },
         TON: {
             TON: {
-                address: "UQ...TONADDRESS",
-                fee: "0.2 TON",
-                min: "1 TON",
-                networkLabel: "TON",
-                icon: "/icons/ton.svg",
+                address: 'UQ...TONADDRESS',
+                fee: '0.2 TON',
+                min: '1 TON',
+                networkLabel: 'TON',
+                icon: '/icons/ton.svg',
             },
         },
     };
 
     const srcQr =
-        network === "TRC20" ? "/icons/USDT-TRC20.svg" : network === "TON" ? "/icons/TON-TON.svg" : "/qr-demo.png";
+        network === 'TRC20' ? '/icons/USDT-TRC20.svg' : network === 'TON' ? '/icons/TON-TON.svg' : '/qr-demo.png';
 
     const upperCrypto = crypto?.toUpperCase();
     const upperNetwork = network?.toUpperCase();
@@ -95,19 +95,19 @@ export default function RefilledQrPage() {
             });
         } else {
             // Fallback для Safari/WebView
-            const textarea = document.createElement("textarea");
+            const textarea = document.createElement('textarea');
             textarea.value = text;
-            textarea.style.position = "fixed";
-            textarea.style.opacity = "0";
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
             document.body.appendChild(textarea);
             textarea.focus();
             textarea.select();
             try {
-                document.execCommand("copy");
+                document.execCommand('copy');
                 setToastMsg(msg);
                 setToastOpen(true);
             } catch (err) {
-                setToastMsg("Не удалось скопировать");
+                setToastMsg('Не удалось скопировать');
                 setToastOpen(true);
             }
             document.body.removeChild(textarea);
@@ -121,15 +121,13 @@ export default function RefilledQrPage() {
     if (!data) return <div className="p-8">Данные не найдены</div>;
 
     return (
-        <div
-            className=" bg-[#f7f8fa] flex flex-col items-center px-[1.6rem] py-[2rem] "
-            style={{
-                paddingBottom: "calc(1rem + var(--nav-bottom-height))",
-            }}
-        >
+        <div className=" bg-[var(--bg-optional)] flex flex-col items-center p-[1.6rem] min-h-[100dvh] ">
             <Toast open={toastOpen} onClose={() => setToastOpen(false)} message={toastMsg} />
-            <div className="flex items-center justify-center relative text-[1.8rem] leading-[130%] mb-[3rem] font-semibold w-full">
-                <button className="absolute left-0 top-1/2 -translate-y-1/2" onClick={() => router.back()}>
+            <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[3rem] font-semibold w-full">
+                <button
+                    className="absolute left-0 top-1/2 -translate-y-1/2 bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] flex items-center justify-center ml-auto text-[var(--text-secondary)]"
+                    onClick={() => router.back()}
+                >
                     <ArrowLeft />
                 </button>
                 <span className="flex items-center gap-[0.5rem] ">
@@ -137,20 +135,18 @@ export default function RefilledQrPage() {
                     Пополнение {crypto}
                 </span>
             </div>
-            <div className="bg-white rounded-[1.5rem] box-shadow py-[2rem] px-[1.6rem] w-full  flex flex-col items-center mb-[2rem]">
-                {/* QR-код (можно заменить на компонент генерации QR) */}
+            <div className="bg-[var(--bg-secondary)] rounded-[1.5rem] box-shadow py-[1.6rem] px-[1.6rem] w-full  flex flex-col items-center mb-[2.5rem]">
                 <div className="mb-[2rem]">
-                    {/* <Image src={srcQr} alt="QR" width={180} height={180} /> */}
                     <QRCodeSVG
                         value={data.address}
-                        size={180}
+                        size={150}
                         imageSettings={{
-                            src: srcQr, // путь к твоей иконке
-                            x: undefined, // автоматически по центру
+                            src: srcQr,
+                            x: undefined,
                             y: undefined,
-                            height: 40,
-                            width: 40,
-                            excavate: true, // вырезать фон под иконкой
+                            height: 35,
+                            width: 35,
+                            excavate: true,
                         }}
                     />
                 </div>
@@ -161,43 +157,46 @@ export default function RefilledQrPage() {
                     {data.address}
                 </div>
                 <div className="text-[1.2rem] leading-[130%] text-[var(--gray)] text-center mb-[1rem]">
-                    Данный адрес предназначен только для получения {crypto} в сети {data.networkLabel}. Отправка активов
-                    в других сетях приведёт к их безвозвратной потере!
+                    Адрес принимает только <b>USDT в сети TRC20</b>. Отправка через другие сети{' '}
+                    <b>приведёт к потере средств!</b>
                 </div>
                 <div
                     onClick={() => setShowMinAmountModal(true)}
-                    className="w-full flex gap-[0.5rem] bg-[#FFF4E8]  py-[1rem] px-[1.6rem] rounded-[1.5rem] mb-2 text-[1.2rem] leading-[130%] "
+                    className="w-full flex gap-[0.5rem] bg-[var(--yellow-optional)]  py-[1.6rem] px-[1.6rem] rounded-[1.5rem] mb-[1.2rem] text-[1.2rem] leading-[130%] "
                 >
                     <div>
                         <WarrningLeftIcon width={20} height={20} />
                     </div>
-                    <span>
-                        Для зачисления средств на ваш счёт необходимо выполнить перевод(ы) на сумму больше{" "}
-                        <b>{data.min}</b>
+                    <span className="text-[var(--text-main)]">
+                        Переведите от <b>{data.min}</b>, чтобы средства зачислились на счёт
                     </span>
-                    <div className="text-[#FF9720] ml-auto flex items-center">
+                    <div className="text-[var(--yellow)] ml-auto bg-[var(--yellow-secondary)] rounded-[1rem] min-w-[2.5rem] h-[2.5rem] flex items-center justify-center ">
                         <RightIcon width={16} height={16} />
                     </div>
                 </div>
                 <div
                     onClick={() => setShowTaxModal(true)}
-                    className="w-full bg-[#FFF4E8]  py-[1rem] px-[1.6rem] rounded-[1.5rem] text-[1.2rem] leading-[130%]  flex items-center gap-2"
+                    className="w-full bg-[var(--yellow-optional)]  py-[1.6rem] px-[1.6rem] rounded-[1.5rem] text-[1.2rem] leading-[130%]  flex items-center gap-2"
                 >
                     <div>
                         <WarrningLeftIcon width={20} height={20} />
                     </div>
-                    <span>
-                        Фиксированная комиссия <b>{data.fee}</b>
+                    <span className="text-[var(--text-main)]">
+                        Комиссия — <b>{data.fee}</b>
                     </span>
-                    <div className="text-[#FF9720] ml-auto flex items-center">
+                    <div className="text-[var(--yellow)] ml-auto bg-[var(--yellow-secondary)]  rounded-[1rem] w-[2.5rem] h-[2.5rem] flex items-center justify-center ">
                         <RightIcon width={16} height={16} />
                     </div>
                 </div>
             </div>
-            <Button className="w-full mb-[1rem]" onClick={() => handleCopy(data.address, "Адрес скопирован")}>
+            <Button
+                className="w-full mt-auto mb-[1rem]"
+                variant="yellow"
+                onClick={() => handleCopy(data.address, 'Адрес скопирован')}
+            >
                 Копировать адрес
             </Button>
-            <Button className="w-full" variant="ghost" onClick={() => router.push("/")}>
+            <Button className="w-full" variant="ghost" onClick={() => router.push('/')}>
                 Вернуться на главную
             </Button>
             <TaxModal showModal={showTaxModal} onClose={() => setShowTaxModal(false)} />

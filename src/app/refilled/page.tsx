@@ -1,23 +1,23 @@
-"use client";
-import React, { useCallback, useState } from "react";
-import ArrowLeft from "@/components/icons/arrow-left.svg";
-import { SelectCustom } from "@/components/ui/SelectCustom";
-import SelectCrypto from "@/components/SelectCrypto";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { getCrypto, getNetworkType } from "@/lib/redux/selectors/walletSelectors";
-import Image from "next/image";
-import { Button } from "@/components/ui/Button";
-import { NetworkType, setNetwork } from "@/lib/redux/slices/walletSlice";
-import { useRouter } from "next/navigation";
-import { getLoading, getWallet } from "@/lib/redux/selectors/userSelectors";
-import Loader from "@/components/ui/Loader";
+'use client';
+import React, { useCallback, useState } from 'react';
+import ArrowLeft from '@/components/icons/arrow-left.svg';
+import { SelectCustom } from '@/components/ui/SelectCustom';
+import SelectCrypto from '@/components/SelectCrypto';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { getCrypto, getNetworkType } from '@/lib/redux/selectors/walletSelectors';
+import Image from 'next/image';
+import { Button } from '@/components/ui/Button';
+import { NetworkType, setNetwork } from '@/lib/redux/slices/walletSlice';
+import { useRouter } from 'next/navigation';
+import { getLoading, getWallet } from '@/lib/redux/selectors/userSelectors';
+import Loader from '@/components/ui/Loader';
 
 const MOCK_SELECT_USDT = [
     {
-        id: "TRC20",
-        label: "TRC20",
-        description: "Комиссия 2.75 USDT",
-        iconUrl: "/icons/trc20.svg",
+        id: 'TRC20',
+        label: 'TRC20',
+        description: 'Комиссия 2.75 USDT',
+        iconUrl: '/icons/trc20.svg',
     },
     // {
     //     id: "TON",
@@ -29,10 +29,10 @@ const MOCK_SELECT_USDT = [
 
 const MOCK_SELECT_TON = [
     {
-        id: "TON",
-        label: "TON",
-        description: "Комиссия 0.2 TON",
-        iconUrl: "/icons/ton.svg",
+        id: 'TON',
+        label: 'TON',
+        description: 'Комиссия 0.2 TON',
+        iconUrl: '/icons/ton.svg',
     },
 ];
 
@@ -48,10 +48,10 @@ const Page = () => {
 
     const MOCK_SELECT_CRYPTO = [
         {
-            id: "USDT",
-            label: "USDT",
-            description: balance_usdt ? `${balance_usdt} USDT` : "0.00 USDT",
-            iconUrl: "/icons/usdt.svg",
+            id: 'USDT',
+            label: 'USDT',
+            description: balance_usdt ? `${balance_usdt} USDT` : '0.00 USDT',
+            iconUrl: '/icons/usdt.svg',
         },
     ];
 
@@ -60,7 +60,7 @@ const Page = () => {
         dispatch(setNetwork(network as NetworkType));
     };
 
-    const network = crypto.id === "USDT" ? MOCK_SELECT_USDT : MOCK_SELECT_TON;
+    const network = crypto.id === 'USDT' ? MOCK_SELECT_USDT : MOCK_SELECT_TON;
 
     // Функция перехода на страницу с QR-кодом
     const handleContinue = () => {
@@ -74,27 +74,24 @@ const Page = () => {
     }
 
     return (
-        <div
-            className="py-[2rem] px-[1.6rem] flex flex-col "
-            style={{
-                minHeight: "calc(100dvh)",
-                paddingBottom: "calc(1rem + var(--nav-bottom-height))",
-            }}
-        >
-            <div className="flex items-center justify-center relative text-[1.8rem] leading-[130%] mb-[4rem] font-semibold">
-                <div className="absolute left-[0] top-1/2 translate-y-[-50%]" onClick={() => router.back()}>
+        <div className="p-[1.6rem] flex flex-col min-h-[100dvh]">
+            <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[4rem] font-semibold">
+                <div
+                    className="absolute left-[0] top-1/2 translate-y-[-50%] bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] flex items-center justify-center ml-auto text-[var(--text-secondary)]"
+                    onClick={() => router.back()}
+                >
                     <ArrowLeft />
                 </div>
-                <span className="">Пополнить</span>
+                <span className="text-white">Пополнить</span>
             </div>
             <div className="mb-[3rem]">
-                <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[#08091C]">
-                    Выберите криптовалюту
+                <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">
+                    Криптовалюта
                 </p>
                 <SelectCrypto cryptos={MOCK_SELECT_CRYPTO} />
             </div>
             <div className="mb-[3rem]">
-                <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[#08091C]">Выберите сеть</p>
+                <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">Сеть</p>
                 <SelectCustom
                     options={network}
                     value={selectedNetwork}
@@ -102,7 +99,7 @@ const Page = () => {
                     className="mb-[3rem]"
                 />
             </div>
-            <div className="mb-[3rem]">
+            {/* <div className="mb-[3rem]">
                 <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[#08091C]">Скоро</p>
                 <div
                     className={`flex items-center mb-[1rem] w-full gap-[1rem] py-[1rem] px-[1.6rem] rounded-[1.5rem] box-shadow transition
@@ -138,8 +135,8 @@ const Page = () => {
                         <div className="font-semibold text-black text-[1.5rem] leading-[130%]">TON</div>
                     </div>
                 </div>
-            </div>
-            <Button className="mt-auto w-full" onClick={handleContinue}>
+            </div> */}
+            <Button variant="yellow" className="mt-auto w-full" onClick={handleContinue}>
                 Продолжить
             </Button>
         </div>

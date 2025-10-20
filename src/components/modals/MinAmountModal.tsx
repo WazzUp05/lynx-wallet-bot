@@ -1,7 +1,7 @@
-import React from "react";
-import Modal from "../Modal";
-import WalletIcon from "@/components/icons/wallet-color.svg";
-import GuadrdIcon from "@/components/icons/guard.svg";
+import React from 'react';
+import Modal from '../Modal';
+import WalletIcon from '@/components/icons/wallet-color.svg';
+import GuadrdIcon from '@/components/icons/guard.svg';
 
 interface MinAmountModalProps {
     showModal: boolean;
@@ -10,9 +10,9 @@ interface MinAmountModalProps {
 
 const MinAmountModal = ({ showModal, onClose }: MinAmountModalProps) => {
     return (
-        <Modal open={showModal} onClose={onClose}>
+        <Modal swipeToClose={false} closable open={showModal} onClose={onClose}>
             <div>
-                <h2 className="text-[2.5rem] leading-[130%] text-center font-semibold mb-[3rem]">
+                <h2 className="text-[2.5rem] leading-[130%]  font-semibold mb-[2.5rem]">
                     Минимальная сумма для зачисления
                 </h2>
                 <div className="mb-[3rem]">
@@ -23,19 +23,19 @@ const MinAmountModal = ({ showModal, onClose }: MinAmountModalProps) => {
                         </p>
                     </div>
                     <ul className="mb-[1.5rem]">
-                        <li className="flex items-start gap-[0.8rem] mb-[1.5rem] text-[1.4rem] leading-[130%]">
-                            <span className="mt-[0.7rem] w-[0.7rem] h-[0.7rem] rounded-full bg-[#2176FF] flex-shrink-0" />
+                        <li className="flex items-start gap-[1rem] mb-[1.5rem] text-[1.2rem] leading-[130%]">
+                            <span className="mt-[0.7rem] w-[0.7rem] h-[0.7rem] rounded-full bg-[var(--yellow)] flex-shrink-0" />
                             <span>Сеть TRC20 не обрабатывает зачисления на меньшие суммы.</span>
                         </li>
-                        <li className="flex items-start gap-[0.8rem] mb-[1.5rem] text-[1.4rem] leading-[130%]">
-                            <span className="mt-[0.7rem] w-[0.7rem] h-[0.7rem] rounded-full bg-[#2176FF] flex-shrink-0" />
+                        <li className="flex items-start gap-[1rem] mb-[1.5rem] text-[1.2rem] leading-[130%]">
+                            <span className="mt-[0.7rem] w-[0.7rem] h-[0.7rem] rounded-full bg-[var(--yellow)] flex-shrink-0" />
                             <span>
                                 Чтобы перевод был подтверждён и средства появились на балансе, общая сумма ваших
                                 транзакций должна превышать <b>5 USDT</b>.
                             </span>
                         </li>
-                        <li className="flex items-start gap-[0.8rem] mb-[1.5rem] text-[1.4rem] leading-[130%]">
-                            <span className="mt-[0.7rem] w-[0.7rem] h-[0.7rem] rounded-full bg-[#2176FF] flex-shrink-0" />
+                        <li className="flex items-start gap-[1rem] mb-[1.5rem] text-[1.2rem] leading-[130%]">
+                            <span className="mt-[0.7rem] w-[0.7rem] h-[0.7rem] rounded-full bg-[var(--yellow)] flex-shrink-0" />
                             <span>
                                 Можно сделать один перевод больше <b>5 USDT</b> или несколько мелких, чтобы в сумме
                                 получилось больше.
@@ -44,7 +44,7 @@ const MinAmountModal = ({ showModal, onClose }: MinAmountModalProps) => {
                     </ul>
                 </div>
 
-                <p className="text-[1.2rem] leading-[130%] text-[var(--gray)]">
+                <p className="text-[1.2rem] leading-[130%] text-[var(--text-secondary)]">
                     Это требование связано с ограничениями сети. Lynx Wallet не получает выгоды от этого правила.
                 </p>
             </div>

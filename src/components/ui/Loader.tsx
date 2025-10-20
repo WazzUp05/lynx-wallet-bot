@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface LoaderProps {
     className?: string;
@@ -6,7 +6,7 @@ interface LoaderProps {
 
 const Loader: React.FC<LoaderProps> = ({ className }) => (
     <div className={`flex justify-center items-center min-h-[200px] w-full ${className}`}>
-        <div className="w-12 h-12 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-[var(--yellow-secondary)] border-t-[var(--yellow)] rounded-full animate-spin" />
     </div>
 );
 
