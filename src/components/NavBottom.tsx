@@ -81,7 +81,7 @@ const NavBottom = () => {
                     className={
                         pathname === item.href
                             ? 'text-[var(--yellow)] font-semibold flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] text-[1rem] leading-[1.2rem] relative'
-                            : 'flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] text-[var(--text-secondary)] text-[1rem] leading-[1.2rem] relative'
+                            : 'flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] text-[var(--text-secondary)] text-[1rem] leading-[1.2rem] relative '
                     }
                 >
                     <div
