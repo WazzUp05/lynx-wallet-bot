@@ -30,7 +30,7 @@ const Page = () => {
                 </p>
             </div>
             <div className="flex items-center gap-[1.5rem] bg-[var(--bg-secondary)] rounded-[2rem] p-[1.6rem] mb-[4rem]">
-                <div className="w-[3.5rem] h-[3.5rem] bg-[var(--dark-gray-secondary)] rounded-[1rem] flex items-center justify-center">
+                <div className="w-[3.5rem] h-[3.5rem] bg-[var(--dark-gray-secondary)] rounded-[1rem] center">
                     <ApprovedIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                 </div>
                 <div className="flex flex-col gap-[0.5rem]">
@@ -51,7 +51,7 @@ const Page = () => {
                     href="/faq"
                     className="flex items-center gap-[1rem] bg-[var(--bg-secondary)] rounded-[2rem] p-[1.6rem] mb-[4rem]"
                 >
-                    <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] flex items-center justify-center">
+                    <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] center">
                         <QuestionIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                     </div>
                     <p className="text-[1.5rem] leading-[130%] font-medium text-[var(--text-main)]">

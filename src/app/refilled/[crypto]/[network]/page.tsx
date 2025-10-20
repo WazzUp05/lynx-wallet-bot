@@ -125,7 +125,7 @@ export default function RefilledQrPage() {
             <Toast open={toastOpen} onClose={() => setToastOpen(false)} message={toastMsg} />
             <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[3rem] font-semibold w-full">
                 <button
-                    className="absolute left-0 top-1/2 -translate-y-1/2 bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] flex items-center justify-center ml-auto text-[var(--text-secondary)]"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
                     onClick={() => router.back()}
                 >
                     <ArrowLeft />
@@ -170,7 +170,7 @@ export default function RefilledQrPage() {
                     <span className="text-[var(--text-main)]">
                         Переведите от <b>{data.min}</b>, чтобы средства зачислились на счёт
                     </span>
-                    <div className="text-[var(--yellow)] ml-auto bg-[var(--yellow-secondary)] rounded-[1rem] min-w-[2.5rem] h-[2.5rem] flex items-center justify-center ">
+                    <div className="text-[var(--yellow)] ml-auto bg-[var(--yellow-secondary)] rounded-[1rem] min-w-[2.5rem] h-[2.5rem] center ">
                         <RightIcon width={16} height={16} />
                     </div>
                 </div>
@@ -184,7 +184,7 @@ export default function RefilledQrPage() {
                     <span className="text-[var(--text-main)]">
                         Комиссия — <b>{data.fee}</b>
                     </span>
-                    <div className="text-[var(--yellow)] ml-auto bg-[var(--yellow-secondary)]  rounded-[1rem] w-[2.5rem] h-[2.5rem] flex items-center justify-center ">
+                    <div className="text-[var(--yellow)] ml-auto bg-[var(--yellow-secondary)]  rounded-[1rem] w-[2.5rem] h-[2.5rem] center ">
                         <RightIcon width={16} height={16} />
                     </div>
                 </div>

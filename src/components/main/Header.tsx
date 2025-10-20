@@ -28,16 +28,16 @@ const Header = ({ name }: HeaderProps) => {
             <div className="flex items-center gap-[1rem]">
                 {name && <p className="text-[1.6rem] fs-small text-[var(--text-secondary)]">{name}</p>}
             </div>
-            <div className="flex items-center gap-[1.6rem]">
+            <div className="center-v gap-[1.6rem]">
                 <button
                     onClick={onToggleBalance}
-                    className="flex cursor-pointer items-center w-[3.5rem] h-[3.5rem] rounded-[1rem] bg-[var(--bg-main)] justify-center "
+                    className=" cursor-pointer center w-[3.5rem] h-[3.5rem] rounded-[1rem] bg-[var(--bg-main)]  "
                 >
                     {!hideBalance ? <EyeIcon width={15} height={15} /> : <EyeHiddenIcon width={15} height={15} />}
                 </button>
                 <button
                     onClick={handleRefresh}
-                    className="flex cursor-pointer w-[3.5rem] h-[3.5rem] rounded-[1rem] bg-[var(--bg-main)] justify-center items-center"
+                    className="center cursor-pointer w-[3.5rem] h-[3.5rem] rounded-[1rem] bg-[var(--bg-main)]"
                 >
                     <RefreshIcon width={15} height={15} />
                 </button>
