@@ -34,7 +34,7 @@ export const Toast: React.FC<ToastProps> = ({ open, message, onClose, duration =
                         }
                     `}
                 >
-                    <div className="flex items-center justify-center w-[2.4rem] h-[2.4rem]">
+                    <div className="center w-[2.4rem] h-[2.4rem]">
                         {type === 'error' ? <ErrorIcon width={20} height={20} /> : <CheckIcon width={20} height={20} />}
                     </div>
 

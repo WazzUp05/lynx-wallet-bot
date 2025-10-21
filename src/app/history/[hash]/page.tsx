@@ -116,7 +116,7 @@ export default function HistoryDetailPage() {
     return (
         <div className="min-h-[100dvh]  flex flex-col items-center px-[1.6rem] py-[2rem]">
             <Toast open={toastOpen} message={toastMsg} onClose={() => setToastOpen(false)} />
-            <div className="flex items-center justify-center relative text-[1.8rem] leading-[130%] mb-[2rem] font-semibold w-full">
+            <div className="center relative text-[1.8rem] leading-[130%] mb-[2rem] font-semibold w-full">
                 <button className="absolute left-0 top-1/2 -translate-y-1/2" onClick={() => router.back()}>
                     <ArrowLeft />
                 </button>
@@ -124,7 +124,7 @@ export default function HistoryDetailPage() {
             </div>
             <div className="w-full flex flex-col items-center ">
                 <div className="flex flex-col items-center mb-[3.2rem]">
-                    <div className="w-[6rem] h-[6rem] text-[var(--yellow)] bg-[var(--yellow-secondary)] rounded-full flex items-center justify-center mb-[1rem]">
+                    <div className="w-[6rem] h-[6rem] text-[var(--yellow)] bg-[var(--yellow-secondary)] rounded-full center mb-[1rem]">
                         {getTypeImage(tx.type)}
                     </div>
                     <div className="text-[2.5rem] font-semibold mb-[0.8rem]">{tx.amount}</div>

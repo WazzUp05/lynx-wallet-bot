@@ -85,7 +85,7 @@ const Modal = ({ open, title, onClose, children, closable = false, swipeToClose 
                             <div className="flex w-full items-center justify-between mb-[3rem]">
                                 {title && <div className=" font-semibold text-[1.8rem] leading-[130%]">{title}</div>}
                                 <button
-                                    className="bg-[var(--bg-secondary)]  rounded-[1rem] w-[3.5rem] h-[3.5rem] flex items-center justify-center ml-auto text-[var(--text-secondary)]"
+                                    className="bg-[var(--bg-secondary)]  rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
                                     onClick={onClose}
                                     aria-label="Закрыть"
                                 >

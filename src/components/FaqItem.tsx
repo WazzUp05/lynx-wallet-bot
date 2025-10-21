@@ -22,7 +22,7 @@ const FaqItem: React.FC<FaqItemProps> = ({ question, answer, defaultOpen = false
                     {question}
                 </span>
                 <div
-                    className={`w-[2.4rem] h-[2.4rem] flex items-center justify-center transition-transform duration-300 flex-shrink-0 ${
+                    className={`w-[2.4rem] h-[2.4rem] center transition-transform duration-300 flex-shrink-0 ${
                         isOpen ? 'rotate-180' : ''
                     }`}
                 >

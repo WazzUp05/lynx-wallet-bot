@@ -56,8 +56,10 @@
 }
 
 .glass {
-    background-color: color-mix(in srgb, var(--c-glassy) 12%, transparent);
-    backdrop-filter: blur(8px) url(#switcher) saturate(var(--saturation));
+    /* Fallback для браузеров без поддержки backdrop-filter */
+    background-color: rgba(188, 187, 187, 0.36);
+    /* Современные браузеры */
+    backdrop-filter: blur(8px) saturate(var(--saturation));
     -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
         inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
@@ -69,6 +71,12 @@
         inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
         0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
         0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+    .glass {
+        background-color: color-mix(in srgb, var(--c-glassy) 12%, transparent);
+    }
 }
 
 .glass-active:after {
@@ -281,4 +289,191 @@ body {
 
 .offer-slider .slick-slide {
     height: auto;
+}
+
+/* 
+Универсальные классы для центрирования
+
+ИСПОЛЬЗОВАНИЕ:
+
+1. Flexbox центрирование:
+   .center - центрирует по горизонтали и вертикали
+   .center-h - только горизонтальное центрирование  
+   .center-v - только вертикальное центрирование
+   .center-column - центрирование в колонку
+   .center-row - центрирование в ряд
+
+2. Абсолютное позиционирование:
+   .center-absolute - центрирует абсолютно позиционированный элемент
+   .center-absolute-h - только горизонтальное абсолютное центрирование
+   .center-absolute-v - только вертикальное абсолютное центрирование
+
+3. Grid центрирование:
+   .center-grid - центрирует с помощью CSS Grid
+   .center-grid-h - горизонтальное grid центрирование
+   .center-grid-v - вертикальное grid центрирование
+
+4. Margin центрирование:
+   .center-margin - центрирует блочные элементы по горизонтали
+   .center-margin-v - центрирует по вертикали
+   .center-margin-both - центрирует по обеим осям
+
+5. Text центрирование:
+   .center-text - центрирует текст
+   .center-inline - центрирует inline элементы
+   .center-inline-block - центрирует inline-block элементы
+
+ПРИМЕРЫ:
+<div className="center">Центрированный контент</div>
+<div className="center-h">Только горизонтально</div>
+<div className="center-absolute">Абсолютно центрированный</div>
+*/
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-h {
+    display: flex;
+    justify-content: center;
+}
+
+.center-v {
+    display: flex;
+    align-items: center;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.center-absolute {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.center-absolute-h {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.center-absolute-v {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Дополнительные варианты центрирования */
+.center-grid {
+    display: grid;
+    place-items: center;
+}
+
+.center-grid-h {
+    display: grid;
+    justify-items: center;
+}
+
+.center-grid-v {
+    display: grid;
+    align-items: center;
+}
+
+/* Центрирование с помощью margin */
+.center-margin {
+    margin: 0 auto;
+}
+
+.center-margin-v {
+    margin: auto 0;
+}
+
+.center-margin-both {
+    margin: auto;
+}
+
+/* Центрирование для inline элементов */
+.center-inline {
+    text-align: center;
+}
+
+.center-inline-block {
+    display: inline-block;
+    text-align: center;
+}
+
+/* Центрирование с flex-direction */
+.center-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Дополнительные стили для мобильных устройств */
+@media screen and (max-width: 768px) {
+    .nav-bottom-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    /* Исправление для Android Chrome */
+    .nav-bottom-container a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+    }
+
+    /* Улучшенная поддержка центрирования на мобильных */
+    .center,
+    .center-h,
+    .center-v,
+    .center-column,
+    .center-row {
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -webkit-box-align: center;
+    }
+
+    /* Дополнительная поддержка для старых Android браузеров */
+    .center-grid,
+    .center-grid-h,
+    .center-grid-v {
+        -webkit-display: grid;
+        display: grid;
+    }
+
+    .center-grid {
+        -webkit-place-items: center;
+        place-items: center;
+    }
+
+    .center-grid-h {
+        -webkit-justify-items: center;
+        justify-items: center;
+    }
+
+    .center-grid-v {
+        -webkit-align-items: center;
+        align-items: center;
+    }
 }
