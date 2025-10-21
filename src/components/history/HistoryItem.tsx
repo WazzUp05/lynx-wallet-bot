@@ -34,7 +34,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
             href={`/history/${item.transaction_hash}`}
             className="py-[1rem] px-[1.6rem] items-center bg-[var(--bg-secondary)] rounded-[1.5rem] box-shadow flex  gap-[1rem]"
         >
-            <div className="w-[4rem] h-[4rem] text-[var(--yellow)] bg-[var(--yellow-secondary)] rounded-full flex items-center justify-center">
+            <div className="w-[4rem] h-[4rem] text-[var(--yellow)] bg-[var(--yellow-secondary)] rounded-full center">
                 {getTypeImage(item.type)}
             </div>
             <div className="flex flex-col ">

@@ -171,7 +171,7 @@ export default function QrStatusPage() {
                     <div className="text-[var(--text-secondary)] text-[1.4rem] mb-[6.5rem]">
                         {dateFormatter.format(new Date(order.created_at))}
                     </div>
-                    <div className="w-[8rem] h-[8rem] rounded-full bg-[#EBECEF1A] flex items-center justify-center mb-[1rem]">
+                    <div className="w-[8rem] h-[8rem] rounded-full bg-[#EBECEF1A] center mb-[1rem]">
                         {order.status === 'success' ? (
                             <Image src="/tick-circle-big.svg" alt="Paid" width={40} height={40} />
                         ) : (

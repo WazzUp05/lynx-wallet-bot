@@ -87,7 +87,7 @@ const NavBottom = () => {
                     <div
                         className={`w-[8rem] h-[5.2rem] transition-all duration-300 ${
                             pathname === item.href ? 'bg-[#303030CC]' : 'bg-transparent'
-                        } rounded-[10rem] flex items-center justify-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]`}
+                        } rounded-[10rem] center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]`}
                     />
 
                     {item.icon}
