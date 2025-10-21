@@ -73,7 +73,6 @@
         0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
 }
 
-/* Поддержка для браузеров с backdrop-filter */
 @supports (backdrop-filter: blur(1px)) {
     .glass {
         background-color: color-mix(in srgb, var(--c-glassy) 12%, transparent);
