@@ -35,10 +35,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         // Проверяем буфер обмена при монтировании и при фокусе
         const checkClipboard = async () => {
             try {
+                // Проверяем поддержку Clipboard API
+                if (!navigator.clipboard || !navigator.clipboard.readText) {
+                    // На мобильных устройствах показываем кнопку всегда
+                    setHasClipboardText(true);
+                    return;
+                }
+
                 const text = await navigator.clipboard.readText();
                 setHasClipboardText(text.trim().length > 0);
             } catch (err) {
-                setHasClipboardText(false);
+                // На мобильных устройствах или в небезопасном контексте показываем кнопку всегда
+                console.log('Clipboard API недоступен:', err);
+                setHasClipboardText(true);
             }
         };
 
@@ -48,6 +57,24 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
         const handlePaste = async () => {
             try {
+                // Проверяем поддержку Clipboard API
+                if (!navigator.clipboard || !navigator.clipboard.readText) {
+                    // Fallback для старых браузеров или мобильных устройств
+                    const text = prompt('Вставьте текст из буфера обмена:');
+                    if (text) {
+                        setValue(text);
+                        if (props.onChange) {
+                            props.onChange({
+                                target: { value: text },
+                            } as React.ChangeEvent<HTMLInputElement>);
+                        }
+                        if (onButtonClick) {
+                            onButtonClick();
+                        }
+                    }
+                    return;
+                }
+
                 const text = await navigator.clipboard.readText();
                 setValue(text);
                 if (props.onChange) {
@@ -60,6 +87,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 }
             } catch (err) {
                 console.error('Ошибка при вставке:', err);
+                // Fallback для случаев, когда Clipboard API заблокирован
+                const text = prompt('Вставьте текст из буфера обмена:');
+                if (text) {
+                    setValue(text);
+                    if (props.onChange) {
+                        props.onChange({
+                            target: { value: text },
+                        } as React.ChangeEvent<HTMLInputElement>);
+                    }
+                    if (onButtonClick) {
+                        onButtonClick();
+                    }
+                }
             }
         };
 
@@ -72,6 +112,21 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
         const handleFocus = () => {
             checkClipboard();
+        };
+
+        const handlePasteEvent = (e: React.ClipboardEvent<HTMLInputElement>) => {
+            const text = e.clipboardData.getData('text');
+            if (text) {
+                setValue(text);
+                if (props.onChange) {
+                    props.onChange({
+                        target: { value: text },
+                    } as React.ChangeEvent<HTMLInputElement>);
+                }
+                if (onButtonClick) {
+                    onButtonClick();
+                }
+            }
         };
 
         return (
@@ -94,6 +149,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                             value={value}
                             onChange={handleInputChange}
                             onFocus={handleFocus}
+                            onPaste={handlePasteEvent}
                             placeholder={placeholder}
                             className={`flex-1 bg-transparent text-[1.4rem] ${
                                 error ? 'text-[var(--red-main)]' : 'text-[var(--text-main)]'
