@@ -39,11 +39,8 @@ const Navigation: React.FC<NavigationProps> = ({ onTopUp }) => {
                     Сканировать <br /> QR-код
                 </p>
             </Link>
-            <Link href="/qr" className=" text-[var(--text-main)] pointer-events-none relative text-center">
-                <p className="absolute right-0 top-0  z-10 rounded-[2rem] translate-y-[-50%] text-[1.2rem] font-medium leading-[130%] bg-[var(--bg-secondary)] py-[0.2rem] text-[var(--text-optional)] px-[0.7rem] ">
-                    Скоро
-                </p>
-                <div className="bg-[#2A2E3633] glass text-[var(--dark-gray-secondary)] w-[7.3rem] h-[5.5rem] rounded-[2rem] center mb-[0.5rem]">
+            <Link href="/link" className=" text-[var(--text-main)]  text-center">
+                <div className="bg-[#2A2E3633] glass  text-[var(--yellow)] w-[7.3rem] h-[5.5rem] rounded-[2rem] center mb-[0.5rem]">
                     <LinkIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
                 </div>
                 <p className="text-[1.1rem] leading-[130%] font-medium">

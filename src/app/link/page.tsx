@@ -1,8 +1,9 @@
 'use client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import ArrowLeft from '@/components/icons/arrow-left.svg';
 import { Button } from '@/components/ui/Button';
 import { Toast } from '@/components/ui/Toast';
-import QrScanner from '@/components/QrScanner';
+import WarrningLeftIcon from '@/components/icons/warrning-mark.svg';
 import Modal from '@/components/Modal';
 import RubleIcon from '@/components/icons/ruble.svg';
 import UsdtIcon from '@/components/icons/usdt.svg';
@@ -15,14 +16,16 @@ import { useRouter } from 'next/navigation';
 import Loader from '@/components/ui/Loader';
 import { getLoading, getUser, getWallet } from '@/lib/redux/selectors/userSelectors';
 import { API_URL } from '@/lib/helpers/url';
+import Input from '@/components/ui/Input';
 
-export default function QrScanPage() {
-    const [scanned, setScanned] = useState<string | null>(null);
+export default function LinkPage() {
+    const [link, setLink] = useState<string>('');
     const [toast, setToast] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [timer, setTimer] = useState(30);
-    const [loadingQr, setLoadingQr] = useState(false);
-    const [qrInfo, setQrInfo] = useState<{ rubAmount: number; usdtAmount: number } | null>(null);
+    const [loadingLink, setLoadingLink] = useState(false);
+    const [linkInfo, setLinkInfo] = useState<{ rubAmount: number; usdtAmount: number } | null>(null);
+    const [error, setError] = useState('');
     const loadingApp = useAppSelector(getLoading);
     const user = useAppSelector(getUser);
     const [toastMsg, setToastMsg] = useState('');
@@ -49,12 +52,12 @@ export default function QrScanPage() {
         // },
     ];
 
-    // Парсим сумму из QR и считаем итоговые значения
+    // Парсим сумму из ссылки и считаем итоговые значения
     const { rubAmount, usdtAmount } = useMemo(() => {
         let rub = 0;
-        if (scanned) {
-            const sumMatch = scanned.match(/sum=(\d+)/);
-            const amountMatch = scanned.match(/amount=([\d.]+)/);
+        if (link) {
+            const sumMatch = link.match(/sum=(\d+)/);
+            const amountMatch = link.match(/amount=([\d.]+)/);
 
             if (sumMatch) {
                 rub = parseInt(sumMatch[1], 10) / 100; // копейки → рубли
@@ -64,15 +67,34 @@ export default function QrScanPage() {
         }
         const usdt = usdtRate && rub ? +(rub / usdtRate).toFixed(4) : 0;
         return { rubAmount: rub, usdtAmount: usdt };
-    }, [scanned, usdtRate]);
+    }, [link, usdtRate]);
 
-    // Открываем модалку при сканировании
-    const handleScan = async (result: string) => {
-        setScanned(result);
+    // Валидация ссылки
+    const validateLink = (url: string) => {
+        if (!url.trim()) {
+            setError('Вставьте ссылку для перехода к оплате');
+            return false;
+        }
+
+        if (!url.startsWith('https://qr.nspk.ru/')) {
+            setError('Неверный формат ссылки. Ссылка должна начинаться: https://qr.nspk...');
+            return false;
+        }
+
+        setError('');
+        return true;
+    };
+
+    // Обработка ссылки
+    const handleLinkSubmit = async () => {
+        if (!validateLink(link)) return;
+
+        setLoadingLink(true);
+        setError('');
 
         // Проверяем sum (в копейках) или amount (в рублях)
-        const sumMatch = result.match(/sum=(\d+)/);
-        const amountMatch = result.match(/amount=([\d.]+)/);
+        const sumMatch = link.match(/sum=(\d+)/);
+        const amountMatch = link.match(/amount=([\d.]+)/);
 
         if (sumMatch || amountMatch) {
             // Вариант 1: сумма есть в ссылке
@@ -87,13 +109,12 @@ export default function QrScanPage() {
             }
 
             const usdt = usdtRate && rub ? +(rub / usdtRate).toFixed(4) : 0;
-            setQrInfo({ rubAmount: rub, usdtAmount: usdt });
+            setLinkInfo({ rubAmount: rub, usdtAmount: usdt });
             setModalOpen(true);
-            setLoadingQr(false);
+            setLoadingLink(false);
         } else {
             // Вариант 2: суммы нет, нужно запросить prepare
-            setLoadingQr(true);
-            const codeMatch = result.match(/qr\.nspk\.ru\/([^?]+)/);
+            const codeMatch = link.match(/qr\.nspk\.ru\/([^?]+)/);
             const code = codeMatch ? codeMatch[1] : null;
             if (code) {
                 try {
@@ -102,10 +123,10 @@ export default function QrScanPage() {
                     if (data.success && data.amount_rub) {
                         const rub = parseFloat(data.amount_rub);
                         const usdt = usdtRate && rub ? +(rub / usdtRate).toFixed(4) : 0;
-                        setQrInfo({ rubAmount: rub, usdtAmount: usdt });
+                        setLinkInfo({ rubAmount: rub, usdtAmount: usdt });
                         setModalOpen(true);
                     } else {
-                        setToastMsg('Не удалось получить сумму по QR');
+                        setToastMsg('Не удалось получить сумму по ссылке');
                         setToast(true);
                         setTimeout(() => setToast(false), 2000);
                     }
@@ -119,11 +140,11 @@ export default function QrScanPage() {
                     setTimeout(() => setToast(false), 2000);
                 }
             } else {
-                setToastMsg('Некорректный QR-код');
+                setToastMsg('Некорректная ссылка');
                 setToast(true);
                 setTimeout(() => setToast(false), 2000);
             }
-            setLoadingQr(false);
+            setLoadingLink(false);
         }
     };
 
@@ -147,13 +168,13 @@ export default function QrScanPage() {
     }, [modalOpen]);
 
     const handlePay = async () => {
-        if (!qrInfo) return;
+        if (!linkInfo) return;
         const order = {
-            amount: qrInfo.rubAmount,
-            amount_usdt: qrInfo.usdtAmount,
+            amount: linkInfo.rubAmount,
+            amount_usdt: linkInfo.usdtAmount,
             merchant_id,
             rate: usdtRate ? usdtRate.toFixed(2) : '0.00',
-            url: scanned,
+            url: link,
         };
 
         // alert(JSON.stringify(order, null, 2));
@@ -187,19 +208,86 @@ export default function QrScanPage() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-[80vh] px-4">
+        <div className="p-[1.6rem] flex flex-col min-h-[100dvh]">
             {toast && <Toast open={toast} message={toastMsg} type="error" onClose={() => setToast(false)} />}
-            <div className="rounded-2xl overflow-hidden mb-4 bg-[#e5e5e5]">
-                <QrScanner onResult={handleScan} paused={loadingQr || qrInfo ? true : false} torch finder zoom={true} />
+            <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[3.2rem] font-semibold">
+                <div
+                    className="absolute left-[0] top-1/2 translate-y-[-50%] bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
+                    onClick={() => router.back()}
+                >
+                    <ArrowLeft />
+                </div>
+                <span className="text-white">Оплатить по ссылке</span>
             </div>
-            <p className="text-center text-[var(--text-secondary)] mb-2">Наведите камеру на QR-код</p>
-            {/* <span className="flex items-center gap-[0.4rem]">
-                <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : "--"} RUB
-            </span> */}
-            {loadingQr && <Loader className="h-[4rem]" />}
+            <p className="text-[1.4rem] leading-[130%] font-medium mb-[0.8rem] text-[var(--text-secondary)]">
+                Как оплатить по ссылке
+            </p>
+            <div className="flex flex-col mb-[1.2rem] gap-[1.6rem] bg-[var(--bg-secondary)] p-[1.6rem] rounded-[2rem]">
+                <div className="flex items-start gap-[0.6rem]">
+                    <span className="text-[1.2rem] text-[var(--bg-secondary)] font-semibold leading-[130%] bg-[var(--text-main)] min-w-[1.6rem] h-[1.6rem] rounded-full center">
+                        1
+                    </span>
+                    <p className="text-[1.3rem] leading-[130%]  text-[var(--text-main)]">
+                        На компьютере или другом устройстве выберите оплату по СБП.
+                    </p>
+                </div>
+                <div className="flex items-start gap-[0.6rem]">
+                    <span className="text-[1.2rem] text-[var(--bg-secondary)] font-semibold leading-[130%] bg-[var(--text-main)] min-w-[1.6rem] h-[1.6rem] rounded-full center">
+                        2
+                    </span>
+                    <p className="text-[1.3rem] leading-[130%]  text-[var(--text-main)]">
+                        Когда появится QR-код, наведите на него камеру телефона и откройте ссылку в браузере.
+                    </p>
+                </div>
+                <div className="flex items-start gap-[0.6rem]">
+                    <span className="text-[1.2rem] text-[var(--bg-secondary)] font-semibold leading-[130%] bg-[var(--text-main)] min-w-[1.6rem] h-[1.6rem] rounded-full center">
+                        3
+                    </span>
+                    <p className="text-[1.3rem] leading-[130%]  text-[var(--text-main)]">
+                        Откроется страница оплаты. Скопируйте ссылку (URL) из адресной строки — она должна начинаться с{' '}
+                        <span className="text-[var(--yellow)]">https://qr.nspk.ru/.</span>
+                    </p>
+                </div>
+                <div className="flex items-start gap-[0.6rem]">
+                    <span className="text-[1.2rem] text-[var(--bg-secondary)] font-semibold leading-[130%] bg-[var(--text-main)] min-w-[1.6rem] h-[1.6rem] rounded-full center">
+                        4
+                    </span>
+                    <p className="text-[1.3rem] leading-[130%]  text-[var(--text-main)]">
+                        Вернитесь в Lynx, вставьте ссылку в поле ниже и нажмите «Продолжить».
+                    </p>
+                </div>
+            </div>
+            <div className="w-full flex gap-[0.5rem] bg-[var(--yellow-optional)]  py-[1.6rem] px-[1.6rem] rounded-[1.5rem] mb-[1.2rem] text-[1.2rem] leading-[130%] ">
+                <div>
+                    <WarrningLeftIcon width={20} height={20} />
+                </div>
+                <span className="text-[var(--text-main)]">
+                    Этот способ работает только через QR-код, отсканированный с компьютера или другого устройства.
+                </span>
+            </div>
+            <div className=" bg-[var(--bg-secondary)] px-[1.6rem] py-[2rem] rounded-[2rem]">
+                <Input
+                    label="Платёжная ссылка"
+                    placeholder="Вставьте ссылку"
+                    value={link}
+                    onChange={(e) => {
+                        setLink(e.target.value);
+                        setError('');
+                    }}
+                    error={error}
+                />
+            </div>
+            <Button
+                variant="yellow"
+                className="w-full mt-[1.6rem]"
+                onClick={handleLinkSubmit}
+                disabled={loadingLink || !link.trim()}
+            >
+                {loadingLink ? 'Обработка...' : 'Продолжить'}
+            </Button>
             <Modal title="Оплатить" closable swipeToClose={false} open={modalOpen} onClose={() => setModalOpen(false)}>
                 <div className="flex flex-col items-center w-full">
-                    {loadingQr || !qrInfo ? (
+                    {loadingLink || !linkInfo ? (
                         <Loader className="h-[10rem]" />
                     ) : (
                         <>
@@ -209,7 +297,7 @@ export default function QrScanPage() {
                                         Сумма
                                     </p>
                                     <p className="text-[1.4rem] font-semibold leading-[130%]">
-                                        {qrInfo.rubAmount ? qrInfo.rubAmount.toFixed(2) : '--'} RUB
+                                        {linkInfo.rubAmount ? linkInfo.rubAmount.toFixed(2) : '--'} RUB
                                     </p>
                                 </div>
                                 <div className="flex items-center justify-between w-full">
@@ -226,12 +314,6 @@ export default function QrScanPage() {
                                         </span>
                                     </p>
                                 </div>
-                                {/* <div className="flex items-center justify-between w-full">
-                                    <p className="text-[1.4rem] leading-[130%] text-[var(--[var(--text-secondary)])]">Обновится через</p>
-                                    <p className="text-[1.4rem] font-semibold leading-[130%] text-[#007AFF]">
-                                        {timer} сек
-                                    </p>
-                                </div> */}
                             </div>
                             <SelectCrypto cryptos={MOCK_SELECT_CRYPTO} />
                             <div className="flex items-center justify-between w-full mt-[2rem] mb-[3rem]">
@@ -240,13 +322,13 @@ export default function QrScanPage() {
                                     <p className="text-[var(--[var(--text-secondary)])]">Комиссия 0%</p>
                                 </div>
                                 <p className="text-[2.5rem] font-semibold leading-[130%] text-[var(--text-main)]">
-                                    {qrInfo.usdtAmount ? qrInfo.usdtAmount : '--'} USDT
+                                    {linkInfo.usdtAmount ? linkInfo.usdtAmount : '--'} USDT
                                 </p>
                             </div>
                             <Button
                                 variant="yellow"
                                 onClick={handlePay}
-                                disabled={balance_usdt ? balance_usdt < qrInfo.usdtAmount : true}
+                                disabled={balance_usdt ? balance_usdt < linkInfo.usdtAmount : true}
                                 className="mb-2"
                             >
                                 Оплатить
