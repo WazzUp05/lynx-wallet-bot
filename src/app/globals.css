@@ -16,7 +16,7 @@
     --bg-green: #d9eee7;
     --bg-blue: #e0ebf9;
     --white-15: rgba(255, 255, 255, 0.15);
-    --nav-bottom-height: calc(6.3rem + var(--safe-bottom));
+    --nav-bottom-height: calc(6.3rem + max(0.5rem, env(safe-area-inset-bottom)));
     --bg-secondary: #1c1c1e;
     --bg-main: #161616;
     --bg-optional: #121214;
@@ -41,6 +41,17 @@
     --saturation: 150%;
     --safe-bottom: env(safe-area-inset-bottom);
     --safe-top: env(safe-area-inset-top);
+}
+
+/* Safe area support for iOS */
+@supports (padding: max(0px)) {
+    .safe-area-bottom {
+        padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+    }
+
+    .safe-area-top {
+        padding-top: max(0.5rem, env(safe-area-inset-top));
+    }
 }
 
 @theme inline {
