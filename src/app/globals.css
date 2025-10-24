@@ -16,7 +16,7 @@
     --bg-green: #d9eee7;
     --bg-blue: #e0ebf9;
     --white-15: rgba(255, 255, 255, 0.15);
-    --nav-bottom-height: 6.3rem;
+    --nav-bottom-height: calc(6.3rem + var(--safe-bottom));
     --bg-secondary: #1c1c1e;
     --bg-main: #161616;
     --bg-optional: #121214;
@@ -39,6 +39,10 @@
     --glass-reflex-dark: 2;
     --glass-reflex-light: 0.3;
     --saturation: 150%;
+    --tg-safe-area-inset-bottom: 0px;
+    --tg-safe-area-inset-top: 0px;
+    --safe-bottom: var(--tg-safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+    --safe-top: var(--tg-safe-area-inset-top, env(safe-area-inset-top, 0px));
 }
 
 @theme inline {

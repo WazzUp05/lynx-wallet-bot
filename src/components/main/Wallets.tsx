@@ -22,7 +22,7 @@ const Wallets = ({ wallets }: WalletsProps) => {
     const [isTopUpOpen, setTopUpOpen] = React.useState(false);
 
     return (
-        <div className="mt-[-2rem] bg-[var(--bg-optional)] rounded-t-[2rem] w-full h-full relative">
+        <div className="mt-[-2rem] pt-[1.6rem] bg-[var(--bg-optional)] rounded-t-[2rem] w-full h-full relative">
             <Offer />
             <Navigation onTopUp={() => setTopUpOpen(true)} />
             <RefilledModal isTopUpOpen={isTopUpOpen} setTopUpOpen={setTopUpOpen} />
