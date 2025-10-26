@@ -140,10 +140,14 @@ export default function RefilledQrPage() {
                     <QRCodeSVG
                         value={data.address}
                         size={150}
+                        bgColor="#EBECEF"
+                        fgColor="#1C1C1E"
+                        radius="50"
                         imageSettings={{
                             src: srcQr,
                             x: undefined,
                             y: undefined,
+
                             height: 35,
                             width: 35,
                             excavate: true,
@@ -156,7 +160,7 @@ export default function RefilledQrPage() {
                 <div className="text-[1.4rem] leading-[130%] font-semibold break-all text-center mb-[0.5rem]">
                     {data.address}
                 </div>
-                <div className="text-[1.2rem] leading-[130%] text-[var(--gray)] text-center mb-[1rem]">
+                <div className="text-[1.2rem] max-w-[23.3rem] mx-auto leading-[130%] text-[var(--gray)] text-center mb-[1.6rem]">
                     Адрес принимает только <b>USDT в сети TRC20</b>. Отправка через другие сети{' '}
                     <b>приведёт к потере средств!</b>
                 </div>

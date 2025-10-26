@@ -77,7 +77,7 @@ const Offer = () => {
                                 height={199 * 3}
                                 className="mx-auto w-[13.4rem] h-[9.9rem] absolute right-0 top-[0.5rem] z-10"
                             />
-                            <div className="absolute top-0 right-0 h-[12.8rem] w-[12.8rem] bg-white blur-[6rem] rounded-full" />
+                            <div className="absolute top-0 right-0 h-[12.8rem] w-[12.8rem] bg-white blur-[8rem] rounded-full" />
                         </div>
                     </div>
                 ))}
