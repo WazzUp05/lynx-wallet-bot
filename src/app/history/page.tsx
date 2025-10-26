@@ -123,11 +123,11 @@ const Page = () => {
             ) : (
                 <div className="flex flex-col justify-center items-center h-full flex-1">
                     <Image
-                        src="/history-img-1.png"
+                        src="/history-img.png"
                         alt="No data"
-                        width={593}
-                        height={105}
-                        className="mb-[4.4rem] w-[29.3rem] h-[8.5rem]"
+                        width={293 * 2}
+                        height={52 * 2}
+                        className="mb-[4.4rem] w-[29.3rem] "
                     />
                     <h2 className="text-[2.5rem] leading-[130%] font-semibold text-center mb-[1.2rem]">
                         История транзакций
@@ -141,7 +141,7 @@ const Page = () => {
                             fullWidth
                             className="flex text-[var(--bg-secondary)] items-center justify-center gap-[0.5rem]"
                         >
-                            <PlusIcon /> Пополнить кошелёк
+                            <PlusIcon width={25} height={25} className="w-[2.5rem] h-[2.5rem]" /> Пополнить кошелёк
                         </Button>
                     </Link>
                 </div>

@@ -14,6 +14,7 @@ import { getLoading, getWallet } from '@/lib/redux/selectors/userSelectors';
 import Loader from '@/components/ui/Loader';
 import MinAmountModal from '@/components/modals/MinAmountModal';
 import { fetchUser } from '@/lib/redux/thunks/UserThunks';
+import { useCopyWithToast } from '@/hooks/useCopyWithToast';
 
 // Типизация для адресов
 type NetworkData = {
@@ -39,8 +40,7 @@ export default function RefilledQrPage() {
     const [showMinAmountModal, setShowMinAmountModal] = useState(false);
     const [showTaxModal, setShowTaxModal] = useState(false);
 
-    const [toastOpen, setToastOpen] = useState(false);
-    const [toastMsg, setToastMsg] = useState('');
+    const { copyWithToast, isCopying, toastOpen, toastMessage, closeToast } = useCopyWithToast();
 
     // useEffect(() => {
     //     dispatch(fetchUser());
@@ -87,33 +87,6 @@ export default function RefilledQrPage() {
             ? ADDRESSES[upperCrypto][upperNetwork]
             : undefined;
 
-    const handleCopy = (text: string, msg: string) => {
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(text).then(() => {
-                setToastMsg(msg);
-                setToastOpen(true);
-            });
-        } else {
-            // Fallback для Safari/WebView
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.focus();
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                setToastMsg(msg);
-                setToastOpen(true);
-            } catch (err) {
-                setToastMsg('Не удалось скопировать');
-                setToastOpen(true);
-            }
-            document.body.removeChild(textarea);
-        }
-    };
-
     if (loadingApp || !wallet?.address) {
         return <Loader className="h-[100dvh]" />;
     }
@@ -122,7 +95,7 @@ export default function RefilledQrPage() {
 
     return (
         <div className=" bg-[var(--bg-optional)] flex flex-col items-center p-[1.6rem] min-h-[100dvh] ">
-            <Toast open={toastOpen} onClose={() => setToastOpen(false)} message={toastMsg} />
+            <Toast open={toastOpen} onClose={closeToast} message={toastMessage} />
             <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[3rem] font-semibold w-full">
                 <button
                     className="absolute left-0 top-1/2 -translate-y-1/2 bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
@@ -196,9 +169,10 @@ export default function RefilledQrPage() {
             <Button
                 className="w-full mt-auto mb-[1rem]"
                 variant="yellow"
-                onClick={() => handleCopy(data.address, 'Адрес скопирован')}
+                onClick={() => copyWithToast(data.address, 'Адрес скопирован')}
+                disabled={isCopying}
             >
-                Копировать адрес
+                {isCopying ? 'Копирование...' : 'Копировать адрес'}
             </Button>
             <Button className="w-full" variant="ghost" onClick={() => router.push('/')}>
                 Вернуться на главную

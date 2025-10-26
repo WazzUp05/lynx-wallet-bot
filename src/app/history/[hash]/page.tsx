@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { fetchHistory } from '@/lib/redux/thunks/historyThunks';
 import { getHistory } from '@/lib/redux/selectors/historySelectors';
 import Loader from '@/components/ui/Loader';
+import { useCopyWithToast } from '@/hooks/useCopyWithToast';
 
 export default function HistoryDetailPage() {
     const params = useParams();
@@ -29,8 +30,7 @@ export default function HistoryDetailPage() {
     const user = useAppSelector(getUser);
     const { hash } = params as { hash: string };
     const loadingApp = useAppSelector(getLoading);
-    const [toastOpen, setToastOpen] = useState(false);
-    const [toastMsg, setToastMsg] = useState('');
+    const { copyWithToast, isCopying, toastOpen, toastMessage, closeToast } = useCopyWithToast();
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
@@ -62,32 +62,6 @@ export default function HistoryDetailPage() {
                 return null;
         }
     };
-    const handleCopy = (text: string, msg: string) => {
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(text).then(() => {
-                setToastMsg(msg);
-                setToastOpen(true);
-            });
-        } else {
-            // Fallback для Safari/WebView
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.focus();
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                setToastMsg(msg);
-                setToastOpen(true);
-            } catch (err) {
-                setToastMsg('Не удалось скопировать');
-                setToastOpen(true);
-            }
-            document.body.removeChild(textarea);
-        }
-    };
 
     const handleLinkClick = (url: string) => {
         window.open(url, '_blank');
@@ -115,7 +89,7 @@ export default function HistoryDetailPage() {
 
     return (
         <div className="min-h-[100dvh]  flex flex-col items-center px-[1.6rem] py-[2rem]">
-            <Toast open={toastOpen} message={toastMsg} onClose={() => setToastOpen(false)} />
+            <Toast open={toastOpen} message={toastMessage} onClose={closeToast} />
             <div className="center relative text-[1.8rem] leading-[130%] mb-[2rem] font-semibold w-full">
                 <button className="absolute left-0 top-1/2 -translate-y-1/2" onClick={() => router.back()}>
                     <ArrowLeft />
@@ -198,7 +172,8 @@ export default function HistoryDetailPage() {
                                 <span className="max-w-[14.4rem] truncate">{tx.transaction_hash}</span>
                                 <button
                                     className="text-[var(--text-secondary)]"
-                                    onClick={() => handleCopy(tx.transaction_hash, 'Хэш скопирован')}
+                                    onClick={() => copyWithToast(tx.transaction_hash, 'Хэш скопирован')}
+                                    disabled={isCopying}
                                 >
                                     <CopyIcon />
                                 </button>
@@ -214,7 +189,8 @@ export default function HistoryDetailPage() {
                                 <span className="max-w-[14.4rem] truncate">{tx.transaction_id}</span>
                                 <button
                                     className="text-[var(--text-secondary)]"
-                                    onClick={() => handleCopy(tx.transaction_id, 'ID скопирован')}
+                                    onClick={() => copyWithToast(tx.transaction_id, 'ID скопирован')}
+                                    disabled={isCopying}
                                 >
                                     <CopyIcon />
                                 </button>
@@ -232,7 +208,8 @@ export default function HistoryDetailPage() {
                                 <span className="max-w-[14.4rem] truncate">{tx.receiver}</span>
                                 <button
                                     className="text-[var(--text-secondary)]"
-                                    onClick={() => handleCopy(tx.receiver, 'Адрес скопирован')}
+                                    onClick={() => copyWithToast(tx.receiver, 'Адрес скопирован')}
+                                    disabled={isCopying}
                                 >
                                     <CopyIcon />
                                 </button>
