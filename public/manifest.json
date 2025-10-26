@@ -7,6 +7,7 @@
     "background_color": "#ffffff",
     "theme_color": "#8B5CF6",
     "orientation": "portrait",
+    "isClosingConfirmationEnabled": true,
     "scope": "/",
     "lang": "ru",
     "categories": ["finance", "utilities"],
