@@ -3,8 +3,11 @@ import Image from 'next/image';
 import React from 'react';
 import Slider from 'react-slick';
 import ExportIcon from '@/components/icons/export.svg';
+import { useCopyWithToast } from '@/hooks/useCopyWithToast';
 
 const Offer = () => {
+    const { copyWithToast, isCopying } = useCopyWithToast();
+
     const settings = {
         dots: true,
         infinite: true,
@@ -30,19 +33,12 @@ const Offer = () => {
                 await navigator.share(shareData);
             } else {
                 // Fallback: копируем ссылку в буфер обмена
-                await navigator.clipboard.writeText(shareData.url);
-                alert('Ссылка скопирована в буфер обмена!');
+                await copyWithToast(shareData.url, 'Ссылка скопирована в буфер обмена!');
             }
         } catch (error) {
             console.error('Ошибка при попытке поделиться:', error);
             // Fallback: копируем ссылку в буфер обмена
-            try {
-                await navigator.clipboard.writeText(shareData.url);
-                alert('Ссылка скопирована в буфер обмена!');
-            } catch (clipboardError) {
-                console.error('Ошибка при копировании в буфер обмена:', clipboardError);
-                alert('Не удалось поделиться. Попробуйте скопировать ссылку вручную.');
-            }
+            await copyWithToast(shareData.url, 'Ссылка скопирована в буфер обмена!');
         }
     };
 
@@ -62,9 +58,10 @@ const Offer = () => {
                         <div className="p-[1.6rem] bg-gradient-to-r from-[#000000] to-[#061BFF] bg-[var(--yellow)] rounded-[2rem] w-full relative overflow-hidden">
                             <button
                                 onClick={handleShare}
-                                className="text-[1.2rem] bg-[var(--dark-gray-secondary)] text-[var(--text-main)] w-fit leading-[130%] mb-[1rem] flex gap-[0.5rem] items-center py-[0.3rem] px-[0.7rem] rounded-[1.5rem] font-medium hover:opacity-80 transition-opacity cursor-pointer"
+                                disabled={isCopying}
+                                className="text-[1.2rem] bg-[var(--dark-gray-secondary)] text-[var(--text-main)] w-fit leading-[130%] mb-[1rem] flex gap-[0.5rem] items-center py-[0.3rem] px-[0.7rem] rounded-[1.5rem] font-medium hover:opacity-80 transition-opacity cursor-pointer disabled:opacity-50"
                             >
-                                {offer.title}
+                                {isCopying ? 'Копирование...' : offer.title}
                                 <ExportIcon width={13} height={13} className="w-[1.3rem] h-[1.3rem]" />
                             </button>
                             <p className="text-[1.4rem] leading-[130%] max-w-[16.2rem] text-[var(--text-main)]">

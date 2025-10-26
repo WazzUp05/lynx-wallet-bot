@@ -68,7 +68,7 @@ const Page = () => {
                                 <TimeIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                             </div>
                         </a>
-                        <a
+                        {/* <a
                             href="#referral"
                             className="flex items-center gap-[1rem] justify-between bg-[var(--bg-main)] p-[1.6rem] text-[var(--text-secondary)] rounded-[1.5rem] text-[1.5rem] leading-[130%] font-semibold"
                         >
@@ -76,7 +76,7 @@ const Page = () => {
                             <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] center">
                                 <Profile2UserIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                             </div>
-                        </a>
+                        </a> */}
                     </div>
                 </div>
 
@@ -88,8 +88,7 @@ const Page = () => {
                     <div className="flex flex-col ">
                         <FaqItem
                             question="Когда появится приложение нашего кошелька?"
-                            answer="Когда появится приложение нашего кошелька?
-Lynx уже доступен прямо в Telegram — не нужно ничего скачивать или устанавливать. Просто откройте мини-приложение и пользуйтесь кошельком в привычном мессенджере."
+                            answer="Lynx уже доступен прямо в Telegram — не нужно ничего скачивать или устанавливать. Просто откройте мини-приложение и пользуйтесь кошельком в привычном мессенджере."
                         />
                     </div>
                 </div>
@@ -166,7 +165,7 @@ Lynx уже доступен прямо в Telegram — не нужно ниче
                 </div>
 
                 {/* Реферальная программа */}
-                <div id="referral" className="mt-[3.2rem] mb-[3.2rem]">
+                {/* <div id="referral" className="mt-[3.2rem] mb-[3.2rem]">
                     <h4 className="text-[2.5rem] leading-[130%] font-semibold text-[var(--text-main)] mb-[1.6rem]">
                         Реферальная программа
                     </h4>
@@ -188,7 +187,7 @@ Lynx уже доступен прямо в Telegram — не нужно ниче
                             answer="Нет, количество рефералов не ограничено. Чем больше активных пользователей вы приведете, тем больше будет ваш пассивный доход."
                         />
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className="bg-[var(--bg-secondary)] py-[3rem] px-[1.6rem]">
                 <Image

@@ -16,6 +16,7 @@ import { getLoading } from '@/lib/redux/selectors/userSelectors';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { fetchUser } from '@/lib/redux/thunks/UserThunks';
 import { API_URL } from '@/lib/helpers/url';
+import { useCopyWithToast } from '@/hooks/useCopyWithToast';
 
 interface Order {
     id: number;
@@ -59,8 +60,7 @@ export default function QrStatusPage() {
     const { id } = params as { id: string };
     const dispatch = useAppDispatch();
     const loadingApp = useAppSelector(getLoading);
-    const [toastOpen, setToastOpen] = useState(false);
-    const [toastMsg, setToastMsg] = useState('');
+    const { copyWithToast, isCopying, toastOpen, toastMessage, closeToast } = useCopyWithToast();
     const [order, setOrder] = useState<Order | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -72,34 +72,6 @@ export default function QrStatusPage() {
         minute: '2-digit',
         second: '2-digit',
     });
-
-    // Функция для копирования
-    const handleCopy = (text: string, msg: string) => {
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(text).then(() => {
-                setToastMsg(msg);
-                setToastOpen(true);
-            });
-        } else {
-            // Fallback для Safari/WebView
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.focus();
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                setToastMsg(msg);
-                setToastOpen(true);
-            } catch (err) {
-                setToastMsg('Не удалось скопировать');
-                setToastOpen(true);
-            }
-            document.body.removeChild(textarea);
-        }
-    };
 
     // Запрашиваем статус раз в 5 секунд
     useEffect(() => {
@@ -152,7 +124,7 @@ export default function QrStatusPage() {
 
     return (
         <div className="min-h-[100dvh] relative bg-[var(--bg-main)] overflow-hidden flex flex-col items-center px-[1.6rem] py-[2rem]">
-            <Toast open={toastOpen} message={toastMsg} onClose={() => setToastOpen(false)} />
+            <Toast open={toastOpen} message={toastMessage} onClose={closeToast} />
             <div
                 className={`w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-33.4rem] ${
                     order.status === 'success' ? 'bg-[#34C85A4D]' : 'bg-[#007AFF4D]'
@@ -221,7 +193,8 @@ export default function QrStatusPage() {
                             <span className="max-w-[14.4rem] truncate">{order.uuid}</span>
                             <button
                                 className="text-[var(--text-secondary)]"
-                                onClick={() => handleCopy(order.uuid, 'ID скопировано')}
+                                onClick={() => copyWithToast(order.uuid, 'ID скопировано')}
+                                disabled={isCopying}
                             >
                                 <CopyIcon width={20} height={20} />
                             </button>

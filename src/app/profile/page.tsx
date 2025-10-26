@@ -3,15 +3,18 @@ import Loader from '@/components/ui/Loader';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { getLoading, getUser } from '@/lib/redux/selectors/userSelectors';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ApprovedIcon from '@/components/icons/approved.svg';
 import Link from 'next/link';
 import ArrowRightIcon from '@/components/icons/right-arrow.svg';
 import QuestionIcon from '@/components/icons/message-question.svg';
 import PhoneScreenIcon from '@/components/icons/phone-screen.svg';
+import AddToHome from '@/components/AddToHome';
 const Page = () => {
     const user = useAppSelector(getUser);
     const loadingApp = useAppSelector(getLoading);
+    const [isOpen, setIsOpen] = useState(false);
+
     if (loadingApp) {
         return <Loader className="h-[100dvh]" />;
     }
@@ -52,12 +55,12 @@ const Page = () => {
                     <p className="text-[1.5rem] leading-[130%] font-medium text-[var(--text-main)]">
                         Иконка на экране «Домой»
                     </p>
-                    <Link
-                        href="/profile/kyc"
-                        className="text-[1.4rem] flex items-center gap-[0.5rem] leading-[130%]  text-[var(--yellow)]"
+                    <button
+                        className="text-[1.4rem] w-fit cursor-pointer flex items-center gap-[0.5rem] leading-[130%]  text-[var(--yellow)]"
+                        onClick={() => setIsOpen(true)}
                     >
                         Добавить <ArrowRightIcon width={12} height={12} className="w-[1.2rem] h-[1.2rem]" />
-                    </Link>
+                    </button>
                 </div>
             </div>
             <div className="mb-[3.2rem]">
@@ -80,6 +83,7 @@ const Page = () => {
                 </Link>
             </div>
             <p className="text-[1.4rem] leading-[130%]  text-[var(--text-secondary)] text-center">v0.10.12</p>
+            <AddToHome isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
     );
 };
