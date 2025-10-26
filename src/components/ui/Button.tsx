@@ -29,7 +29,7 @@ export const Button: React.FC<ButtonProps> = ({
                 base,
                 variants[variant],
                 fullWidth ? 'w-full' : '',
-                'disabled:bg-[#E9EAEE] disabled:text-[#9D9DA5]  disabled:cursor-not-allowed',
+                'disabled:bg-[var(--dark-gray-optional)] disabled:text-[var(--text-optional)]  disabled:cursor-not-allowed',
                 className,
             ].join(' ')}
             {...props}

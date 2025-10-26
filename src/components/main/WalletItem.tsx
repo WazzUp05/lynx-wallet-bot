@@ -38,16 +38,28 @@ const WalletItem: React.FC<WalletItemProps> = ({
                 <Image
                     src={walletIcon || '/wallet-icon.png'}
                     alt="Wallet Icon"
-                    className={` w-[4rem] h-[4rem] ${soon ? 'filter grayscale ' : ''}`}
+                    className={` w-[4rem] h-[4rem]`}
                     width={40}
                     height={40}
                 />
                 <div className="flex flex-col w-full">
-                    <p className="text-[1.8rem] leading-[130%] text-[var(--text-main)] font-bold ">
-                        {!hideBalance ? fiatBalance || '0.00' : '********'} ₽
+                    <p
+                        className={`text-[1.8rem] leading-[130%] ${
+                            soon ? 'text-[var(--text-optional)]' : 'text-[var(--text-main)]'
+                        } font-bold `}
+                    >
+                        {!hideBalance ? (fiatBalance ? fiatBalance + ' ₽' : '0 ₽') : '********'}
                     </p>
-                    <p className="text-[1.4rem] leading-[130%] text-[var(--gray)] ">
-                        {!hideBalance ? cryptoBalance || '0.00' : '********'} {walletName}
+                    <p
+                        className={`text-[1.4rem] leading-[130%] ${
+                            soon ? 'text-[var(--text-optional)]' : 'text-[var(--text-secondary)]'
+                        } `}
+                    >
+                        {!hideBalance
+                            ? cryptoBalance
+                                ? cryptoBalance + ' ' + walletName
+                                : '0 ' + walletName
+                            : '********'}
                     </p>
                 </div>
             </div>
@@ -63,7 +75,7 @@ const WalletItem: React.FC<WalletItemProps> = ({
                         </p>
 
                         <div className="flex items-center gap-[1rem]">
-                            <p className="text-[1.4rem] leading-[130%] text-[var(--text-main)]">
+                            <p className="text-[1.4rem] leading-[130%]  text-[var(--text-main)]">
                                 {rate ? Number(rate).toFixed(2) : '0.00'} ₽
                             </p>
                             {hasChange && isPositiveChange && (

@@ -15,7 +15,7 @@ const Balance = ({ balance, isVisible = true }: BalanceProps) => {
     const rubBalance = balance && rate ? (balance * rate).toFixed(2) : '0.00';
 
     return (
-        <div className="text-center mb-[3rem] rounded-[1.5rem] p-[1.5rem] relative">
+        <div className="text-center mb-[3.1rem] rounded-[1.5rem]  relative">
             <div className="relative flex flex-col  justify-center items-center">
                 <span
                     className={`mb-[0.5rem] center w-full text-[3.5rem] font-semibold leading-[130%] transition-all duration-400 text-[var(--text-main)]`}

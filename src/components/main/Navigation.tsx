@@ -11,36 +11,36 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ onTopUp }) => {
     return (
-        <div className="flex px-[1.6rem] gap-[2rem] items-center justify-center mb-[2.4rem]">
-            <button className="w-fit text-[var(--text-main)] " onClick={onTopUp}>
-                <div className="bg-[#2A2E3633] glass text-[var(--yellow)] w-[7.3rem] h-[5.5rem] rounded-[2rem] center mb-[0.5rem]">
+        <div className="flex px-[1.6rem] gap-[1.7rem] items-center justify-between mb-[2.4rem]">
+            <button className="w-[7.3rem] text-[var(--text-main)] " onClick={onTopUp}>
+                <div className="bg-[#2A2E3633] glass text-[var(--yellow)] w-full h-[5.5rem] rounded-[2rem] center mb-[0.5rem]">
                     <PlusIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
                 </div>
                 <p className="text-[1.1rem] leading-[130%] font-medium">
                     Пополнить <br /> кошелёк
                 </p>
             </button>
-            <button className="w-fit text-[var(--text-main)] pointer-events-none  relative">
-                <p className="absolute right-0 top-0  z-10 rounded-[2rem] translate-y-[-50%] text-[1.2rem] font-medium leading-[130%] bg-[var(--bg-secondary)] py-[0.2rem] text-[var(--text-optional)] px-[0.7rem] ">
+            <button className="w-[7.3rem] text-[var(--text-main)] pointer-events-none  relative">
+                <p className="absolute right-0 top-0  z-10 rounded-[2rem] translate-y-[-50%] text-[1rem] font-medium leading-[130%] bg-[var(--bg-secondary)] py-[0.2rem] text-[var(--text-optional)] px-[0.7rem] ">
                     Скоро
                 </p>
-                <div className="bg-[#2A2E3633] glass text-[var(--dark-gray-secondary)]  w-[7.3rem] h-[5.5rem] rounded-[2rem] center mb-[0.5rem]">
+                <div className="bg-[#2A2E3633] glass text-[var(--dark-gray-secondary)]  w-full  h-[5.5rem] rounded-[2rem] center mb-[0.5rem]">
                     <P2PIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
                 </div>
                 <p className="text-[1.1rem] text-[var(--text-optional)] leading-[130%] font-medium">
                     Продать <br /> P2P
                 </p>
             </button>
-            <Link href="/qr" className="w-fit text-[var(--text-main)] text-center relative">
-                <div className="bg-[#2A2E3633] glass  text-[var(--yellow)] w-[7.3rem] h-[5.5rem] rounded-[2rem] center  mb-[0.5rem]">
+            <Link href="/qr" className="w-[7.3rem] text-[var(--text-main)] text-center relative">
+                <div className="bg-[#2A2E3633] glass  text-[var(--yellow)] w-full  h-[5.5rem] rounded-[2rem] center  mb-[0.5rem]">
                     <QrIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
                 </div>
                 <p className="text-[1.1rem] leading-[130%] font-medium">
                     Сканировать <br /> QR-код
                 </p>
             </Link>
-            <Link href="/link" className="w-fit text-[var(--text-main)]  text-center">
-                <div className="bg-[#2A2E3633] glass  text-[var(--yellow)] w-[7.3rem] h-[5.5rem] rounded-[2rem] center mb-[0.5rem]">
+            <Link href="/link" className="w-[7.3rem] text-[var(--text-main)]  text-center">
+                <div className="bg-[#2A2E3633] glass  text-[var(--yellow)] w-full  h-[5.5rem] rounded-[2rem] center mb-[0.5rem]">
                     <LinkIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
                 </div>
                 <p className="text-[1.1rem] leading-[130%] font-medium">

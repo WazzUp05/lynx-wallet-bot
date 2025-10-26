@@ -82,7 +82,7 @@ const Modal = ({ open, title, onClose, children, closable = false, swipeToClose 
                     >
                         {/* {swipeToClose && <DragIndicator className="mb-[1.6rem]" />} */}
                         {closable && (
-                            <div className="flex w-full items-center justify-between mb-[3rem]">
+                            <div className="flex w-full items-center justify-between mb-[1.6rem]">
                                 {title && <div className=" font-semibold text-[1.8rem] leading-[130%]">{title}</div>}
                                 <button
                                     className="bg-[var(--bg-secondary)]  rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"

@@ -40,7 +40,7 @@ const SelectCrypto = ({ cryptos }: TypeCryptoProps) => {
             <button
                 type="button"
                 // onClick={() => setModalOpen(true)}
-                className={`flex items-center w-full gap-[1rem] py-[1rem] px-[1.6rem] rounded-[1.5rem] box-shadow transition bg-[var(--bg-secondary)] `}
+                className={`flex items-center w-full gap-[1rem]  p-[1.6rem] rounded-[2rem] box-shadow transition bg-[var(--bg-secondary)] `}
             >
                 {selected?.iconUrl && (
                     <Image

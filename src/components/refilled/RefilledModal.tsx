@@ -90,10 +90,10 @@ const RefilledItem = ({ icon, name, text, active }: RefilledItemProps) => {
 };
 const RefilledModal = ({ isTopUpOpen, setTopUpOpen }: RefilledModalProps) => {
     return (
-        <Modal open={isTopUpOpen} swipeToClose={false} onClose={() => setTopUpOpen(false)}>
+        <Modal closable open={isTopUpOpen} swipeToClose={false} onClose={() => setTopUpOpen(false)}>
             <div>
                 <h2 className="fs-bold text-center mb-[0.8rem] text-[var(--text-main)]">Пополнить</h2>
-                <p className="fs-regular text-center mb-[3rem] max-w-[29rem] mx-auto">
+                <p className="fs-regular text-center mb-[2.4rem] max-w-[29rem] mx-auto">
                     Как вы хотите получить криптовалюту на Lynx
                 </p>
             </div>
@@ -104,7 +104,9 @@ const RefilledModal = ({ isTopUpOpen, setTopUpOpen }: RefilledModalProps) => {
             </div>
             {MOCK_WAYS?.filter((item) => item.active).length > 0 && (
                 <>
-                    <p className="text-[1.4rem] leading-[130%] mb-[1rem] mt-[3rem] text-[var(--gray)] w-full">Скоро</p>
+                    <p className="text-[1.4rem] leading-[130%] mb-[1rem] mt-[3rem] text-[var(--text-secondary)] w-full">
+                        Скоро
+                    </p>
                     <div className="w-full flex flex-col gap-[1rem]">
                         {MOCK_WAYS?.filter((item) => !item.active).map((item, index) => (
                             <RefilledItem
