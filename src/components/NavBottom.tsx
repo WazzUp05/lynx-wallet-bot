@@ -81,42 +81,36 @@ const NavBottom = () => {
 
     return (
         <div
-            className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full z-10 flex justify-center"
+            className="flex items-center h-[var(--nav-bottom-height)] rounded-[10rem] bg-[var(--bg-secondary)] fixed left-1/2 -translate-x-1/2 border-t border-[#00000026] z-10 glass py-[0.45rem] px-[1rem] w-[calc(100%-3.2rem)] backdrop-blur-md nav-bottom-ios"
             style={{
-                paddingBottom: 'var(--ios-safe-bottom)',
+                bottom: 'var(--ios-safe-bottom)',
+                WebkitBackdropFilter: 'blur(10px)',
             }}
         >
-            <div
-                className="flex items-center h-[var(--nav-bottom-height)] rounded-[10rem] bg-[var(--bg-secondary)] border-t border-[#00000026] z-10 glass py-[0.45rem] px-[1rem] w-[calc(100%-3.2rem)] backdrop-blur-md nav-bottom-ios"
-                style={{
-                    WebkitBackdropFilter: 'blur(10px)',
-                }}
-            >
-                {navItems.map((item) => (
-                    <Link
-                        key={item.href}
-                        href={item.href}
-                        className={
-                            pathname === item.href
-                                ? 'text-[var(--yellow)] font-semibold flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] text-[1rem] leading-[1.2rem] relative'
-                                : `flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] ${
-                                      item.disabled
-                                          ? 'text-[#262627] cursor-not-allowed pointer-events-none'
-                                          : 'text-[var(--text-secondary)]'
-                                  } text-[1rem] leading-[1.2rem] relative`
-                        }
-                    >
-                        <div
-                            className={`w-[9rem] h-[5.8rem] transition-all duration-300 ${
-                                pathname === item.href ? 'bg-[#303030CC]' : 'bg-transparent'
-                            } rounded-[10rem] center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]`}
-                        />
+            {navItems.map((item) => (
+                <Link
+                    key={item.href}
+                    href={item.href}
+                    className={
+                        pathname === item.href
+                            ? 'text-[var(--yellow)] font-semibold flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] text-[1rem] leading-[1.2rem] relative'
+                            : `flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] ${
+                                  item.disabled
+                                      ? 'text-[#262627] cursor-not-allowed pointer-events-none'
+                                      : 'text-[var(--text-secondary)]'
+                              } text-[1rem] leading-[1.2rem] relative`
+                    }
+                >
+                    <div
+                        className={`w-[9rem] h-[5.8rem] transition-all duration-300 ${
+                            pathname === item.href ? 'bg-[#303030CC]' : 'bg-transparent'
+                        } rounded-[10rem] center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]`}
+                    />
 
-                        {item.icon}
-                        <span className="font-semibold">{item.label}</span>
-                    </Link>
-                ))}
-            </div>
+                    {item.icon}
+                    <span className="font-semibold">{item.label}</span>
+                </Link>
+            ))}
         </div>
     );
 };
