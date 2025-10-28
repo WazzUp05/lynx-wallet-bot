@@ -17,7 +17,7 @@ export default function ClientComponents({ children }: ClientComponentsProps) {
             <ServiceWorker />
             <ReduxProvider>
                 <TelegramAuthClient />
-                <UserAutoUpdater />\
+                <UserAutoUpdater />
                 <div className="pb-[var(--safe-bottom)] bg-[var(--bg-optional)]">
                     {children}
                     <NavBottom />
