@@ -6,15 +6,16 @@ interface WarrningBlockProps {
     onClick?: () => void;
     text: string;
     className?: string;
+    classNameIcon?: string;
 }
 
-const WarrningBlock = ({ onClick, text, className }: WarrningBlockProps) => {
+const WarrningBlock = ({ onClick, text, className, classNameIcon }: WarrningBlockProps) => {
     return (
         <div
             onClick={onClick}
             className={`w-full flex gap-[0.5rem] bg-[var(--yellow-optional)]  py-[1.6rem] px-[1.6rem] rounded-[1.5rem] mb-[1.2rem] text-[1.2rem] leading-[130%] ${className}`}
         >
-            <div>
+            <div className={classNameIcon}>
                 <WarrningLeftIcon width={20} height={20} />
             </div>
             <span className="text-[var(--text-main)]">{text}</span>

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Header from './Header';
 import Balance from './Balance';
 import Wallets from './Wallets';
@@ -6,7 +6,7 @@ import RefilledModal from '../refilled/RefilledModal';
 import { getUser, getWallet } from '@/lib/redux/selectors/userSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { getRatesQuoteRub, getRatesPercentChange24h } from '@/lib/redux/selectors/rateSelectors';
-import { getShouldDisableButtons } from '@/lib/redux/selectors/appSelectors';
+import { getNeedDeposit, getShouldDisableButtons, getWaitingForDeposit } from '@/lib/redux/selectors/appSelectors';
 
 const Main: React.FC = () => {
     const { data: user } = useAppSelector(getUser);

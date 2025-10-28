@@ -54,6 +54,7 @@ const Step4: React.FC<Step4Props> = ({ onNext }) => {
             </div>
             <WarrningBlock
                 className="mb-[1.6rem]"
+                classNameIcon="text-[var(--yellow)]"
                 text="Сейчас кошелёк поддерживает только USDT, другие валюты появятся позже."
             />
             <Button variant="yellow" className="w-full mt-auto " onClick={onNext}>
