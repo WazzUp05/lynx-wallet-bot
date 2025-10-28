@@ -14,7 +14,6 @@ import { usePathname } from 'next/navigation';
 import { getLoading } from '@/lib/redux/selectors/userSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { getShouldDisableButtons } from '@/lib/redux/selectors/appSelectors';
-import { div } from 'framer-motion/m';
 
 const NavBottom = () => {
     const pathname = usePathname();
