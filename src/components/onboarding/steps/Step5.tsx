@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { getWallet } from '@/lib/redux/selectors/userSelectors';
 import { Button } from '@/components/ui/Button';
 import { QRCodeSVG } from 'qrcode.react';
@@ -11,17 +11,33 @@ import WarrningLeftIcon from '@/components/icons/warrning-mark.svg';
 import RightIcon from '@/components/icons/right-arrow.svg';
 import MinAmountModal from '@/components/modals/MinAmountModal';
 import TaxModal from '@/components/modals/TaxModal';
+import { setOnboardingCompleted, setWaitingForDeposit, setNeedDeposit } from '@/lib/redux/slices/appSlice';
 interface Step5Props {
     onNext: () => void;
 }
 
 const Step5: React.FC<Step5Props> = ({ onNext }) => {
+    const dispatch = useAppDispatch();
     const { copyWithToast, isCopying, toastOpen, toastMessage, closeToast } = useCopyWithToast();
     const wallet = useAppSelector(getWallet);
     const srcQr = '/icons/USDT-TRC20.svg';
     const address = wallet?.address || '';
     const [showTaxModal, setShowTaxModal] = useState(false);
     const [showMinAmountModal, setShowMinAmountModal] = useState(false);
+
+    const handleIDeposited = () => {
+        // Переходим в состояние ожидания пополнения
+        // dispatch(setOnboardingCompleted(true));
+        dispatch(setWaitingForDeposit(true));
+        dispatch(setNeedDeposit(true));
+        onNext();
+    };
+
+    const handleLater = () => {
+        // Устанавливаем необходимость пополнения
+        dispatch(setOnboardingCompleted(true));
+        dispatch(setNeedDeposit(true));
+    };
 
     return (
         <div className="flex flex-1 flex-col p-[1.6rem] bg-[var(--bg-optional)] ">
@@ -32,7 +48,7 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
             <p className="text-[1.5rem] leading-[130%] text-[var(--text-secondary)] mb-[2.4rem]">
                 Отсканируйте QR или скопируйте адрес, чтобы перевести USDT с другого кошелька.
             </p>
-            <div className="flex gap-[1rem] mb-[2.4rem]">
+            <div className="flex gap-[1rem] mb-[1.6rem]">
                 <QRCodeSVG
                     value={address}
                     size={110}
@@ -69,7 +85,7 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
             </div>
 
             <div className="mb-[1.6rem] bg-[var(--yellow-optional)] rounded-[2rem] px-[1.6rem]">
-                <div className="w-full py-[1.6rem] border-b border-[#363636] flex i gap-[0.5rem]   text-[1.2rem] leading-[130%] ">
+                <div className="w-full py-[1.4rem] border-b border-[#363636] flex i gap-[0.5rem]   text-[1.2rem] leading-[130%] ">
                     <div>
                         <WarrningLeftIcon width={20} height={20} />
                     </div>
@@ -77,15 +93,9 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                         Адрес принимает только USDT (сеть TRC20). Отправка через другие сети приведёт к потере средств.
                     </span>
                 </div>
-                <div className="w-full flex items-center gap-[0.5rem] py-[1.6rem] border-b  border-[#363636]  text-[1.2rem] leading-[130%] ">
-                    <div>
-                        <WarrningLeftIcon width={20} height={20} />
-                    </div>
-                    <span className="text-[var(--text-main)]">Зачисление обычно занимает до 30 минут</span>
-                </div>
                 <div
                     onClick={() => setShowMinAmountModal(true)}
-                    className="w-full flex items-center gap-[0.5rem] py-[1.6rem] border-b  border-[#363636]  text-[1.2rem] leading-[130%] "
+                    className="w-full flex items-center gap-[0.5rem] py-[1.4rem] border-b  border-[#363636]  text-[1.2rem] leading-[130%] "
                 >
                     <div>
                         <WarrningLeftIcon width={20} height={20} />
@@ -100,7 +110,7 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                 </div>
                 <div
                     onClick={() => setShowTaxModal(true)}
-                    className="w-full flex items-center gap-[0.5rem] py-[1.6rem]   text-[1.2rem] leading-[130%] "
+                    className="w-full flex items-center gap-[0.5rem] py-[1.4rem]   text-[1.2rem] leading-[130%] "
                 >
                     <div>
                         <WarrningLeftIcon width={20} height={20} />
@@ -116,8 +126,11 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
             </div>
             <TaxModal showModal={showTaxModal} onClose={() => setShowTaxModal(false)} />
             <MinAmountModal showModal={showMinAmountModal} onClose={() => setShowMinAmountModal(false)} />
-            <Button variant="yellow" className="w-full mt-auto mb-[1rem]" onClick={onNext}>
-                Продолжить
+            <Button variant="yellow" className="w-full mt-auto mb-[1.2rem]" onClick={handleIDeposited}>
+                Я пополнил
+            </Button>
+            <Button variant="ghost" className="w-full" onClick={handleLater}>
+                Сделаю позже
             </Button>
         </div>
     );

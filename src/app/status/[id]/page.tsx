@@ -7,7 +7,6 @@ import CopyIcon from '@/components/icons/copy.svg';
 import UsdtIcon from '@/components/icons/usdt.svg';
 import RubleIcon from '@/components/icons/ruble.svg';
 import ArrowRightIcon from '@/components/icons/right-arrow.svg';
-import TickIcon from '@/components/icons/tick-circle-big.svg';
 import { useEffect, useState } from 'react';
 import { Toast } from '@/components/ui/Toast';
 import Image from 'next/image';
@@ -114,7 +113,7 @@ export default function QrStatusPage() {
         if (order?.status === 'success') {
             dispatch(fetchUser());
         }
-    }, [order?.status]);
+    }, [order?.status, dispatch]);
 
     if (loadingApp || loading) {
         return <Loader className="h-[100dvh]" />;

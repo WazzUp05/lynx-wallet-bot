@@ -6,14 +6,13 @@ import ArrowLeft from '@/components/icons/arrow-left.svg';
 import WarrningLeftIcon from '@/components/icons/warrning-mark.svg';
 import RightIcon from '@/components/icons/right-arrow.svg';
 import { QRCodeSVG } from 'qrcode.react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import TaxModal from '@/components/modals/TaxModal';
 import { Toast } from '@/components/ui/Toast';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { getLoading, getWallet } from '@/lib/redux/selectors/userSelectors';
 import Loader from '@/components/ui/Loader';
 import MinAmountModal from '@/components/modals/MinAmountModal';
-import { fetchUser } from '@/lib/redux/thunks/UserThunks';
 import { useCopyWithToast } from '@/hooks/useCopyWithToast';
 
 // Типизация для адресов

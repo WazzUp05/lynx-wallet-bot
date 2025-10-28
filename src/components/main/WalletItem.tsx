@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 import RateUpIcon from '@/components/icons/rate-up.svg';
 import RateDownIcon from '@/components/icons/rate-down.svg';
-import { getHideBalance } from '@/lib/redux/selectors/appSelectors';
+import { getHideBalance, getShouldDisableButtons } from '@/lib/redux/selectors/appSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
 
 interface WalletItemProps {
@@ -28,6 +28,7 @@ const WalletItem: React.FC<WalletItemProps> = ({
     const isPositiveChange = rateChange !== null && rateChange !== undefined && rateChange > 0;
     const isNegativeChange = rateChange !== null && rateChange !== undefined && rateChange < 0;
     const hasChange = rateChange !== null && rateChange !== undefined && rateChange !== 0;
+    const shouldDisableButtons = useAppSelector(getShouldDisableButtons);
 
     return (
         <div
@@ -45,14 +46,16 @@ const WalletItem: React.FC<WalletItemProps> = ({
                 <div className="flex flex-col w-full">
                     <p
                         className={`text-[1.8rem] leading-[130%] ${
-                            soon ? 'text-[var(--text-optional)]' : 'text-[var(--text-main)]'
+                            soon || shouldDisableButtons ? 'text-[var(--text-optional)]' : 'text-[var(--text-main)]'
                         } font-bold `}
                     >
                         {!hideBalance ? (fiatBalance ? fiatBalance + ' ₽' : '0 ₽') : '********'}
                     </p>
                     <p
                         className={`text-[1.4rem] leading-[130%] ${
-                            soon ? 'text-[var(--text-optional)]' : 'text-[var(--text-secondary)]'
+                            soon || shouldDisableButtons
+                                ? 'text-[var(--text-optional)]'
+                                : 'text-[var(--text-secondary)]'
                         } `}
                     >
                         {!hideBalance
@@ -70,21 +73,37 @@ const WalletItem: React.FC<WalletItemProps> = ({
                     </div>
                 ) : (
                     <>
-                        <p className="text-[1.5rem] leading-[130%] text-[var(--text-secondary)] font-semibold mb-[0.3rem]">
+                        <p
+                            className={`text-[1.5rem] leading-[130%] text-[var(${
+                                shouldDisableButtons ? '--text-optional' : '--text-secondary'
+                            })] font-semibold mb-[0.3rem]`}
+                        >
                             {walletName || 'Wallet Name'}
                         </p>
 
                         <div className="flex items-center gap-[1rem]">
-                            <p className="text-[1.4rem] leading-[130%]  text-[var(--text-main)]">
+                            <p
+                                className={`text-[1.4rem] leading-[130%]  text-[var(${
+                                    shouldDisableButtons ? '--text-optional' : '--text-main'
+                                })]`}
+                            >
                                 {rate ? Number(rate).toFixed(2) : '0.00'} ₽
                             </p>
                             {hasChange && isPositiveChange && (
-                                <span className="flex text-[1.4rem] leading-[130%] items-center gap-[0.3rem] text-[var(--green-main)]">
+                                <span
+                                    className={`flex text-[1.4rem] leading-[130%] items-center gap-[0.3rem] text-[var(${
+                                        shouldDisableButtons ? '--text-optional' : '--green-main'
+                                    })]`}
+                                >
                                     <RateUpIcon /> {Math.abs(rateChange).toFixed(2)}%
                                 </span>
                             )}
                             {hasChange && isNegativeChange && (
-                                <span className="flex text-[1.4rem] leading-[130%] items-center gap-[0.3rem] text-[var(--red-main)]">
+                                <span
+                                    className={`flex text-[1.4rem] leading-[130%] items-center gap-[0.3rem] text-[var(${
+                                        shouldDisableButtons ? '--text-optional' : '--red-main'
+                                    })]`}
+                                >
                                     <RateDownIcon /> {Math.abs(rateChange).toFixed(2)}%
                                 </span>
                             )}

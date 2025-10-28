@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 interface UseCopyToClipboardReturn {
-    copyToClipboard: (text: string, successMessage?: string) => Promise<boolean>;
+    copyToClipboard: (text: string) => Promise<boolean>;
     isCopying: boolean;
     lastCopiedText: string | null;
 }
@@ -10,7 +10,7 @@ export const useCopyToClipboard = (): UseCopyToClipboardReturn => {
     const [isCopying, setIsCopying] = useState(false);
     const [lastCopiedText, setLastCopiedText] = useState<string | null>(null);
 
-    const copyToClipboard = async (text: string, successMessage?: string): Promise<boolean> => {
+    const copyToClipboard = async (text: string): Promise<boolean> => {
         setIsCopying(true);
         setLastCopiedText(text);
 
