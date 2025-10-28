@@ -40,7 +40,7 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
     };
 
     return (
-        <div className="flex flex-1 flex-col p-[1.6rem] bg-[var(--bg-optional)] ">
+        <div className="flex flex-1 flex-col p-[1.6rem]  bg-[var(--bg-optional)] ">
             <Toast open={toastOpen} onClose={closeToast} message={toastMessage} />
             <h2 className="text-[2.2rem] text-[var(--text-main)] font-bold leading-[130%] mb-[0.8rem]">
                 Пополните кошелёк
