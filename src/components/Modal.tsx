@@ -1,7 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import DragIndicator from './ui/DragIndicator';
 import CloseIcon from '@/components/icons/close.svg';
 
 interface ModalProps {

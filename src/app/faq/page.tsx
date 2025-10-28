@@ -5,7 +5,7 @@ import MobileIcon from '@/components/icons/mobile.svg';
 import LockIcon from '@/components/icons/lock.svg';
 import QrIcon from '@/components/icons/qr.svg';
 import TimeIcon from '@/components/icons/time.svg';
-import Profile2UserIcon from '@/components/icons/profile-2user.svg';
+// import Profile2UserIcon from '@/components/icons/profile-2user.svg';
 import FaqItem from '@/components/FaqItem';
 import Image from 'next/image';
 

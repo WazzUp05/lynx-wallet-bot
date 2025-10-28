@@ -8,14 +8,17 @@ import HomeActiveIcon from '@/components/icons/home-active.svg';
 import ChatIcon from '@/components/icons/chat.svg';
 import ChatActiveIcon from '@/components/icons/chat-active.svg';
 import UserIcon from '@/components/icons/user.svg';
+import UserDisableIcon from '@/components/icons/user-disable.svg';
 import UserActiveIcon from '@/components/icons/user-active.svg';
 import { usePathname } from 'next/navigation';
 import { getLoading } from '@/lib/redux/selectors/userSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
+import { getShouldDisableButtons } from '@/lib/redux/selectors/appSelectors';
 
 const NavBottom = () => {
     const pathname = usePathname();
     const loadingApp = useAppSelector(getLoading);
+    const shouldDisableButtons = useAppSelector(getShouldDisableButtons);
 
     // Страницы, на которых показывать NavBottom
     const allowedPages = ['/', '/history', '/profile'];
@@ -39,6 +42,7 @@ const NavBottom = () => {
         {
             href: '/history',
             label: 'История',
+            disabled: shouldDisableButtons,
             icon:
                 pathname === '/history' ? (
                     <ClockActiveIcon width={28} height={28} className="w-[2.8rem] h-[2.8rem]" />
@@ -59,9 +63,12 @@ const NavBottom = () => {
         {
             href: '/profile',
             label: 'Профиль',
+            disabled: shouldDisableButtons,
             icon:
                 pathname === '/profile' ? (
                     <UserActiveIcon width={28} height={28} className="w-[2.8rem] h-[2.8rem]" />
+                ) : shouldDisableButtons ? (
+                    <UserDisableIcon width={28} height={28} className="w-[2.8rem] h-[2.8rem]" />
                 ) : (
                     <UserIcon width={28} height={28} className="w-[2.8rem] h-[2.8rem]" />
                 ),
@@ -74,10 +81,9 @@ const NavBottom = () => {
 
     return (
         <div
-            className="flex items-center mix-blend-plus-lighter h-[var(--nav-bottom-height)] rounded-[10rem] bg-[var(--bg-secondary)] fixed left-1/2 -translate-x-1/2 border-t border-[#00000026] z-10 glass py-[0.45rem] px-[0.3rem] w-[calc(100%-3.2rem)]"
+            className="flex items-center mix-blend-plus-lighter h-[var(--nav-bottom-height)] rounded-[10rem] bg-[var(--bg-secondary)] fixed left-1/2 -translate-x-1/2 border-t border-[#00000026] z-10 glass py-[0.45rem] px-[1rem] w-[calc(100%-3.2rem)]"
             style={{
                 bottom: 'max(0.5rem, env(safe-area-inset-bottom))',
-                paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))',
             }}
         >
             {navItems.map((item) => (
@@ -87,11 +93,15 @@ const NavBottom = () => {
                     className={
                         pathname === item.href
                             ? 'text-[var(--yellow)] font-semibold flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] text-[1rem] leading-[1.2rem] relative'
-                            : 'flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] text-[var(--text-secondary)] text-[1rem] leading-[1.2rem] relative'
+                            : `flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] ${
+                                  item.disabled
+                                      ? 'text-[#121214] cursor-not-allowed pointer-events-none'
+                                      : 'text-[var(--text-secondary)]'
+                              } text-[1rem] leading-[1.2rem] relative`
                     }
                 >
                     <div
-                        className={`w-[8rem] h-[5.2rem] transition-all duration-300 ${
+                        className={`w-[9rem] h-[5.8rem] transition-all duration-300 ${
                             pathname === item.href ? 'bg-[#303030CC]' : 'bg-transparent'
                         } rounded-[10rem] center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]`}
                     />

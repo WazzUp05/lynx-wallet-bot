@@ -1,31 +1,64 @@
 'use client';
 import React from 'react';
 import { useState } from 'react';
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { setOnboardingCompleted } from '@/lib/redux/slices/appSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import {
+    setOnboardingCompleted,
+    setOnboardingStep,
+    setWaitingForDeposit,
+    setNeedDeposit,
+    setIsFirstTime,
+} from '@/lib/redux/slices/appSlice';
+import { getOnboardingStep } from '@/lib/redux/selectors/appSelectors';
 import Step1 from './steps/Step1';
 import Step2 from './steps/Step2';
 import Step3 from './steps/Step3';
 import Step4 from './steps/Step4';
 import Step5 from './steps/Step5';
+import Step6 from './steps/Step6';
 import CloseIcon from '@/components/icons/close.svg';
 import ArrowLeftIcon from '@/components/icons/arrow-left.svg';
 
 const Onboarding: React.FC = () => {
-    const [step, setStep] = useState(0);
     const dispatch = useAppDispatch();
+    const savedStep = useAppSelector(getOnboardingStep);
 
-    const stepComponents = [Step1, Step2, Step3, Step4, Step5];
+    // Инициализируем шаг из сохранённого состояния
+    const [step, setStep] = useState(savedStep);
+
+    const stepComponents = [Step1, Step2, Step3, Step4, Step5, Step6];
+
+    // Обновляем состояние шага в Redux
+    React.useEffect(() => {
+        dispatch(setOnboardingStep(step));
+    }, [step, dispatch]);
+
+    // Если ожидаем пополнения, переходим на Step6
+    // React.useEffect(() => {
+    //     if (isWaitingForDeposit) {
+    //         setStep(5); // Step6 имеет индекс 5
+    //     }
+    // }, [isWaitingForDeposit]);
+
     const handleNext = () => {
         if (step < stepComponents.length - 1) setStep(step + 1);
         else handleSkip();
     };
 
     const handleSkip = () => {
-        if (typeof window !== 'undefined') {
-            localStorage.setItem('onboardingCompleted', 'true');
-        }
+        console.log('close');
+
         dispatch(setOnboardingCompleted(true));
+        dispatch(setIsFirstTime(false)); // Устанавливаем что больше не первый раз
+
+        // Если закрываем на шагах 3-4 (индексы 2-3), устанавливаем необходимость пополнения
+        if (step >= 2 && step <= 4) {
+            dispatch(setNeedDeposit(true));
+        }
+        // Если закрываем на Step6 (индекс 5), устанавливаем ожидание пополнения
+        else if (step === 5) {
+            dispatch(setWaitingForDeposit(true));
+        }
     };
 
     const handlePrev = () => {
@@ -66,7 +99,7 @@ const Onboarding: React.FC = () => {
                 )}
                 <button
                     className={`bg-[var(--bg-secondary)]  rounded-[1rem] w-[3.5rem] h-[3.5rem] center text-[var(--text-secondary)] ${
-                        step === stepComponents.length - 1 ? '' : 'opacity-0 pointer-events-none'
+                        step > 1 ? '' : 'opacity-0 pointer-events-none'
                     }`}
                     onClick={handleSkip}
                     aria-label="Закрыть"

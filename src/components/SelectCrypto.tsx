@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import RightArrowIcon from '@/components/icons/right-arrow.svg';
-import CloseIcon from '@/components/icons/close.svg';
 import Modal from './Modal';
 import { useState } from 'react';
 import { SelectCustom } from './ui/SelectCustom';

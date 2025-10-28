@@ -1,7 +1,6 @@
 import React from 'react';
 import Modal from '../Modal';
 import WalletIcon from '@/components/icons/wallet-color.svg';
-import GuadrdIcon from '@/components/icons/guard.svg';
 
 interface MinAmountModalProps {
     showModal: boolean;

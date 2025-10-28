@@ -5,7 +5,6 @@ import { SelectCustom } from '@/components/ui/SelectCustom';
 import SelectCrypto from '@/components/SelectCrypto';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { getCrypto, getNetworkType } from '@/lib/redux/selectors/walletSelectors';
-import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { NetworkType, setNetwork } from '@/lib/redux/slices/walletSlice';
 import { useRouter } from 'next/navigation';

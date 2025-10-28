@@ -31,6 +31,7 @@
     --red-main: #ff0719;
     --red-secondary: #ff071926;
     --c-glass: #0000005c;
+    --c-glass-gray: #2a2e3633;
     --c-light: #fff;
     --c-dark: #000;
     --c-content: #e1e1e1;
@@ -73,6 +74,10 @@
     padding-bottom: env(safe-area-inset-bottom);
 }
 
+.gradient {
+    background: linear-gradient(180deg, #ffdb70 0%, #ffbe00 100%);
+}
+
 .glass {
     /* Fallback для браузеров без поддержки backdrop-filter */
     background-color: rgba(188, 187, 187, 0.36);
@@ -94,6 +99,9 @@
 @supports (backdrop-filter: blur(1px)) {
     .glass {
         background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+    }
+    .glass-btn {
+        background-color: color-mix(in srgb, var(--c-glass-gray) 12%, #2a2e3633);
     }
 }
 

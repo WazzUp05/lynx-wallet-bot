@@ -50,10 +50,13 @@ const Step4: React.FC<Step4Props> = ({ onNext }) => {
             </div>
             <div className="mb-[1.2rem]">
                 <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">Сеть</p>
-                <SelectCustom options={network} value={'TRC20'} onChange={() => {}} className="mb-[3rem]" />
+                <SelectCustom options={network} value={'TRC20'} onChange={() => {}} />
             </div>
-            <WarrningBlock text="Сейчас кошелёк поддерживает только USDT, другие валюты появятся позже." />
-            <Button variant="yellow" className="w-full mt-auto mb-[1rem]" onClick={onNext}>
+            <WarrningBlock
+                className="mb-[1.6rem]"
+                text="Сейчас кошелёк поддерживает только USDT, другие валюты появятся позже."
+            />
+            <Button variant="yellow" className="w-full mt-auto " onClick={onNext}>
                 Продолжить
             </Button>
         </div>

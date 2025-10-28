@@ -5,13 +5,14 @@ import RightIcon from '@/components/icons/right-arrow.svg';
 interface WarrningBlockProps {
     onClick?: () => void;
     text: string;
+    className?: string;
 }
 
-const WarrningBlock = ({ onClick, text }: WarrningBlockProps) => {
+const WarrningBlock = ({ onClick, text, className }: WarrningBlockProps) => {
     return (
         <div
             onClick={onClick}
-            className="w-full flex gap-[0.5rem] bg-[var(--yellow-optional)]  py-[1.6rem] px-[1.6rem] rounded-[1.5rem] mb-[1.2rem] text-[1.2rem] leading-[130%] "
+            className={`w-full flex gap-[0.5rem] bg-[var(--yellow-optional)]  py-[1.6rem] px-[1.6rem] rounded-[1.5rem] mb-[1.2rem] text-[1.2rem] leading-[130%] ${className}`}
         >
             <div>
                 <WarrningLeftIcon width={20} height={20} />
