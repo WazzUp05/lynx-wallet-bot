@@ -34,7 +34,7 @@ const Step4: React.FC<Step4Props> = ({ onNext }) => {
     ];
 
     return (
-        <div className="flex flex-1 flex-col p-[1.6rem] bg-[var(--bg-optional)] ">
+        <div className="flex flex-1 flex-col p-[1.6rem] pb-[calc(var(--safe-bottom)+1.6rem) bg-[var(--bg-optional)] ">
             <h2 className="text-[2.2rem] text-[var(--text-main)] font-bold leading-[130%] mb-[0.8rem]">
                 Пополнение кошелька
             </h2>

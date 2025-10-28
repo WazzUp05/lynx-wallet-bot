@@ -66,7 +66,7 @@ const Step6: React.FC<Step6Props> = ({ onNext }) => {
     };
 
     return (
-        <div className="flex flex-1 flex-col p-[1.6rem] pt-[6rem] bg-[var(--bg-optional)] ">
+        <div className="flex flex-1 flex-col p-[1.6rem] pt-[6rem] pb-[calc(var(--safe-bottom)+1.6rem)] bg-[var(--bg-optional)] ">
             <div
                 className={`fixed top-[2.6rem] left-1/2 -translate-x-1/2 z-[9999] box-shadow rounded-[1.5rem] flex items-center gap-[0.5rem] py-[0.55rem] px-[0.7rem] text-[1.2rem] leading-[130%] font-semibold
                         bg-[var(--dark-gray-main)] text-[var(--text-main)]
