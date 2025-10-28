@@ -6,7 +6,7 @@ import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
 import { getOnboardingCompleted, getWaitingForDeposit } from '@/lib/redux/selectors/appSelectors';
 import { getHistory } from '@/lib/redux/selectors/historySelectors';
 import { getWallet } from '@/lib/redux/selectors/userSelectors';
-import { setIsFirstTime, setNeedDeposit } from '@/lib/redux/slices/appSlice';
+import { setIsFirstTime, setNeedDeposit, setWaitingForDeposit } from '@/lib/redux/slices/appSlice';
 import { fetchHistory } from '@/lib/redux/thunks/historyThunks';
 import { useEffect } from 'react';
 import { getLoading, getUser } from '@/lib/redux/selectors/userSelectors';
@@ -31,8 +31,10 @@ export default function Home() {
                 // Первый раз - показываем онбординг
                 dispatch(setIsFirstTime(true));
             } else {
-                // Не первый раз
+                // Не первый раз - сбрасываем флаги ожидания пополнения
                 dispatch(setIsFirstTime(false));
+                dispatch(setNeedDeposit(false));
+                dispatch(setWaitingForDeposit(false));
             }
         }
     }, [user, wallet, history, dispatch]);
@@ -67,6 +69,7 @@ export default function Home() {
             if (latestTransaction && latestTransaction.status === 'completed') {
                 // Пополнение успешно - раздизейбливаем все
                 dispatch(setNeedDeposit(false));
+                dispatch(setWaitingForDeposit(false));
                 dispatch(setIsFirstTime(false));
             }
         }
