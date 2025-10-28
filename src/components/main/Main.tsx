@@ -6,7 +6,7 @@ import RefilledModal from '../refilled/RefilledModal';
 import { getUser, getWallet } from '@/lib/redux/selectors/userSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { getRatesQuoteRub, getRatesPercentChange24h } from '@/lib/redux/selectors/rateSelectors';
-import { getNeedDeposit, getShouldDisableButtons, getWaitingForDeposit } from '@/lib/redux/selectors/appSelectors';
+import { getShouldDisableButtons } from '@/lib/redux/selectors/appSelectors';
 
 const Main: React.FC = () => {
     const { data: user } = useAppSelector(getUser);

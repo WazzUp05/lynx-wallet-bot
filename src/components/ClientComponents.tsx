@@ -4,8 +4,13 @@ import { ReduxProvider } from '@/lib/providers/ReduxProvider';
 import NavBottom from '@/components/NavBottom';
 import UserAutoUpdater from '@/components/UserAutoUpdater';
 import ServiceWorker from '@/components/ServiceWorker';
-import { TwaAnalyticsProvider } from '@tonsolutions/telemetree-react';
+import WebApp from '@twa-dev/sdk';
+
 const TelegramAuthClient = dynamic(() => import('@/components/TelegramAuthClient'), { ssr: false });
+const TwaAnalyticsProvider = dynamic(
+    () => import('@tonsolutions/telemetree-react').then((mod) => mod.TwaAnalyticsProvider),
+    { ssr: false }
+);
 
 interface ClientComponentsProps {
     children: React.ReactNode;
