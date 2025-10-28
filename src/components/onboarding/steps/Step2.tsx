@@ -24,7 +24,7 @@ const Step2: React.FC<Step2Props> = ({ onNext }) => {
                 </motion.div>
 
                 {/* Content */}
-                <div className="bg-[var(--bg-optional)] rounded-t-[2rem] w-full relative pt-[2.4rem] pb-[calc(var(--safe-bottom)+1.6rem) px-[1.6rem] flex flex-col items-center">
+                <div className="bg-[var(--bg-optional)] rounded-t-[2rem] w-full relative pt-[2.4rem] pb-[calc(var(--safe-bottom)+1.6rem)] px-[1.6rem] flex flex-col items-center">
                     <motion.h2
                         initial={{ opacity: 0, y: 0 }}
                         animate={{ opacity: 1, y: 0 }}

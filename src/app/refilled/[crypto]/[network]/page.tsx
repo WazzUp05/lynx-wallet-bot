@@ -93,7 +93,7 @@ export default function RefilledQrPage() {
     if (!data) return <div className="p-8">Данные не найдены</div>;
 
     return (
-        <div className=" bg-[var(--bg-optional)] flex flex-col items-center p-[1.6rem] min-h-[100dvh] ">
+        <div className=" bg-[var(--bg-optional)] flex flex-col items-center p-[1.6rem] pb-[calc(var(--safe-bottom)+1.6rem)] min-h-[100dvh] ">
             <Toast open={toastOpen} onClose={closeToast} message={toastMessage} />
             <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[3rem] font-semibold w-full">
                 <button

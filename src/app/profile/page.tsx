@@ -19,7 +19,7 @@ const Page = () => {
     }
 
     return (
-        <div className="px-[1.6rem] py-[2rem] w-full bg-[var(--bg-optional)] min-h-[100dvh] flex flex-col">
+        <div className="px-[1.6rem] py-[2rem] w-full bg-[var(--bg-optional)] min-h-[100dvh] flex flex-col pb-[calc(var(--safe-bottom)+1.6rem)]">
             <div className="flex items-center gap-[1.5rem] bg-[var(--bg-secondary)] rounded-[2rem] p-[1.6rem] mb-[2.4rem]">
                 <Image
                     className="rounded-full w-[5rem] h-[5rem]"

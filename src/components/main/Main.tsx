@@ -46,10 +46,7 @@ const Main: React.FC = () => {
     ];
 
     return (
-        <div
-            className="w-full min-h-[100dvh] flex flex-col items-center  text-[var(--text)] "
-            style={{ paddingBottom: 'calc(1rem + var(--nav-bottom-height))' }}
-        >
+        <div className="w-full min-h-[100dvh] flex flex-col items-center pb-[calc(var(--safe-bottom)+1rem+var(--nav-bottom-height)))]  text-[var(--text)] ">
             <div className="px-[1.6rem] pb-0 py-[2rem] w-full bg-[var(--bg-main)] relative">
                 <div className="bg-[#ffffff29]  rounded-full w-[20rem] h-[20rem] blur-[11rem] absolute top-[2.8rem] left-1/2 -translate-x-1/2 "></div>
                 <Header name={user ? `${user.first_name}${user.last_name ? ' ' + user.last_name : ''}` : '...'} />

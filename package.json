@@ -13,6 +13,8 @@
         "@reduxjs/toolkit": "^2.9.0",
         "@telegram-apps/init-data-node": "^2.0.10",
         "@telegram-apps/sdk-react": "^3.3.7",
+        "@tonsolutions/telemetree-react": "^1.2.15",
+        "@twa-dev/sdk": "^8.0.2",
         "@yudiel/react-qr-scanner": "^2.3.1",
         "framer-motion": "^12.23.12",
         "html5-qrcode": "^2.3.8",
