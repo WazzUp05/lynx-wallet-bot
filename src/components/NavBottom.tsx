@@ -81,9 +81,10 @@ const NavBottom = () => {
 
     return (
         <div
-            className="flex items-center mix-blend-plus-lighter h-[var(--nav-bottom-height)] rounded-[10rem] bg-[var(--bg-secondary)] fixed left-1/2 -translate-x-1/2 border-t border-[#00000026] z-10 glass py-[0.45rem] px-[1rem] w-[calc(100%-3.2rem)] "
+            className="flex items-center h-[var(--nav-bottom-height)] rounded-[10rem] bg-[var(--bg-secondary)] fixed left-1/2 -translate-x-1/2 border-t border-[#00000026] z-10 glass py-[0.45rem] px-[1rem] w-[calc(100%-3.2rem)] backdrop-blur-md nav-bottom-ios"
             style={{
-                bottom: 'max(0.5rem, var(--safe-bottom))',
+                bottom: 'var(--ios-safe-bottom)',
+                WebkitBackdropFilter: 'blur(10px)',
             }}
         >
             {navItems.map((item) => (
@@ -95,7 +96,7 @@ const NavBottom = () => {
                             ? 'text-[var(--yellow)] font-semibold flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] text-[1rem] leading-[1.2rem] relative'
                             : `flex flex-col items-center justify-center gap-[0.4rem] flex-1 py-[0.6rem] ${
                                   item.disabled
-                                      ? 'text-[#121214] cursor-not-allowed pointer-events-none'
+                                      ? 'text-[#262627] cursor-not-allowed pointer-events-none'
                                       : 'text-[var(--text-secondary)]'
                               } text-[1rem] leading-[1.2rem] relative`
                     }

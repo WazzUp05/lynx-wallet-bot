@@ -42,6 +42,10 @@
     --saturation: 150%;
     --safe-bottom: var(--tg-safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
     --safe-top: var(--tg-safe-area-inset-top, env(safe-area-inset-top, 0px));
+
+    /* iOS specific safe area fixes */
+    --ios-safe-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+    --ios-safe-top: max(0px, env(safe-area-inset-top, 0px));
 }
 .no-scrollbar {
     scrollbar-width: none !important;
@@ -507,5 +511,21 @@ body {
     .center-grid-v {
         -webkit-align-items: center;
         align-items: center;
+    }
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+    /* iPhone specific styles */
+    .nav-bottom-ios {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        background: rgba(42, 46, 54, 0.8);
+    }
+
+    /* Fix for iPhone safe areas */
+    .nav-bottom-ios {
+        bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+        padding-bottom: max(0.45rem, env(safe-area-inset-bottom, 0px));
     }
 }

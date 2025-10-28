@@ -24,7 +24,7 @@ export const SelectCustom: React.FC<SelectCustomProps> = ({ options, value, onCh
                     key={option.id}
                     type="button"
                     onClick={() => onChange(option.id)}
-                    className={`flex items-center gap-[1rem] py-[1rem] px-[1.6rem] rounded-[1.5rem] box-shadow transition
+                    className={`flex items-center gap-[1rem] py-[1.6rem] px-[1.6rem] rounded-[1.5rem] box-shadow transition
                         bg-[var(--bg-secondary)]
                        `}
                 >
