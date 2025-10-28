@@ -43,7 +43,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="ru">
-            <body className={`antialiased  pb-[var(--safe-bottom)] ${inter.className} `}>
+            <body className={`antialiased ${inter.className} `}>
                 <ClientComponents>{children}</ClientComponents>
             </body>
         </html>
