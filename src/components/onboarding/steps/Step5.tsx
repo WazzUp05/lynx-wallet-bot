@@ -43,7 +43,9 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
         <div className="flex flex-1 flex-col p-[1.6rem] bg-[var(--bg-optional)] ">
             <Toast open={toastOpen} onClose={closeToast} message={toastMessage} />
             <h2 className="text-[2.2rem] text-[var(--text-main)] font-bold leading-[130%] mb-[0.8rem]">
-                Пополните кошелёк через QR или ссылку
+                Пополните кошелёк
+                <br />
+                через QR или ссылку
             </h2>
             <p className="text-[1.5rem] leading-[130%] text-[var(--text-secondary)] mb-[2.4rem]">
                 Отсканируйте QR или скопируйте адрес, чтобы перевести USDT с другого кошелька.
@@ -53,14 +55,13 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                     value={address}
                     size={110}
                     bgColor="#EBECEF"
-                    fgColor="#1C1C1E"
+                    fgColor="#121214"
                     className="flex-shrink-0 w-[11rem] h-[11rem]"
                     radius="50"
                     imageSettings={{
                         src: srcQr,
                         x: undefined,
                         y: undefined,
-
                         height: 35,
                         width: 35,
                         excavate: true,
@@ -86,7 +87,7 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
 
             <div className="mb-[1.6rem] bg-[var(--yellow-optional)] rounded-[2rem] px-[1.6rem]">
                 <div className="w-full py-[1.4rem] border-b border-[#363636] flex i gap-[0.5rem]   text-[1.2rem] leading-[130%] ">
-                    <div>
+                    <div className="text-[var(--yellow)]">
                         <WarrningLeftIcon width={20} height={20} />
                     </div>
                     <span className="text-[var(--text-main)]">
@@ -97,7 +98,7 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                     onClick={() => setShowMinAmountModal(true)}
                     className="w-full flex items-center gap-[0.5rem] py-[1.4rem] border-b  border-[#363636]  text-[1.2rem] leading-[130%] "
                 >
-                    <div>
+                    <div className="text-[var(--yellow)]">
                         <WarrningLeftIcon width={20} height={20} />
                     </div>
                     <span className="text-[var(--text-main)]">
@@ -112,7 +113,7 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                     onClick={() => setShowTaxModal(true)}
                     className="w-full flex items-center gap-[0.5rem] py-[1.4rem]   text-[1.2rem] leading-[130%] "
                 >
-                    <div>
+                    <div className="text-[var(--yellow)]">
                         <WarrningLeftIcon width={20} height={20} />
                     </div>
                     <span className="text-[var(--text-main)]">

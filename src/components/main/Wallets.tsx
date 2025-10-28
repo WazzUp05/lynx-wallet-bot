@@ -52,7 +52,7 @@ const Wallets = ({ wallets }: WalletsProps) => {
             <Navigation onTopUp={handleTopUp} />
             <RefilledModal isTopUpOpen={isTopUpOpen} setTopUpOpen={setTopUpOpen} />
 
-            <div className="flex mb-[2rem] gap-[1.6rem] flew-nowrap overflow-x-auto">
+            <div className="flex mb-[2rem] gap-[1.6rem] flew-nowrap overflow-x-auto no-scrollbar">
                 {wallets?.map((item, index) => (
                     <WalletItem key={index} {...item} />
                 ))}

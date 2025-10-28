@@ -16,7 +16,7 @@
     --bg-green: #d9eee7;
     --bg-blue: #e0ebf9;
     --white-15: rgba(255, 255, 255, 0.15);
-    --nav-bottom-height: calc(6.3rem + max(0.5rem, env(safe-area-inset-bottom)));
+    --nav-bottom-height: calc(6.5rem);
     --bg-secondary: #1c1c1e;
     --bg-main: #161616;
     --bg-optional: #121214;
@@ -32,7 +32,7 @@
     --red-secondary: #ff071926;
     --c-glass: #0000005c;
     --c-glass-gray: #2a2e3633;
-    --c-light: #fff;
+    --c-light: #ffffff5c;
     --c-dark: #000;
     --c-content: #e1e1e1;
     --c-action: #03d5ff;
@@ -40,8 +40,14 @@
     --glass-reflex-dark: 2;
     --glass-reflex-light: 0.3;
     --saturation: 150%;
-    --safe-bottom: env(safe-area-inset-bottom);
-    --safe-top: env(safe-area-inset-top);
+    --safe-bottom: var(--tg-safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+    --safe-top: var(--tg-safe-area-inset-top, env(safe-area-inset-top, 0px));
+}
+.no-scrollbar {
+    scrollbar-width: none !important;
+    &::-webkit-scrollbar {
+        display: none !important;
+    }
 }
 
 /* Safe area support for iOS */

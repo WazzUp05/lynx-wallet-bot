@@ -120,7 +120,11 @@ const Step6: React.FC<Step6Props> = ({ onNext }) => {
                         <h2 className="text-[2.2rem] text-[var(--text-main)] font-bold leading-[130%] mb-[1.6rem]">
                             Проверяем перевод
                         </h2>
-                        <WarrningBlock className="items-center" text="Обычно это занимает до 30 минут." />
+                        <WarrningBlock
+                            className="items-center"
+                            classNameIcon="text-[var(--yellow)]"
+                            text="Обычно это занимает до 30 минут."
+                        />
                         <Button variant="yellow" disabled={true} className="w-full mt-auto" onClick={onNext}>
                             Проверить снова
                         </Button>
