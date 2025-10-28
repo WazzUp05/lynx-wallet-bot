@@ -40,7 +40,7 @@
     --glass-reflex-dark: 2;
     --glass-reflex-light: 0.3;
     --saturation: 150%;
-    --safe-bottom: max(1.6rem, env(safe-area-inset-bottom, 0px));
+    --safe-bottom: max(env(safe-area-inset-bottom, 0px));
     --safe-top: var(--tg-safe-area-inset-top, env(safe-area-inset-top, 0px));
 
     /* iOS specific safe area fixes */

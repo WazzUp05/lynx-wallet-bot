@@ -66,7 +66,7 @@ const Onboarding: React.FC = () => {
     };
     return (
         <div
-            className="flex z-[1000] relative flex-col pt-[2.4rem] overflow-hidden"
+            className="flex z-[1000] relative flex-col pt-[2.4rem]overflow-hidden"
             style={{
                 minHeight: 'calc(100dvh)',
             }}
