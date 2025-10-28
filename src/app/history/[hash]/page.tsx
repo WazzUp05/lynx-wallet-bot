@@ -88,7 +88,7 @@ export default function HistoryDetailPage() {
     }
 
     return (
-        <div className="min-h-[100dvh]  flex flex-col items-center px-[1.6rem] py-[2rem]">
+        <div className="min-h-[100dvh]  flex flex-col items-center px-[1.6rem] py-[2rem] pb-[calc(var(--safe-bottom)+1.6rem)]">
             <Toast open={toastOpen} message={toastMessage} onClose={closeToast} />
             <div className="center relative text-[1.8rem] leading-[130%] mb-[2rem] font-semibold w-full">
                 <button className="absolute left-0 top-1/2 -translate-y-1/2" onClick={() => router.back()}>

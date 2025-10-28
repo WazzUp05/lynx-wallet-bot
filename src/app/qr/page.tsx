@@ -187,7 +187,7 @@ export default function QrScanPage() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-[80vh] px-4">
+        <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 pb-[calc(var(--safe-bottom)+1.6rem)]">
             {toast && <Toast open={toast} message={toastMsg} type="error" onClose={() => setToast(false)} />}
             <div className="rounded-2xl overflow-hidden mb-4 bg-[#e5e5e5]">
                 <QrScanner onResult={handleScan} paused={loadingQr || qrInfo ? true : false} torch finder zoom={true} />

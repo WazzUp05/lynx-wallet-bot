@@ -208,7 +208,7 @@ export default function LinkPage() {
     }
 
     return (
-        <div className="p-[1.6rem] flex flex-col min-h-[100dvh]">
+        <div className="p-[1.6rem] pb-[calc(var(--safe-bottom)+1.6rem)] flex flex-col min-h-[100dvh]">
             {toast && <Toast open={toast} message={toastMsg} type="error" onClose={() => setToast(false)} />}
             <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[3.2rem] font-semibold">
                 <div

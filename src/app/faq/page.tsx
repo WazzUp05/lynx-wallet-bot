@@ -12,7 +12,7 @@ import Image from 'next/image';
 const Page = () => {
     return (
         <>
-            <div className="px-[1.6rem] py-[2rem] w-full bg-[var(--bg-optional)] min-h-[100dvh] flex flex-col">
+            <div className="px-[1.6rem] py-[2rem] w-full bg-[var(--bg-optional)] min-h-[100dvh] flex flex-col pb-[calc(var(--safe-bottom)+1.6rem)]">
                 <div className="flex gap-[1rem] items-center mb-[3.2rem]">
                     <Link
                         href="/profile"

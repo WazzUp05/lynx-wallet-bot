@@ -122,7 +122,7 @@ export default function QrStatusPage() {
     if (error || !order) return <div className="p-8">{error || 'Заявка не найдена'}</div>;
 
     return (
-        <div className="min-h-[100dvh] relative bg-[var(--bg-main)] overflow-hidden flex flex-col items-center px-[1.6rem] py-[2rem]">
+        <div className="min-h-[100dvh] relative bg-[var(--bg-main)] overflow-hidden flex flex-col items-center px-[1.6rem] pb-[calc(var(--safe-bottom)+1.6rem)] py-[2rem]">
             <Toast open={toastOpen} message={toastMessage} onClose={closeToast} />
             <div
                 className={`w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-33.4rem] ${

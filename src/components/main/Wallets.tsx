@@ -7,7 +7,7 @@ import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
 import { getHistory } from '@/lib/redux/selectors/historySelectors';
 import { getWallet } from '@/lib/redux/selectors/userSelectors';
 import { setOnboardingToStep5 } from '@/lib/redux/slices/appSlice';
-
+import { useTWAEvent } from '@tonsolutions/telemetree-react';
 interface WalletItemDataProps {
     walletName?: string;
     walletIcon?: string;
@@ -27,6 +27,7 @@ const Wallets = ({ wallets }: WalletsProps) => {
     const [isTopUpOpen, setTopUpOpen] = React.useState(false);
     const history = useAppSelector(getHistory);
     const wallet = useAppSelector(getWallet);
+    const eventBuilder = useTWAEvent();
 
     // Функция для проверки условий: нет истории и баланс 0
     const shouldShowOnboarding = () => {
@@ -37,6 +38,10 @@ const Wallets = ({ wallets }: WalletsProps) => {
 
     // Обработчик клика на кнопку "Пополнить"
     const handleTopUp = () => {
+        eventBuilder.track('Button Clicked', {
+            label: 'Top Up Button', // Additional info about the button
+            category: 'Wallet', // Categorize the event
+        });
         if (shouldShowOnboarding()) {
             // Если нет истории и баланс 0 - открываем онбординг на 5-м шаге
             dispatch(setOnboardingToStep5());
