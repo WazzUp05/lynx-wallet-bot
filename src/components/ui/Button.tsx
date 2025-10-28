@@ -7,7 +7,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const base =
-    'rounded-[1.2rem] w-full fs-button py-[1.45rem] px-[2rem] transition focus:outline-none focus:ring-2 focus:ring-offset-2';
+    'rounded-[1.5rem] w-full fs-button py-[1.45rem] px-[2rem] transition focus:outline-none focus:ring-2 focus:ring-offset-2';
 const variants = {
     primary: 'bg-[var(--blue)] active:bg-[#1d4ed8] text-white',
     gray: 'bg-[var(--text-optional)] text-[var(--text-main)] hover:bg-[var(--text-optional)]/80 border border-transparent',

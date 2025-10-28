@@ -72,7 +72,7 @@ const Onboarding: React.FC = () => {
             }}
         >
             {/* Progress */}
-            <div className="flex w-full justify-between items-center px-[1.6rem] mb-2">
+            <div className="flex w-full justify-between items-center px-[1.6rem] mb-2 relative z-[1000]">
                 <button
                     className={`bg-[var(--bg-secondary)]  rounded-[1rem] w-[3.5rem] h-[3.5rem] center  text-[var(--text-secondary)] ${
                         step === 0 ? 'opacity-0 pointer-events-none' : ''
