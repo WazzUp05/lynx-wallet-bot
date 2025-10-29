@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import CheckIcon from '@/components/icons/check-green.svg';
-import ErrorIcon from '@/components/icons/error.svg'; // добавь иконку ошибки
+import ErrorIcon from '@/components/icons/error.svg';
+import ClockIcon from '@/components/icons/clock-bg.svg';
 
 interface ToastProps {
     open: boolean;
     message: string;
     onClose: () => void;
     duration?: number; // ms
-    type?: 'success' | 'error';
+    type?: 'success' | 'error' | 'waiting';
 }
 
 export const Toast: React.FC<ToastProps> = ({ open, message, onClose, duration = 2000, type = 'success' }) => {
@@ -35,7 +36,13 @@ export const Toast: React.FC<ToastProps> = ({ open, message, onClose, duration =
                     `}
                 >
                     <div className="center w-[2.4rem] h-[2.4rem]">
-                        {type === 'error' ? <ErrorIcon width={20} height={20} /> : <CheckIcon width={20} height={20} />}
+                        {type === 'error' ? (
+                            <ErrorIcon width={20} height={20} />
+                        ) : type === 'success' ? (
+                            <CheckIcon width={20} height={20} />
+                        ) : type === 'waiting' ? (
+                            <ClockIcon className="text-[var(--yellow)]" width={20} height={20} />
+                        ) : null}
                     </div>
 
                     {message}

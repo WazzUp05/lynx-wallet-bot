@@ -522,10 +522,4 @@ body {
         backdrop-filter: blur(10px);
         background: rgba(42, 46, 54, 0.8);
     }
-
-    /* Fix for iPhone safe areas */
-    .nav-bottom-ios {
-        bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
-        padding-bottom: max(0.45rem, env(safe-area-inset-bottom, 0px));
-    }
 }

@@ -7,12 +7,11 @@ import { fetchHistory } from '@/lib/redux/thunks/historyThunks';
 import { setWaitingForDeposit, setOnboardingCompleted, setIsFirstTime } from '@/lib/redux/slices/appSlice';
 import { Button } from '@/components/ui/Button';
 
-import ClockIcon from '@/components/icons/clock-bg.svg';
-import CheckIcon from '@/components/icons/check-green.svg';
 import WarrningBlock from '@/components/WarrningBlock';
 import Image from 'next/image';
 import Loader from '@/components/ui/Loader';
 import { HistoryItemType } from '@/components/history/HistoryDay';
+import { Toast } from '@/components/ui/Toast';
 interface Step6Props {
     onNext: () => void;
 }
@@ -22,6 +21,13 @@ const Step6: React.FC<Step6Props> = ({ onNext }) => {
     const history = useAppSelector(getHistory);
     const [isSuccess, setIsSuccess] = useState(false);
     const [lastTransaction, setLastTransaction] = useState<HistoryItemType | null>(null);
+    const [toastOpen, setToastOpen] = useState(true);
+
+    useEffect(() => {
+        if (isSuccess) {
+            setToastOpen(true);
+        }
+    }, [isSuccess]);
 
     // Проверяем историю каждые 2 минуты
     useEffect(() => {
@@ -67,21 +73,26 @@ const Step6: React.FC<Step6Props> = ({ onNext }) => {
 
     return (
         <div className="flex flex-1 flex-col p-[1.6rem] pt-[6rem] pb-[calc(var(--safe-bottom)+1.6rem)] bg-[var(--bg-optional)] ">
-            <div
-                className={`fixed top-[2.6rem] left-1/2 -translate-x-1/2 z-[9999] box-shadow rounded-[1.5rem] flex items-center gap-[0.5rem] py-[0.55rem] px-[0.7rem] text-[1.2rem] leading-[130%] font-semibold
-                        bg-[var(--dark-gray-main)] text-[var(--text-main)]
-                    `}
-            >
-                <div className="center w-[2.4rem] h-[2.4rem]">
-                    {isSuccess ? (
-                        <CheckIcon className="text-[var(--green)]" width={20} height={20} />
-                    ) : (
-                        <ClockIcon className="text-[var(--yellow)]" width={20} height={20} />
-                    )}
-                </div>
+            {isSuccess ? (
+                <Toast
+                    open={toastOpen}
+                    message="Успешно"
+                    onClose={() => {
+                        setToastOpen(false);
+                    }}
+                    type="success"
+                />
+            ) : (
+                <Toast
+                    open={toastOpen}
+                    message="Ожидание"
+                    onClose={() => {
+                        setToastOpen(false);
+                    }}
+                    type="waiting"
+                />
+            )}
 
-                {isSuccess ? 'Успешно' : 'Ожидание'}
-            </div>
             <div
                 className={`w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-43.4rem] ${
                     isSuccess ? 'bg-[#34C85A4D]' : 'bg-[#007AFF4D]'
@@ -125,9 +136,6 @@ const Step6: React.FC<Step6Props> = ({ onNext }) => {
                             classNameIcon="text-[var(--yellow)]"
                             text="Обычно это занимает до 30 минут."
                         />
-                        <Button variant="yellow" disabled={true} className="w-full mt-auto" onClick={onNext}>
-                            Проверить снова
-                        </Button>
                     </>
                 )}
             </div>

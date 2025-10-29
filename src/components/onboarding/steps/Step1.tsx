@@ -12,19 +12,19 @@ interface Step1Props {
 const Step1: React.FC<Step1Props> = ({ onNext }) => {
     return (
         <div className="flex-1 flex flex-col items-center bg-[url('/onboarding/bg.png')] bg-cover bg-center justify-end">
-            <div className="w-full flex flex-col items-center ">
+            <div className="w-full flex flex-col items-center relative flex-1">
                 {/* Image */}
                 <motion.div
                     initial={{ opacity: 0, y: 0 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute top-[13.2rem] w-[31.5rem] h-[31.3rem] mb-[1rem]"
+                    className="absolute top-[2rem] w-[31.5rem] left-[1.5rem] h-[31.3rem] mb-[1rem]"
                 >
                     <Image src="/onboarding/step1.png" alt="Step 1" fill loading="lazy" />
                 </motion.div>
 
                 {/* Content */}
-                <div className="bg-[var(--bg-optional)] rounded-t-[2rem] w-full relative pt-[2.4rem] pb-[calc(var(--safe-bottom)+1.6rem)] px-[1.6rem] flex flex-col items-center">
+                <div className="bg-[var(--bg-optional)] mt-auto rounded-t-[2rem] w-full relative pt-[2.4rem] pb-[calc(var(--safe-bottom)+1.6rem)] px-[1.6rem] flex flex-col items-center">
                     <motion.h2
                         initial={{ opacity: 0, y: 0 }}
                         animate={{ opacity: 1, y: 0 }}
