@@ -5,6 +5,7 @@ import NavBottom from '@/components/NavBottom';
 import UserAutoUpdater from '@/components/UserAutoUpdater';
 import ServiceWorker from '@/components/ServiceWorker';
 import WebApp from '@twa-dev/sdk';
+import { useEffect } from 'react';
 
 const TelegramAuthClient = dynamic(() => import('@/components/TelegramAuthClient'), { ssr: false });
 const TwaAnalyticsProvider = dynamic(
@@ -17,6 +18,11 @@ interface ClientComponentsProps {
 }
 
 export default function ClientComponents({ children }: ClientComponentsProps) {
+    useEffect(() => {
+        WebApp.disableVerticalSwipes();
+        WebApp.isClosingConfirmationEnabled = true;
+    }, []);
+
     return (
         <>
             <ServiceWorker />
