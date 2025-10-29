@@ -81,9 +81,9 @@ const NavBottom = () => {
 
     return (
         <div
-            className="flex items-center h-[var(--nav-bottom-height)] rounded-[10rem] bg-[var(--bg-secondary)] fixed left-1/2 -translate-x-1/2 border-t border-[#00000026] z-10 glass py-[0.45rem] px-[1rem] w-[calc(100%-3.2rem)] backdrop-blur-md nav-bottom-ios"
+            className="flex items-center h-[var(--nav-bottom-height)] rounded-[10rem] bg-[var(--bg-secondary)] fixed left-1/2 -translate-x-1/2 border-t border-[#00000026] z-10 glass py-[0.45rem] px-[1rem] w-[calc(100%-3.2rem)] backdrop-blur-md"
             style={{
-                bottom: '0.5rem',
+                bottom: 'calc(var(--safe-bottom) + 0.5rem)',
                 WebkitBackdropFilter: 'blur(10px)',
             }}
         >
