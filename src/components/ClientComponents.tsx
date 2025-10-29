@@ -19,8 +19,11 @@ interface ClientComponentsProps {
 
 export default function ClientComponents({ children }: ClientComponentsProps) {
     useEffect(() => {
-        WebApp.disableVerticalSwipes();
-        WebApp.isClosingConfirmationEnabled = true;
+        // Импортируем SDK только в браузере
+        import('@twa-dev/sdk').then(({ default: WebApp }) => {
+            WebApp.disableVerticalSwipes();
+            WebApp.isClosingConfirmationEnabled = true;
+        });
     }, []);
 
     return (
