@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PlusIcon from '@/components/icons/plus.svg';
 import P2PIcon from '@/components/icons/p2p.svg';
 import QrIcon from '@/components/icons/qr.svg';
@@ -6,6 +6,7 @@ import LinkIcon from '@/components/icons/link.svg';
 import Link from 'next/link';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { getNeedDeposit, getShouldDisableButtons, getWaitingForDeposit } from '@/lib/redux/selectors/appSelectors';
+import WebApp from '@twa-dev/sdk';
 
 interface NavigationProps {
     onTopUp?: () => void;
@@ -16,8 +17,22 @@ const Navigation: React.FC<NavigationProps> = ({ onTopUp }) => {
     const waitingDeposit = useAppSelector(getWaitingForDeposit);
     const needDeposit = useAppSelector(getNeedDeposit);
 
+    useEffect(() => {}, []);
+
+    const showQrCode = () => {
+        const par = {
+            text: 'Сканируйте QR-код',
+        };
+        WebApp.showScanQrPopup(par, (result) => {
+            alert(result);
+        });
+    };
+
     return (
         <div className="flex px-[1.6rem] gap-[1.7rem] items-center justify-between mb-[2.4rem]">
+            <button className="w-[7.3rem] text-[var(--text-main)]" onClick={showQrCode}>
+                Scan QR
+            </button>
             <button className={`w-[7.3rem] text-[var(--text-main)]`} onClick={onTopUp}>
                 <div
                     className={`bg-[#2A2E3633] glass glass-btn ${
