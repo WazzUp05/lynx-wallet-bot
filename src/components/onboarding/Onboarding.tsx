@@ -18,6 +18,7 @@ import Step5 from './steps/Step5';
 import Step6 from './steps/Step6';
 import CloseIcon from '@/components/icons/close.svg';
 import ArrowLeftIcon from '@/components/icons/arrow-left.svg';
+import Step7 from './steps/Step7';
 
 const Onboarding: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -26,7 +27,7 @@ const Onboarding: React.FC = () => {
     // Инициализируем шаг из сохранённого состояния
     const [step, setStep] = useState(savedStep);
 
-    const stepComponents = [Step1, Step2, Step3, Step4, Step5, Step6];
+    const stepComponents = [Step1, Step2, Step3, Step4, Step5, Step6, Step7];
 
     // Обновляем состояние шага в Redux
     React.useEffect(() => {
@@ -62,7 +63,13 @@ const Onboarding: React.FC = () => {
     };
 
     const handlePrev = () => {
-        if (step > 0) setStep(step - 1);
+        // Если сейчас 7 шаг (индекс 6) — делать переход к 5 шагу (индекс 4)
+        if (step === 6) setStep(4);
+        else if (step > 0) setStep(step - 1);
+    };
+
+    const handleGoToStep5 = () => {
+        setStep(4);
     };
     return (
         <div
@@ -109,7 +116,7 @@ const Onboarding: React.FC = () => {
             </div>
 
             {/* Step Content */}
-            {React.createElement(stepComponents[step], { onNext: handleNext })}
+            {React.createElement(stepComponents[step], { onNext: handleNext, onGoToStep5: handleGoToStep5 })}
         </div>
     );
 };

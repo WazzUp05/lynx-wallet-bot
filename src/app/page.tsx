@@ -3,10 +3,16 @@ import Main from '@/components/main/Main';
 import Onboarding from '@/components/onboarding/Onboarding';
 import Loader from '@/components/ui/Loader';
 import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
-import { getOnboardingCompleted, getWaitingForDeposit } from '@/lib/redux/selectors/appSelectors';
+import { getOnboardingCompleted, getWaitingForDeposit, getWaitingSince } from '@/lib/redux/selectors/appSelectors';
 import { getHistory } from '@/lib/redux/selectors/historySelectors';
 import { getWallet } from '@/lib/redux/selectors/userSelectors';
-import { setIsFirstTime, setNeedDeposit, setWaitingForDeposit } from '@/lib/redux/slices/appSlice';
+import {
+    setIsFirstTime,
+    setNeedDeposit,
+    setWaitingForDeposit,
+    setOnboardingCompleted,
+    setOnboardingStep,
+} from '@/lib/redux/slices/appSlice';
 import { fetchHistory } from '@/lib/redux/thunks/historyThunks';
 import { useEffect } from 'react';
 import { getLoading, getUser } from '@/lib/redux/selectors/userSelectors';
@@ -15,6 +21,7 @@ export default function Home() {
     const dispatch = useAppDispatch();
     const onboardingCompleted = useAppSelector(getOnboardingCompleted);
     const isWaitingForDeposit = useAppSelector(getWaitingForDeposit);
+    const waitingSince = useAppSelector(getWaitingSince);
 
     const history = useAppSelector(getHistory);
     const wallet = useAppSelector(getWallet);
@@ -38,6 +45,28 @@ export default function Home() {
             }
         }
     }, [user, wallet, history, dispatch]);
+
+    // Если ожидаем оплаты: проверяем прошедшее время (переживает перезапуски),
+    // и ставим таймер на остаток до 30 минут
+    useEffect(() => {
+        if (!isWaitingForDeposit || !waitingSince) return;
+        const elapsed = Date.now() - waitingSince;
+        const total = 30 * 60 * 1000;
+        if (elapsed >= total) {
+            dispatch(setWaitingForDeposit(false));
+            dispatch(setNeedDeposit(true));
+            dispatch(setOnboardingStep(6));
+            dispatch(setOnboardingCompleted(false));
+            return;
+        }
+        const timeout = setTimeout(() => {
+            dispatch(setWaitingForDeposit(false));
+            dispatch(setNeedDeposit(true));
+            dispatch(setOnboardingStep(6));
+            dispatch(setOnboardingCompleted(false));
+        }, total - elapsed);
+        return () => clearTimeout(timeout);
+    }, [isWaitingForDeposit, waitingSince, dispatch]);
 
     // Проверяем историю каждые 2 минуты если ожидаем пополнения
     useEffect(() => {
