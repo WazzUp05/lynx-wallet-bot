@@ -7,13 +7,14 @@ import SelectCrypto from '@/components/SelectCrypto';
 import { SelectCustom } from '@/components/ui/SelectCustom';
 import WarrningBlock from '@/components/WarrningBlock';
 import { Button } from '@/components/ui/Button';
-import { trackEvent } from '@/lib/telemetry';
+import { useTelemetry } from '@/lib/telemetry';
 
 interface Step4Props {
     onNext: () => void;
 }
 
 const Step4: React.FC<Step4Props> = ({ onNext }) => {
+    const { trackEvent } = useTelemetry();
     const wallet = useAppSelector(getWallet);
     const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
 

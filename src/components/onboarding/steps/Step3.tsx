@@ -4,13 +4,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Button } from '../../ui/Button';
-import { trackEvent } from '@/lib/telemetry';
+import { useTelemetry } from '@/lib/telemetry';
 
 interface Step3Props {
     onNext: () => void;
 }
 
 const Step3: React.FC<Step3Props> = ({ onNext }) => {
+    const { trackEvent } = useTelemetry();
     return (
         <div className="flex-1 flex flex-col items-center bg-[url('/onboarding/bg.png')] bg-cover bg-center justify-end">
             <div className="w-full flex flex-col items-center relative flex-1">

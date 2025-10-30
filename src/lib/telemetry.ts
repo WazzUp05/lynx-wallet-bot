@@ -1,10 +1,13 @@
-import telemetree from 'telemetree-io';
+import { useTWAEvent } from '@tonsolutions/telemetree-react';
 
-export const trackEvent = (event: string, props?: object) => {
-    try {
-        telemetree.track(event, props);
-    } catch (e) {
-        // Для разработки/дебага можно разкомментить:
-        // console.warn('telemetry error', e);
-    }
+export const useTelemetry = () => {
+    const telemetree = useTWAEvent();
+    const trackEvent = (event: string, props?: object) => {
+        try {
+            telemetree.track(event, props || {});
+        } catch (e) {
+            // console.warn('telemetry error', e);
+        }
+    };
+    return { trackEvent };
 };

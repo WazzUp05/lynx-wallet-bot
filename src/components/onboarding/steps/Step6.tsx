@@ -12,7 +12,7 @@ import Image from 'next/image';
 import Loader from '@/components/ui/Loader';
 import { HistoryItemType } from '@/components/history/HistoryDay';
 import { Toast } from '@/components/ui/Toast';
-import { trackEvent } from '@/lib/telemetry';
+import { useTelemetry } from '@/lib/telemetry';
 interface Step6Props {
     onNext: () => void;
 }
@@ -23,6 +23,7 @@ const Step6: React.FC<Step6Props> = ({ onNext }) => {
     const [isSuccess, setIsSuccess] = useState(false);
     const [lastTransaction, setLastTransaction] = useState<HistoryItemType | null>(null);
     const [toastOpen, setToastOpen] = useState(true);
+    const { trackEvent } = useTelemetry();
 
     useEffect(() => {
         if (isSuccess) {
@@ -64,7 +65,7 @@ const Step6: React.FC<Step6Props> = ({ onNext }) => {
         }
     }, [history, dispatch]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (isSuccess && lastTransaction) {
             trackEvent('wallet_deposit_success', { amount: lastTransaction.amount });
         }
