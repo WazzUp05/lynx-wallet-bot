@@ -7,7 +7,6 @@ interface AppState {
     needDeposit: boolean; // необходимо пополнить счет
     onboardingStep: number;
     isFirstTime: boolean; // первый раз зашел
-    waitingSince: number | null; // timestamp начала ожидания
     // Добавляй сюда другие глобальные состояния приложения
 }
 
@@ -33,7 +32,6 @@ const initialState: AppState = {
     needDeposit: false,
     onboardingStep: 0,
     isFirstTime: true,
-    waitingSince: null,
     ...loadStateFromStorage(), // Загружаем сохранённое состояние
 };
 
@@ -49,12 +47,6 @@ const appSlice = createSlice({
         },
         setWaitingForDeposit(state, action: PayloadAction<boolean>) {
             state.isWaitingForDeposit = action.payload;
-            if (action.payload) {
-                // Запоминаем момент начала ожидания
-                state.waitingSince = state.waitingSince ?? Date.now();
-            } else {
-                state.waitingSince = null;
-            }
         },
         setOnboardingStep(state, action: PayloadAction<number>) {
             state.onboardingStep = action.payload;
@@ -87,7 +79,6 @@ const appSlice = createSlice({
                                 needDeposit: state.needDeposit,
                                 onboardingStep: state.onboardingStep,
                                 isFirstTime: state.isFirstTime,
-                                waitingSince: state.waitingSince,
                             })
                         );
                     } catch (error) {

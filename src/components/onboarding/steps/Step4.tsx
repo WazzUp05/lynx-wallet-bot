@@ -7,12 +7,14 @@ import SelectCrypto from '@/components/SelectCrypto';
 import { SelectCustom } from '@/components/ui/SelectCustom';
 import WarrningBlock from '@/components/WarrningBlock';
 import { Button } from '@/components/ui/Button';
+import { useTelemetry } from '@/lib/telemetry';
 
 interface Step4Props {
     onNext: () => void;
 }
 
 const Step4: React.FC<Step4Props> = ({ onNext }) => {
+    const { trackEvent } = useTelemetry();
     const wallet = useAppSelector(getWallet);
     const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
 
@@ -57,7 +59,14 @@ const Step4: React.FC<Step4Props> = ({ onNext }) => {
                 classNameIcon="text-[var(--yellow)]"
                 text="Сейчас кошелёк поддерживает только USDT, другие валюты появятся позже."
             />
-            <Button variant="yellow" className="w-full mt-auto " onClick={onNext}>
+            <Button
+                variant="yellow"
+                className="w-full mt-auto "
+                onClick={() => {
+                    trackEvent('onboarding_step_passed', { step_number: 4 });
+                    onNext();
+                }}
+            >
                 Продолжить
             </Button>
         </div>

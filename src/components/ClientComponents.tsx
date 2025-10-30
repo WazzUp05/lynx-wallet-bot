@@ -6,6 +6,7 @@ import UserAutoUpdater from '@/components/UserAutoUpdater';
 import ServiceWorker from '@/components/ServiceWorker';
 import WebApp from '@twa-dev/sdk';
 import { useEffect } from 'react';
+import { TrackGroups } from '@tonsolutions/telemetree-react';
 
 const TelegramAuthClient = dynamic(() => import('@/components/TelegramAuthClient'), { ssr: false });
 const TwaAnalyticsProvider = dynamic(
@@ -35,6 +36,7 @@ export default function ClientComponents({ children }: ClientComponentsProps) {
                 <TwaAnalyticsProvider
                     projectId="d14f0c89-0266-4753-9e44-65dd94548add"
                     apiKey="908c65ba-093c-4a83-ac84-2e6b066c6ca3"
+                    trackGroup={TrackGroups.MEDIUM}
                 >
                     {children}
                     <NavBottom />
