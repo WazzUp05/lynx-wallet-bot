@@ -11,32 +11,26 @@ import ClockIcon from '@/components/icons/clock-bg.svg';
 import WarrningIcon from '@/components/icons/warrning-mark.svg';
 import QuestionIcon from '@/components/icons/question.svg';
 import Link from 'next/link';
+import { Toast } from '@/components/ui/Toast';
 interface Step7Props {
     onNext: () => void;
+    onGoToStep5?: () => void;
 }
 
-const Step7: React.FC<Step7Props> = ({ onNext }) => {
-    const dispatch = useAppDispatch();
-    const history = useAppSelector(getHistory);
-    const [isRejected, setIsRejected] = useState(true);
+const Step7: React.FC<Step7Props> = ({ onNext, onGoToStep5 }) => {
+    const [toastOpen, setToastOpen] = useState(true);
 
     const handleCheckAgain = () => {
-        setIsRejected(false);
-        onNext();
+        if (onGoToStep5) {
+            onGoToStep5();
+        } else {
+            onNext();
+        }
     };
 
     return (
         <div className="flex flex-1 flex-col p-[1.6rem] pt-[6rem] pb-[calc(var(--safe-bottom)+1.6rem)] bg-[var(--bg-optional)] ">
-            <div
-                className={`fixed top-[2.6rem] left-1/2 -translate-x-1/2 z-[9999] box-shadow rounded-[1.5rem] flex items-center gap-[0.5rem] py-[0.55rem] px-[0.7rem] text-[1.2rem] leading-[130%] font-semibold
-                        bg-[var(--dark-gray-main)] text-[var(--text-main)]
-                    `}
-            >
-                <div className="center w-[2.4rem] h-[2.4rem]">
-                    <WarrningIcon className="text-[#FF9000]" width={20} height={20} />
-                </div>
-                Отклонено
-            </div>
+            <Toast open={toastOpen} message="Отклонено" onClose={() => setToastOpen(false)} type="warrning" />
             <div
                 className={`w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-43.4rem] ${'bg-[#FFFFFF0D]'} blur-[12rem] rounded-[50%] `}
             />
@@ -53,7 +47,7 @@ const Step7: React.FC<Step7Props> = ({ onNext }) => {
                 </h2>
 
                 <p className="text-[1.5rem] text-[var(--text-main)] mb-[1.6rem]">Что могло произойти:</p>
-                <div className="bg-[var(--bg-optional)] rounded-[2rem] p-[1.6rem] flex flex-col gap-[1.6rem]">
+                <div className="bg-[var(--bg-optional)] rounded-[2rem] p-[1.6rem] flex flex-col gap-[1.6rem] mb-[4.4rem]">
                     <div className="flex items-start gap-[0.6rem]">
                         <div className="min-w-[1.6rem] flex-1 flex min-h-[1.6rem] text-[1.2rem] leading-[130%] font-semibold flex-shrink-0 rounded-full bg-[var(--text-main)] text-[var(--bg-secondary)] center">
                             1
