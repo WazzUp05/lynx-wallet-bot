@@ -12,6 +12,7 @@ import RightIcon from '@/components/icons/right-arrow.svg';
 import MinAmountModal from '@/components/modals/MinAmountModal';
 import TaxModal from '@/components/modals/TaxModal';
 import { setOnboardingCompleted, setWaitingForDeposit, setNeedDeposit } from '@/lib/redux/slices/appSlice';
+import { trackEvent } from '@/lib/telemetry';
 interface Step5Props {
     onNext: () => void;
 }
@@ -24,6 +25,10 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
     const address = wallet?.address || '';
     const [showTaxModal, setShowTaxModal] = useState(false);
     const [showMinAmountModal, setShowMinAmountModal] = useState(false);
+
+    React.useEffect(() => {
+        trackEvent('wallet_deposit_screen_opened');
+    }, []);
 
     const handleIDeposited = () => {
         // Переходим в состояние ожидания пополнения
@@ -77,7 +82,10 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                     </p>
                     <button
                         className="border border-[var(--text-main)] rounded-[1.5rem] px-[2.2rem] py-[1.2rem] text-[1.4rem] leading-[130%] text-[var(--text-main)]"
-                        onClick={() => copyWithToast(address, 'Адрес скопирован')}
+                        onClick={() => {
+                            trackEvent('wallet_deposit_address_copied');
+                            copyWithToast(address, 'Адрес скопирован');
+                        }}
                         disabled={isCopying}
                     >
                         Скопировать адрес
@@ -127,10 +135,24 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
             </div>
             <TaxModal showModal={showTaxModal} onClose={() => setShowTaxModal(false)} />
             <MinAmountModal showModal={showMinAmountModal} onClose={() => setShowMinAmountModal(false)} />
-            <Button variant="yellow" className="w-full mt-auto mb-[1.2rem]" onClick={handleIDeposited}>
+            <Button
+                variant="yellow"
+                className="w-full mt-auto mb-[1.2rem]"
+                onClick={() => {
+                    trackEvent('wallet_deposit_confirmed');
+                    handleIDeposited();
+                }}
+            >
                 Я пополнил
             </Button>
-            <Button variant="ghost" className="w-full" onClick={handleLater}>
+            <Button
+                variant="ghost"
+                className="w-full"
+                onClick={() => {
+                    trackEvent('wallet_deposit_later');
+                    handleLater();
+                }}
+            >
                 Сделаю позже
             </Button>
         </div>

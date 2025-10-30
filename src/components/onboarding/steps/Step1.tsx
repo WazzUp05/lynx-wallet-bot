@@ -4,12 +4,17 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Button } from '../../ui/Button';
+import { trackEvent } from '@/lib/telemetry';
 
 interface Step1Props {
     onNext: () => void;
 }
 
 const Step1: React.FC<Step1Props> = ({ onNext }) => {
+    React.useEffect(() => {
+        trackEvent('onboarding_started');
+    }, []);
+
     return (
         <div className="flex-1 flex flex-col items-center bg-[url('/onboarding/bg.png')] bg-cover bg-center justify-end">
             <div className="w-full flex flex-col items-center relative flex-1">
@@ -50,7 +55,13 @@ const Step1: React.FC<Step1Props> = ({ onNext }) => {
                         transition={{ duration: 0.6, delay: 0.6 }}
                         className="w-full"
                     >
-                        <Button variant="yellow" onClick={onNext}>
+                        <Button
+                            variant="yellow"
+                            onClick={() => {
+                                trackEvent('onboarding_step_passed', { step_number: 1 });
+                                onNext();
+                            }}
+                        >
                             Классно!
                         </Button>
                     </motion.div>

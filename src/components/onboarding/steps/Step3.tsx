@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Button } from '../../ui/Button';
+import { trackEvent } from '@/lib/telemetry';
 
 interface Step3Props {
     onNext: () => void;
@@ -50,7 +51,13 @@ const Step3: React.FC<Step3Props> = ({ onNext }) => {
                         transition={{ duration: 0.6, delay: 0.6 }}
                         className="w-full"
                     >
-                        <Button variant="yellow" onClick={onNext}>
+                        <Button
+                            variant="yellow"
+                            onClick={() => {
+                                trackEvent('onboarding_step_passed', { step_number: 3 });
+                                onNext();
+                            }}
+                        >
                             Пополнить
                         </Button>
                     </motion.div>
