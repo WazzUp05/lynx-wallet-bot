@@ -14,6 +14,8 @@ import { getLoading, getWallet } from '@/lib/redux/selectors/userSelectors';
 import Loader from '@/components/ui/Loader';
 import MinAmountModal from '@/components/modals/MinAmountModal';
 import { useCopyWithToast } from '@/hooks/useCopyWithToast';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useEffect } from 'react';
 
 // Типизация для адресов
 type NetworkData = {
@@ -36,10 +38,19 @@ export default function RefilledQrPage() {
     const wallet = useAppSelector(getWallet);
     const loadingApp = useAppSelector(getLoading);
     const { crypto, network } = params as { crypto: string; network: string };
+    const { trackEvent } = useTelemetry();
     const [showMinAmountModal, setShowMinAmountModal] = useState(false);
     const [showTaxModal, setShowTaxModal] = useState(false);
 
     const { copyWithToast, isCopying, toastOpen, toastMessage, closeToast } = useCopyWithToast();
+
+    // Событие при открытии страницы
+    useEffect(() => {
+        trackEvent('refill_qr_page_opened', {
+            crypto,
+            network,
+        });
+    }, [crypto, network, trackEvent]);
 
     // useEffect(() => {
     //     dispatch(fetchUser());
@@ -98,7 +109,10 @@ export default function RefilledQrPage() {
             <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[3rem] font-semibold w-full">
                 <button
                     className="absolute left-0 top-1/2 -translate-y-1/2 bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
-                    onClick={() => router.back()}
+                    onClick={() => {
+                        trackEvent('refill_qr_page_closed', { crypto, network });
+                        router.back();
+                    }}
                 >
                     <ArrowLeft />
                 </button>
@@ -137,7 +151,10 @@ export default function RefilledQrPage() {
                     <b>приведёт к потере средств!</b>
                 </div>
                 <div
-                    onClick={() => setShowMinAmountModal(true)}
+                    onClick={() => {
+                        trackEvent('refill_min_amount_modal_opened', { crypto, network });
+                        setShowMinAmountModal(true);
+                    }}
                     className="w-full flex gap-[0.5rem] bg-[var(--yellow-optional)]  py-[1.6rem] px-[1.6rem] rounded-[1.5rem] mb-[1.2rem] text-[1.2rem] leading-[130%] "
                 >
                     <div>
@@ -151,7 +168,10 @@ export default function RefilledQrPage() {
                     </div>
                 </div>
                 <div
-                    onClick={() => setShowTaxModal(true)}
+                    onClick={() => {
+                        trackEvent('refill_tax_modal_opened', { crypto, network });
+                        setShowTaxModal(true);
+                    }}
                     className="w-full bg-[var(--yellow-optional)]  py-[1.6rem] px-[1.6rem] rounded-[1.5rem] text-[1.2rem] leading-[130%]  flex items-center gap-2"
                 >
                     <div>
@@ -168,16 +188,42 @@ export default function RefilledQrPage() {
             <Button
                 className="w-full mt-auto mb-[1rem]"
                 variant="yellow"
-                onClick={() => copyWithToast(data.address, 'Адрес скопирован')}
+                onClick={() => {
+                    trackEvent('refill_address_copied', {
+                        crypto,
+                        network,
+                        address: data.address,
+                    });
+                    copyWithToast(data.address, 'Адрес скопирован');
+                }}
                 disabled={isCopying}
             >
                 {isCopying ? 'Копирование...' : 'Копировать адрес'}
             </Button>
-            <Button className="w-full" variant="ghost" onClick={() => router.push('/')}>
+            <Button
+                className="w-full"
+                variant="ghost"
+                onClick={() => {
+                    trackEvent('refill_home_clicked', { crypto, network });
+                    router.push('/');
+                }}
+            >
                 Вернуться на главную
             </Button>
-            <TaxModal showModal={showTaxModal} onClose={() => setShowTaxModal(false)} />
-            <MinAmountModal showModal={showMinAmountModal} onClose={() => setShowMinAmountModal(false)} />
+            <TaxModal
+                showModal={showTaxModal}
+                onClose={() => {
+                    trackEvent('refill_tax_modal_closed', { crypto, network });
+                    setShowTaxModal(false);
+                }}
+            />
+            <MinAmountModal
+                showModal={showMinAmountModal}
+                onClose={() => {
+                    trackEvent('refill_min_amount_modal_closed', { crypto, network });
+                    setShowMinAmountModal(false);
+                }}
+            />
         </div>
     );
 }

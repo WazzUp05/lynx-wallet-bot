@@ -1,5 +1,6 @@
+'use client';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ArrowLeftIcon from '@/components/icons/arrow-left.svg';
 import MobileIcon from '@/components/icons/mobile.svg';
 import LockIcon from '@/components/icons/lock.svg';
@@ -8,8 +9,16 @@ import TimeIcon from '@/components/icons/time.svg';
 // import Profile2UserIcon from '@/components/icons/profile-2user.svg';
 import FaqItem from '@/components/FaqItem';
 import Image from 'next/image';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
 
 const Page = () => {
+    const { trackEvent } = useTelemetry();
+
+    // Событие при открытии страницы
+    useEffect(() => {
+        trackEvent('faq_page_opened');
+    }, [trackEvent]);
+
     return (
         <>
             <div className="px-[1.6rem] py-[2rem] w-full bg-[var(--bg-optional)] min-h-[100dvh] flex flex-col pb-[calc(var(--safe-bottom)+1.6rem)]">
@@ -17,6 +26,7 @@ const Page = () => {
                     <Link
                         href="/profile"
                         className="w-[3.5rem] h-[3.5rem] bg-[var(--bg-secondary)] text-[var(--text-secondary)] rounded-[1rem] center"
+                        onClick={() => trackEvent('faq_back_clicked')}
                     >
                         <ArrowLeftIcon width={16} height={16} className="w-[1.6rem] h-[1.6rem]" />
                     </Link>

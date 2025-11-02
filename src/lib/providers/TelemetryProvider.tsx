@@ -4,8 +4,11 @@
 import React, { createContext, useContext, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useTWAEvent } from '@tonsolutions/telemetree-react';
 
+// Тип для свойств событий телеметрии (JSON-совместимые типы)
+export type TelemetryEventProps = Record<string, string | number | boolean | null | undefined | string[] | number[]>;
+
 type TelemetreeLike = {
-    track: (eventName: string, eventProps: Record<string, any>) => Promise<void>;
+    track: (eventName: string, eventProps: TelemetryEventProps) => Promise<void>;
 };
 
 type PatchedTelemetree = TelemetreeLike & {
@@ -15,20 +18,16 @@ type PatchedTelemetree = TelemetreeLike & {
 // Префиксы автособытий, которые нужно блокировать
 const AUTO_EVENT_PREFIXES = ['TS Click', 'TS PageView', 'TS Error', 'TS Load'];
 
-const TelemetryContext = createContext<{ trackEvent: (event: string, props?: Record<string, any>) => Promise<void> }>({
+const TelemetryContext = createContext<{
+    trackEvent: (event: string, props?: TelemetryEventProps) => Promise<void>;
+}>({
     trackEvent: async () => {},
 });
 
 export const TelemetryProvider = ({ children }: { children: React.ReactNode }) => {
-    let telemetree: TelemetreeLike | null = null;
-
-    try {
-        telemetree = useTWAEvent();
-    } catch (error) {
-        if (process.env.NODE_ENV !== 'production') {
-            console.warn('[Telemetry] provider not ready', error);
-        }
-    }
+    // Хуки должны вызываться на верхнем уровне, не условно и не в try-catch
+    // Если useTWAEvent может выбросить ошибку, она должна обрабатываться Error Boundary или выше по дереву
+    const telemetree: TelemetreeLike | null = useTWAEvent();
 
     const appliedRef = useRef(false);
 
@@ -47,7 +46,7 @@ export const TelemetryProvider = ({ children }: { children: React.ReactNode }) =
 
         const originalTrack = telemetree.track.bind(telemetree);
 
-        telemetree.track = async (eventName: string, props: Record<string, any> = {}) => {
+        telemetree.track = async (eventName: string, props: TelemetryEventProps = {}) => {
             // Блокируем все автособытия от Telemetree
             const isAutoEvent = AUTO_EVENT_PREFIXES.some((prefix) => eventName.includes(prefix));
 
@@ -66,7 +65,7 @@ export const TelemetryProvider = ({ children }: { children: React.ReactNode }) =
     }, [telemetree]);
 
     const trackEvent = useCallback(
-        async (event: string, props?: Record<string, any>) => {
+        async (event: string, props?: TelemetryEventProps) => {
             if (!telemetree) {
                 if (process.env.NODE_ENV !== 'production') {
                     console.debug('[Telemetry] skipped', event, props);

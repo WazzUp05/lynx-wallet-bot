@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import ArrowDownIcon from '@/components/icons/arrow-down.svg';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
 
 interface FaqItemProps {
     question: string;
@@ -11,11 +12,22 @@ interface FaqItemProps {
 
 const FaqItem: React.FC<FaqItemProps> = ({ question, answer, defaultOpen = false }) => {
     const [isOpen, setIsOpen] = useState(defaultOpen);
+    const { trackEvent } = useTelemetry();
+
+    const handleToggle = () => {
+        const newIsOpen = !isOpen;
+        setIsOpen(newIsOpen);
+        if (newIsOpen) {
+            trackEvent('faq_question_opened', { question });
+        } else {
+            trackEvent('faq_question_closed', { question });
+        }
+    };
 
     return (
         <div className=" py-[1.5rem] border-t mt-[-1px] border-b border-[var(--dark-gray-secondary)] overflow-hidden">
             <button
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={handleToggle}
                 className="w-full flex items-center  justify-between text-left transition-all"
             >
                 <span className="text-[1.6rem] leading-[130%] font-semibold text-[var(--text-main)] pr-[1rem]">

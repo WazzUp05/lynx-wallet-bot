@@ -1,0 +1,331 @@
+{
+    "total_events": 81,
+    "categories": {
+        "qr_scanning": {
+            "count": 12,
+            "events": [
+                {
+                    "name": "qr_scan_page_opened",
+                    "params": []
+                },
+                {
+                    "name": "qr_scan_page_closed",
+                    "params": []
+                },
+                {
+                    "name": "qr_code_scanned",
+                    "params": ["has_url"]
+                },
+                {
+                    "name": "qr_scan_success",
+                    "params": ["rub_amount", "usdt_amount", "has_amount_in_url", "prepare_required"]
+                },
+                {
+                    "name": "qr_scan_error",
+                    "params": ["reason"]
+                },
+                {
+                    "name": "qr_prepare_error",
+                    "params": ["code", "error"]
+                },
+                {
+                    "name": "qr_payment_modal_opened",
+                    "params": ["rub_amount", "usdt_amount"]
+                },
+                {
+                    "name": "qr_payment_initiated",
+                    "params": ["rub_amount", "usdt_amount", "rate"]
+                },
+                {
+                    "name": "qr_payment_order_created",
+                    "params": ["order_uuid", "rub_amount", "usdt_amount"]
+                },
+                {
+                    "name": "qr_payment_order_error",
+                    "params": ["rub_amount", "usdt_amount", "error"]
+                },
+                {
+                    "name": "qr_payment_modal_closed",
+                    "params": ["rub_amount", "usdt_amount"]
+                },
+                {
+                    "name": "qr_error_modal_closed",
+                    "params": []
+                }
+            ]
+        },
+        "link_payment": {
+            "count": 11,
+            "events": [
+                {
+                    "name": "link_payment_page_opened",
+                    "params": []
+                },
+                {
+                    "name": "link_payment_page_closed",
+                    "params": []
+                },
+                {
+                    "name": "link_pasted",
+                    "params": ["has_url"]
+                },
+                {
+                    "name": "link_validation_error",
+                    "params": ["error"]
+                },
+                {
+                    "name": "link_submitted",
+                    "params": ["has_url"]
+                },
+                {
+                    "name": "link_prepare_error",
+                    "params": ["code", "error"]
+                },
+                {
+                    "name": "link_payment_modal_opened",
+                    "params": ["rub_amount", "usdt_amount"]
+                },
+                {
+                    "name": "link_payment_modal_closed",
+                    "params": ["rub_amount", "usdt_amount"]
+                },
+                {
+                    "name": "link_payment_initiated",
+                    "params": ["rub_amount", "usdt_amount", "rate"]
+                },
+                {
+                    "name": "link_payment_order_created",
+                    "params": ["order_uuid", "rub_amount", "usdt_amount"]
+                },
+                {
+                    "name": "link_payment_order_error",
+                    "params": ["rub_amount", "usdt_amount", "error"]
+                }
+            ]
+        },
+        "payment_status": {
+            "count": 6,
+            "events": [
+                {
+                    "name": "payment_status_page_opened",
+                    "params": ["order_id"]
+                },
+                {
+                    "name": "payment_status_refreshed",
+                    "params": ["order_id", "old_status", "new_status"]
+                },
+                {
+                    "name": "payment_status_success",
+                    "params": ["order_id", "order_uuid", "amount", "amount_usdt"]
+                },
+                {
+                    "name": "payment_status_error",
+                    "params": ["order_id", "error"]
+                },
+                {
+                    "name": "payment_status_order_id_copied",
+                    "params": ["order_id", "order_uuid"]
+                },
+                {
+                    "name": "payment_status_home_clicked",
+                    "params": ["order_id", "order_uuid", "status"]
+                }
+            ]
+        },
+        "transaction_detail": {
+            "count": 8,
+            "events": [
+                {
+                    "name": "transaction_detail_page_opened",
+                    "params": ["transaction_hash"]
+                },
+                {
+                    "name": "transaction_detail_back_clicked",
+                    "params": ["transaction_hash"]
+                },
+                {
+                    "name": "transaction_hash_copied",
+                    "params": ["transaction_hash"]
+                },
+                {
+                    "name": "transaction_id_copied",
+                    "params": ["transaction_hash", "transaction_id"]
+                },
+                {
+                    "name": "transaction_address_copied",
+                    "params": ["transaction_hash"]
+                },
+                {
+                    "name": "transaction_link_clicked",
+                    "params": ["transaction_hash", "url"]
+                },
+                {
+                    "name": "transaction_tax_modal_opened",
+                    "params": ["transaction_hash"]
+                },
+                {
+                    "name": "transaction_tax_modal_closed",
+                    "params": ["transaction_hash"]
+                }
+            ]
+        },
+        "history": {
+            "count": 4,
+            "events": [
+                {
+                    "name": "history_page_opened",
+                    "params": ["items_count"]
+                },
+                {
+                    "name": "history_tab_changed",
+                    "params": ["tab", "items_count"]
+                },
+                {
+                    "name": "history_transaction_clicked",
+                    "params": ["transaction_hash", "transaction_type", "transaction_status"]
+                },
+                {
+                    "name": "history_empty_state_action",
+                    "params": ["action"]
+                }
+            ]
+        },
+        "refill": {
+            "count": 12,
+            "events": [
+                {
+                    "name": "refill_page_opened",
+                    "params": []
+                },
+                {
+                    "name": "refill_page_closed",
+                    "params": []
+                },
+                {
+                    "name": "refill_network_selected",
+                    "params": ["network", "crypto"]
+                },
+                {
+                    "name": "refill_continue_clicked",
+                    "params": ["crypto", "network"]
+                },
+                {
+                    "name": "refill_qr_page_opened",
+                    "params": ["crypto", "network"]
+                },
+                {
+                    "name": "refill_qr_page_closed",
+                    "params": ["crypto", "network"]
+                },
+                {
+                    "name": "refill_address_copied",
+                    "params": ["crypto", "network", "address"]
+                },
+                {
+                    "name": "refill_home_clicked",
+                    "params": ["crypto", "network"]
+                },
+                {
+                    "name": "refill_min_amount_modal_opened",
+                    "params": ["crypto", "network"]
+                },
+                {
+                    "name": "refill_min_amount_modal_closed",
+                    "params": ["crypto", "network"]
+                },
+                {
+                    "name": "refill_tax_modal_opened",
+                    "params": ["crypto", "network"]
+                },
+                {
+                    "name": "refill_tax_modal_closed",
+                    "params": ["crypto", "network"]
+                }
+            ]
+        },
+        "profile": {
+            "count": 3,
+            "events": [
+                {
+                    "name": "profile_page_opened",
+                    "params": []
+                },
+                {
+                    "name": "profile_add_to_home_clicked",
+                    "params": []
+                },
+                {
+                    "name": "profile_faq_clicked",
+                    "params": []
+                }
+            ]
+        },
+        "faq": {
+            "count": 4,
+            "events": [
+                {
+                    "name": "faq_page_opened",
+                    "params": []
+                },
+                {
+                    "name": "faq_back_clicked",
+                    "params": []
+                },
+                {
+                    "name": "faq_question_opened",
+                    "params": ["question"]
+                },
+                {
+                    "name": "faq_question_closed",
+                    "params": ["question"]
+                }
+            ]
+        },
+        "onboarding": {
+            "count": 10,
+            "events": [
+                {
+                    "name": "onboarding_started",
+                    "params": []
+                },
+                {
+                    "name": "onboarding_step_passed",
+                    "params": ["step_number"]
+                },
+                {
+                    "name": "wallet_deposit_screen_opened",
+                    "params": []
+                },
+                {
+                    "name": "wallet_deposit_address_copied",
+                    "params": []
+                },
+                {
+                    "name": "wallet_deposit_confirmed",
+                    "params": []
+                },
+                {
+                    "name": "wallet_deposit_later",
+                    "params": []
+                },
+                {
+                    "name": "wallet_deposit_success",
+                    "params": ["amount"]
+                }
+            ]
+        },
+        "navigation": {
+            "count": 3,
+            "events": [
+                {
+                    "name": "page_view",
+                    "params": ["page"]
+                },
+                {
+                    "name": "button_clicked",
+                    "params": ["button_name"]
+                }
+            ]
+        }
+    }
+}

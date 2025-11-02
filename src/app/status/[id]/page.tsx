@@ -7,7 +7,8 @@ import CopyIcon from '@/components/icons/copy.svg';
 import UsdtIcon from '@/components/icons/usdt.svg';
 import RubleIcon from '@/components/icons/ruble.svg';
 import ArrowRightIcon from '@/components/icons/right-arrow.svg';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import { Toast } from '@/components/ui/Toast';
 import Image from 'next/image';
 import Loader from '@/components/ui/Loader';
@@ -16,6 +17,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { fetchUser } from '@/lib/redux/thunks/UserThunks';
 import { API_URL } from '@/lib/helpers/url';
 import { useCopyWithToast } from '@/hooks/useCopyWithToast';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
 
 interface Order {
     id: number;
@@ -60,9 +62,11 @@ export default function QrStatusPage() {
     const dispatch = useAppDispatch();
     const loadingApp = useAppSelector(getLoading);
     const { copyWithToast, isCopying, toastOpen, toastMessage, closeToast } = useCopyWithToast();
+    const { trackEvent } = useTelemetry();
     const [order, setOrder] = useState<Order | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const prevStatusRef = React.useRef<string | null>(null);
     const dateFormatter = new Intl.DateTimeFormat('ru-RU', {
         year: 'numeric',
         month: '2-digit',
@@ -71,6 +75,11 @@ export default function QrStatusPage() {
         minute: '2-digit',
         second: '2-digit',
     });
+
+    // Событие при открытии страницы
+    useEffect(() => {
+        trackEvent('payment_status_page_opened', { order_id: id });
+    }, [trackEvent, id]);
 
     // Запрашиваем статус раз в 5 секунд
     useEffect(() => {
@@ -84,6 +93,14 @@ export default function QrStatusPage() {
                 if (data.success && data.data) {
                     setOrder((prev: Order | null) => {
                         if (!prev || prev.status !== data.data.status) {
+                            // Статус изменился
+                            if (prev && prev.status !== data.data.status) {
+                                trackEvent('payment_status_refreshed', {
+                                    order_id: id,
+                                    old_status: prev.status,
+                                    new_status: data.data.status,
+                                });
+                            }
                             return data.data;
                         }
                         return {
@@ -94,9 +111,14 @@ export default function QrStatusPage() {
                     });
                 } else {
                     setError('Заявка не найдена');
+                    trackEvent('payment_status_error', { order_id: id, error: 'order_not_found' });
                 }
             } catch (e) {
                 setError('Ошибка загрузки');
+                trackEvent('payment_status_error', {
+                    order_id: id,
+                    error: e instanceof Error ? e.message : 'network_error',
+                });
             } finally {
                 if (first) setLoading(false);
                 first = false;
@@ -107,13 +129,23 @@ export default function QrStatusPage() {
         const interval = setInterval(fetchStatus, 5000);
         return () => clearInterval(interval);
         // eslint-disable-next-line
-    }, [id]);
+    }, [id, trackEvent]);
 
+    // Отслеживаем изменение статуса на успешный
     useEffect(() => {
-        if (order?.status === 'success') {
+        if (order?.status === 'success' && prevStatusRef.current !== 'success') {
+            trackEvent('payment_status_success', {
+                order_id: id,
+                order_uuid: order.uuid,
+                amount: order.amount,
+                amount_usdt: order.amount_usdt,
+            });
+            prevStatusRef.current = 'success';
             dispatch(fetchUser());
+        } else if (order?.status) {
+            prevStatusRef.current = order.status;
         }
-    }, [order?.status, dispatch]);
+    }, [order?.status, order?.uuid, order?.amount, order?.amount_usdt, id, trackEvent, dispatch]);
 
     if (loadingApp || loading) {
         return <Loader className="h-[100dvh]" />;
@@ -192,7 +224,10 @@ export default function QrStatusPage() {
                             <span className="max-w-[14.4rem] truncate">{order.uuid}</span>
                             <button
                                 className="text-[var(--text-secondary)]"
-                                onClick={() => copyWithToast(order.uuid, 'ID скопировано')}
+                                onClick={() => {
+                                    trackEvent('payment_status_order_id_copied', { order_id: id, order_uuid: order.uuid });
+                                    copyWithToast(order.uuid, 'ID скопировано');
+                                }}
                                 disabled={isCopying}
                             >
                                 <CopyIcon width={20} height={20} />
@@ -200,7 +235,18 @@ export default function QrStatusPage() {
                         </span>
                     </div>
                 </div>
-                <Button variant="yellow" className="w-full mb-[1rem]" onClick={() => router.push('/')}>
+                <Button
+                    variant="yellow"
+                    className="w-full mb-[1rem]"
+                    onClick={() => {
+                        trackEvent('payment_status_home_clicked', {
+                            order_id: id,
+                            order_uuid: order.uuid,
+                            status: order.status,
+                        });
+                        router.push('/');
+                    }}
+                >
                     На главную
                 </Button>
                 {/* <Button className="w-full" variant="ghost" onClick={() => router.push(`/history/${order.uuid}`)}>

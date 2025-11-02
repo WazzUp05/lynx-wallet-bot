@@ -11,6 +11,7 @@ import { getHistory } from '@/lib/redux/selectors/historySelectors';
 import { getLoading } from '@/lib/redux/selectors/userSelectors';
 import Loader from '@/components/ui/Loader';
 import Link from 'next/link';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
 
 interface HistoryItem {
     id: number;
@@ -47,7 +48,13 @@ const Page = () => {
     const historyItems = useAppSelector(getHistory) as HistoryItem[];
     const loadingApp = useAppSelector(getLoading);
     const user = useAppSelector((state) => state.user.data);
+    const { trackEvent } = useTelemetry();
     const [historyLoading, setHistoryLoading] = React.useState(true);
+
+    // Событие при открытии страницы
+    useEffect(() => {
+        trackEvent('history_page_opened', { items_count: historyItems?.length || 0 });
+    }, [trackEvent, historyItems]);
 
     useEffect(() => {
         if (user && user.id) {
@@ -74,7 +81,13 @@ const Page = () => {
     ];
 
     const [selectedTab, setSelectedTab] = React.useState('all');
-    const handleTabChange = (value: string) => setSelectedTab(value);
+    const handleTabChange = (value: string) => {
+        trackEvent('history_tab_changed', {
+            tab: value,
+            items_count: historyItems?.length || 0,
+        });
+        setSelectedTab(value);
+    };
 
     // Map HistoryItem to HistoryItemType
     const mapToHistoryItemType = (item: HistoryItem) => ({
@@ -135,7 +148,11 @@ const Page = () => {
                     <p className="text-[1.6rem] max-w-[26rem] mx-auto leading-[130%]  text-center mb-[3.2rem]">
                         Здесь вы увидите все свои финансовые операции.
                     </p>
-                    <Link href="/refilled" className="w-full">
+                    <Link
+                        href="/refilled"
+                        className="w-full"
+                        onClick={() => trackEvent('history_empty_state_action', { action: 'refill_clicked' })}
+                    >
                         <Button
                             variant="yellow"
                             fullWidth
