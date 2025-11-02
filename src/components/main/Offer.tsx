@@ -10,25 +10,53 @@ const Offer = () => {
     const { copyWithToast, isCopying } = useCopyWithToast();
     const needDeposit = useAppSelector(getNeedDeposit);
     const waitingDeposit = useAppSelector(getWaitingForDeposit);
+
     const handleShare = async () => {
-        const shareData = {
-            title: 'Lynx Wallet Bot',
-            text: 'Пригласи своих друзей на бета-тестирование Lynx Wallet Bot!',
-            url: window.location.href,
-        };
+        const shareText = 'Пригласи своих друзей в Lynx Wallet Bot!';
+        const shareUrl = window.location.href;
 
         try {
-            // Проверяем поддержку Web Share API
+            // Проверяем, находимся ли мы в Telegram Web App
+            if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
+                // Используем нативный Telegram Share через t.me/share/url
+                // Это откроет нативное Telegram окно для выбора чата/контакта
+                const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(
+                    shareUrl
+                )}&text=${encodeURIComponent(shareText)}`;
+
+                // Пытаемся использовать Telegram Web App API метод openLink
+                const webApp = window.Telegram.WebApp as typeof window.Telegram.WebApp & {
+                    openLink?: (url: string, options?: { try_instant_view?: boolean }) => void;
+                };
+
+                if (typeof webApp.openLink === 'function') {
+                    // Используем встроенный метод Telegram Web App API
+                    webApp.openLink(telegramShareUrl, { try_instant_view: false });
+                } else {
+                    // Fallback: используем window.open для Telegram Share
+                    // Это откроет нативное Telegram окно шаринга
+                    window.location.href = telegramShareUrl;
+                }
+                return;
+            }
+
+            // Если не в Telegram, пробуем Web Share API
+            const shareData = {
+                title: 'Lynx Wallet Bot',
+                text: shareText,
+                url: shareUrl,
+            };
+
             if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
                 await navigator.share(shareData);
             } else {
                 // Fallback: копируем ссылку в буфер обмена
-                await copyWithToast(shareData.url, 'Ссылка скопирована в буфер обмена!');
+                await copyWithToast(shareUrl, 'Ссылка скопирована в буфер обмена!');
             }
         } catch (error) {
             console.error('Ошибка при попытке поделиться:', error);
             // Fallback: копируем ссылку в буфер обмена
-            await copyWithToast(shareData.url, 'Ссылка скопирована в буфер обмена!');
+            await copyWithToast(shareUrl, 'Ссылка скопирована в буфер обмена!');
         }
     };
 
