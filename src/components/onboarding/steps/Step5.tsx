@@ -12,7 +12,7 @@ import RightIcon from '@/components/icons/right-arrow.svg';
 import MinAmountModal from '@/components/modals/MinAmountModal';
 import TaxModal from '@/components/modals/TaxModal';
 import { setOnboardingCompleted, setWaitingForDeposit, setNeedDeposit } from '@/lib/redux/slices/appSlice';
-import { useTelemetry } from '@/lib/telemetry';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
 
 interface Step5Props {
     onNext: () => void;

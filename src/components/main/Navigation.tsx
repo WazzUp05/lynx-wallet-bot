@@ -6,7 +6,6 @@ import LinkIcon from '@/components/icons/link.svg';
 import Link from 'next/link';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { getNeedDeposit, getShouldDisableButtons, getWaitingForDeposit } from '@/lib/redux/selectors/appSelectors';
-// import WebApp from '@twa-dev/sdk';
 
 interface NavigationProps {
     onTopUp?: () => void;
@@ -16,15 +15,6 @@ const Navigation: React.FC<NavigationProps> = ({ onTopUp }) => {
     const shouldDisableButtons = useAppSelector(getShouldDisableButtons);
     const waitingDeposit = useAppSelector(getWaitingForDeposit);
     const needDeposit = useAppSelector(getNeedDeposit);
-
-    // const showQrCode = () => {
-    //     const par = {
-    //         text: 'Сканируйте QR-код',
-    //     };
-    //     WebApp.showScanQrPopup(par, (result) => {
-    //         alert(result);
-    //     });
-    // };
 
     return (
         <div className="flex px-[1.6rem] gap-[1.7rem] items-center justify-between mb-[2.4rem]">

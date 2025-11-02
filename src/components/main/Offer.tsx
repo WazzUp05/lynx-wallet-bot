@@ -41,6 +41,7 @@ const Offer = () => {
                     </p>
                     <Image
                         src="/offer-robot-deposite.png"
+                        priority
                         alt="Offer Image"
                         width={130 * 3}
                         height={90 * 3}
@@ -72,6 +73,7 @@ const Offer = () => {
                 <Image
                     src="/offer-robot.png"
                     alt="Offer Image"
+                    priority
                     width={234 * 3}
                     height={199 * 3}
                     className="mx-auto w-[13.4rem] h-[9.9rem] absolute right-0 top-[0rem] z-10"

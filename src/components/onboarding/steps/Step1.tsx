@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Button } from '../../ui/Button';
-import { useTelemetry } from '@/lib/telemetry';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
 
 interface Step1Props {
     onNext: () => void;

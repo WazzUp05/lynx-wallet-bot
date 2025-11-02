@@ -101,7 +101,9 @@ export default function HistoryDetailPage() {
                     <div className="w-[6rem] h-[6rem] text-[var(--yellow)] bg-[var(--yellow-secondary)] rounded-full center mb-[1rem]">
                         {getTypeImage(tx.type)}
                     </div>
-                    <div className="text-[2.5rem] font-semibold mb-[0.8rem]">{tx.amount}</div>
+                    <div className="text-[2.5rem] font-semibold mb-[0.8rem]">
+                        {tx.type === 'Пополнение' ? '+' : '-'} {tx.amount} USDT
+                    </div>
                     {tx.status === 'Успешно' ? (
                         <div className="flex items-center py-[0.55rem] px-[1rem] gap-[0.55rem] box-shadow rounded-[1.5rem] mb-2 bg-[var(--dark-gray-main)]">
                             <div className=" text-[1.2rem] leading-[130%] flex items-center gap-[0.5rem] font-semibold">
@@ -134,7 +136,7 @@ export default function HistoryDetailPage() {
                             <span className="text-[var(--text-secondary)] text-[1.4rem] leading-[130%]">
                                 Отправлено
                             </span>
-                            <span className="font-semibold text-[1.4rem] leading-[130%]">{tx.sent_amount}</span>
+                            <span className="font-semibold text-[1.4rem] leading-[130%]">{tx.sent_amount} USDT</span>
                         </div>
                     )}
 
@@ -142,7 +144,7 @@ export default function HistoryDetailPage() {
                         <div className="w-full  flex justify-between text-sm">
                             <span className="text-[var(--text-secondary)] text-[1.4rem] leading-[130%]">Комиссия</span>
                             <span className="font-semibold text-[1.4rem] leading-[130%] flex items-center gap-[1rem]">
-                                {tx.commission}
+                                {tx.commission} USDT
                                 <div onClick={() => setShowModal(true)} className="relative top-[-0.2rem]">
                                     <QuestionIcon />
                                 </div>

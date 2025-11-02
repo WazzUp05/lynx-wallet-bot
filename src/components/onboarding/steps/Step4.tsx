@@ -7,7 +7,7 @@ import SelectCrypto from '@/components/SelectCrypto';
 import { SelectCustom } from '@/components/ui/SelectCustom';
 import WarrningBlock from '@/components/WarrningBlock';
 import { Button } from '@/components/ui/Button';
-import { useTelemetry } from '@/lib/telemetry';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
 
 interface Step4Props {
     onNext: () => void;
