@@ -17,7 +17,6 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
     title: 'Lynx Wallet Bot',
     description: 'Современный Telegram кошелек с поддержкой криптовалют',
-    themeColor: '#8B5CF6',
     appleWebApp: {
         capable: true,
         statusBarStyle: 'default',

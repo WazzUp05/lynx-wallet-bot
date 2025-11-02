@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ClockIcon from '@/components/icons/clock.svg';
 import ClockActiveIcon from '@/components/icons/clock-active.svg';
 import HomeIcon from '@/components/icons/home.svg';
@@ -14,11 +14,20 @@ import { usePathname } from 'next/navigation';
 import { getLoading } from '@/lib/redux/selectors/userSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { getShouldDisableButtons } from '@/lib/redux/selectors/appSelectors';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
 
 const NavBottom = () => {
     const pathname = usePathname();
     const loadingApp = useAppSelector(getLoading);
     const shouldDisableButtons = useAppSelector(getShouldDisableButtons);
+
+    const { trackEvent } = useTelemetry();
+
+    useEffect(() => {
+        trackEvent('page_view', {
+            page: pathname,
+        });
+    }, [pathname]);
 
     // Страницы, на которых показывать NavBottom
     const allowedPages = ['/', '/history', '/profile'];
@@ -92,6 +101,11 @@ const NavBottom = () => {
                     key={item.href}
                     href={item.href}
                     onClick={(e) => {
+                        trackEvent('button_clicked', {
+                            label: item.label,
+                            category: 'Nav Bottom',
+                            href: item.href,
+                        });
                         if (item.href.startsWith('http')) {
                             const shouldOpen = window.confirm('Открыть чат поддержки в Telegram?');
                             if (!shouldOpen) {

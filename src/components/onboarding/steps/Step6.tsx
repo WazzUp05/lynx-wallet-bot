@@ -12,7 +12,7 @@ import Image from 'next/image';
 import Loader from '@/components/ui/Loader';
 import { HistoryItemType } from '@/components/history/HistoryDay';
 import { Toast } from '@/components/ui/Toast';
-import { useTelemetry } from '@/lib/telemetry';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
 interface Step6Props {
     onNext: () => void;
 }

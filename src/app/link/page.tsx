@@ -17,6 +17,7 @@ import Loader from '@/components/ui/Loader';
 import { getLoading, getUser, getWallet } from '@/lib/redux/selectors/userSelectors';
 import { API_URL } from '@/lib/helpers/url';
 import Input from '@/components/ui/Input';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
 
 export default function LinkPage() {
     const [link, setLink] = useState<string>('');
@@ -36,6 +37,12 @@ export default function LinkPage() {
     const usdtRate = useAppSelector(getRatesQuoteRub);
 
     const merchant_id = user.data?.id;
+    const { trackEvent } = useTelemetry();
+
+    // Событие при открытии страницы
+    useEffect(() => {
+        trackEvent('link_payment_page_opened');
+    }, [trackEvent]);
 
     const MOCK_SELECT_CRYPTO = [
         {
@@ -73,11 +80,13 @@ export default function LinkPage() {
     const validateLink = (url: string) => {
         if (!url.trim()) {
             setError('Вставьте ссылку для перехода к оплате');
+            trackEvent('link_validation_error', { error: 'empty_link' });
             return false;
         }
 
         if (!url.startsWith('https://qr.nspk.ru/')) {
             setError('Неверный формат ссылки. Ссылка должна начинаться: https://qr.nspk...');
+            trackEvent('link_validation_error', { error: 'invalid_format' });
             return false;
         }
 
@@ -89,6 +98,7 @@ export default function LinkPage() {
     const handleLinkSubmit = async () => {
         if (!validateLink(link)) return;
 
+        trackEvent('link_submitted', { has_url: !!link });
         setLoadingLink(true);
         setError('');
 
@@ -129,6 +139,7 @@ export default function LinkPage() {
                         setToastMsg('Не удалось получить сумму по ссылке');
                         setToast(true);
                         setTimeout(() => setToast(false), 2000);
+                        trackEvent('link_prepare_error', { code, error: 'invalid_response' });
                     }
                 } catch (e) {
                     let errorMsg = 'Ошибка запроса prepare';
@@ -138,11 +149,16 @@ export default function LinkPage() {
                     setToastMsg(errorMsg);
                     setToast(true);
                     setTimeout(() => setToast(false), 2000);
+                    trackEvent('link_prepare_error', {
+                        code,
+                        error: e instanceof Error ? e.message : 'unknown_error',
+                    });
                 }
             } else {
                 setToastMsg('Некорректная ссылка');
                 setToast(true);
                 setTimeout(() => setToast(false), 2000);
+                trackEvent('link_validation_error', { error: 'invalid_link_format' });
             }
             setLoadingLink(false);
         }
@@ -164,11 +180,24 @@ export default function LinkPage() {
 
     // Сброс таймера при открытии модалки
     useEffect(() => {
-        if (modalOpen) setTimer(30);
-    }, [modalOpen]);
+        if (modalOpen && linkInfo) {
+            setTimer(30);
+            trackEvent('link_payment_modal_opened', {
+                rub_amount: linkInfo.rubAmount,
+                usdt_amount: linkInfo.usdtAmount,
+            });
+        }
+    }, [modalOpen, linkInfo, trackEvent]);
 
     const handlePay = async () => {
         if (!linkInfo) return;
+
+        trackEvent('link_payment_initiated', {
+            rub_amount: linkInfo.rubAmount,
+            usdt_amount: linkInfo.usdtAmount,
+            rate: usdtRate ? usdtRate.toFixed(2) : '0.00',
+        });
+
         const order = {
             amount: linkInfo.rubAmount,
             amount_usdt: linkInfo.usdtAmount,
@@ -192,14 +221,29 @@ export default function LinkPage() {
                 setTimeout(() => setToast(false), 2000);
                 // Можно сохранить текст сообщения для Toast:
                 setToastMsg(data.message || 'Ошибка при создании заявки');
+                trackEvent('link_payment_order_error', {
+                    rub_amount: linkInfo.rubAmount,
+                    usdt_amount: linkInfo.usdtAmount,
+                    error: data.message || 'unknown_error',
+                });
                 return;
             }
 
             if (data.success && data.data?.uuid) {
+                trackEvent('link_payment_order_created', {
+                    order_uuid: data.data.uuid,
+                    rub_amount: linkInfo.rubAmount,
+                    usdt_amount: linkInfo.usdtAmount,
+                });
                 router.push(`/status/${data.data.uuid}`);
             }
         } catch (e) {
             console.error('Order error:', e);
+            trackEvent('link_payment_order_error', {
+                rub_amount: linkInfo.rubAmount,
+                usdt_amount: linkInfo.usdtAmount,
+                error: e instanceof Error ? e.message : 'network_error',
+            });
         }
     };
 
@@ -213,7 +257,10 @@ export default function LinkPage() {
             <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[3.2rem] font-semibold">
                 <div
                     className="absolute left-[0] top-1/2 translate-y-[-50%] bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
-                    onClick={() => router.back()}
+                    onClick={() => {
+                        trackEvent('link_payment_page_closed');
+                        router.back();
+                    }}
                 >
                     <ArrowLeft />
                 </div>
@@ -271,8 +318,12 @@ export default function LinkPage() {
                     placeholder="Вставьте ссылку"
                     value={link}
                     onChange={(e) => {
-                        setLink(e.target.value);
+                        const newLink = e.target.value;
+                        setLink(newLink);
                         setError('');
+                        if (newLink.trim()) {
+                            trackEvent('link_pasted', { has_url: !!newLink });
+                        }
                     }}
                     error={error}
                 />
@@ -285,7 +336,19 @@ export default function LinkPage() {
             >
                 {loadingLink ? 'Обработка...' : 'Продолжить'}
             </Button>
-            <Modal title="Оплатить" closable swipeToClose={false} open={modalOpen} onClose={() => setModalOpen(false)}>
+            <Modal
+                title="Оплатить"
+                closable
+                swipeToClose={false}
+                open={modalOpen}
+                onClose={() => {
+                    setModalOpen(false);
+                    trackEvent('link_payment_modal_closed', {
+                        rub_amount: linkInfo?.rubAmount || 0,
+                        usdt_amount: linkInfo?.usdtAmount || 0,
+                    });
+                }}
+            >
                 <div className="flex flex-col items-center w-full">
                     {loadingLink || !linkInfo ? (
                         <Loader className="h-[10rem]" />

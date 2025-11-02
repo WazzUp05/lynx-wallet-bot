@@ -3,16 +3,23 @@ import Loader from '@/components/ui/Loader';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { getLoading, getUser } from '@/lib/redux/selectors/userSelectors';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ArrowRightIcon from '@/components/icons/right-arrow.svg';
 import QuestionIcon from '@/components/icons/message-question.svg';
 import PhoneScreenIcon from '@/components/icons/phone-screen.svg';
 import AddToHome from '@/components/AddToHome';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
 const Page = () => {
     const user = useAppSelector(getUser);
     const loadingApp = useAppSelector(getLoading);
+    const { trackEvent } = useTelemetry();
     const [isOpen, setIsOpen] = useState(false);
+
+    // Событие при открытии страницы
+    useEffect(() => {
+        trackEvent('profile_page_opened');
+    }, [trackEvent]);
 
     if (loadingApp) {
         return <Loader className="h-[100dvh]" />;
@@ -56,7 +63,10 @@ const Page = () => {
                     </p>
                     <button
                         className="text-[1.4rem] w-fit cursor-pointer flex items-center gap-[0.5rem] leading-[130%]  text-[var(--yellow)]"
-                        onClick={() => setIsOpen(true)}
+                        onClick={() => {
+                            trackEvent('profile_add_to_home_clicked');
+                            setIsOpen(true);
+                        }}
                     >
                         Добавить <ArrowRightIcon width={12} height={12} className="w-[1.2rem] h-[1.2rem]" />
                     </button>
@@ -69,6 +79,7 @@ const Page = () => {
                 <Link
                     href="/faq"
                     className="flex items-center gap-[1rem] bg-[var(--bg-secondary)] rounded-[2rem] p-[1.6rem] "
+                    onClick={() => trackEvent('profile_faq_clicked')}
                 >
                     <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] center">
                         <QuestionIcon width={20} height={20} className="w-[2rem] h-[2rem]" />

@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { HistoryItemType } from './HistoryDay';
 import SendIcon from '@/components/icons/send.svg';
@@ -7,12 +8,15 @@ import PlusIcon from '@/components/icons/plus.svg';
 import ArrowUpIcon from '@/components/icons/arrow-up.svg';
 import ClockIcon from '@/components/icons/clock-small.svg';
 import Link from 'next/link';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
 
 type HistoryItemProps = {
     item: HistoryItemType;
 };
 
 const HistoryItem = ({ item }: HistoryItemProps) => {
+    const { trackEvent } = useTelemetry();
+
     const getTypeImage = (type: string) => {
         switch (type) {
             case 'Вывод':
@@ -33,6 +37,13 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
         <Link
             href={`/history/${item.transaction_hash}`}
             className="py-[1rem] px-[1.6rem] items-center bg-[var(--bg-secondary)] rounded-[1.5rem] box-shadow flex  gap-[1rem]"
+            onClick={() => {
+                trackEvent('history_transaction_clicked', {
+                    transaction_hash: item.transaction_hash,
+                    transaction_type: item.type,
+                    transaction_status: item.status,
+                });
+            }}
         >
             <div className="w-[4rem] h-[4rem] text-[var(--yellow)] bg-[var(--yellow-secondary)] rounded-full center">
                 {getTypeImage(item.type)}

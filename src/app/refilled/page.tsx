@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import ArrowLeft from '@/components/icons/arrow-left.svg';
 import { SelectCustom } from '@/components/ui/SelectCustom';
 import SelectCrypto from '@/components/SelectCrypto';
@@ -10,6 +10,7 @@ import { NetworkType, setNetwork } from '@/lib/redux/slices/walletSlice';
 import { useRouter } from 'next/navigation';
 import { getLoading, getWallet } from '@/lib/redux/selectors/userSelectors';
 import Loader from '@/components/ui/Loader';
+import { useTelemetry } from '@/lib/providers/TelemetryProvider';
 
 const MOCK_SELECT_USDT = [
     {
@@ -43,7 +44,13 @@ const Page = () => {
     const crypto = useAppSelector(getCrypto);
     const wallet = useAppSelector(getWallet);
     const loadingApp = useAppSelector(getLoading);
+    const { trackEvent } = useTelemetry();
     const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
+
+    // Событие при открытии страницы
+    useEffect(() => {
+        trackEvent('refill_page_opened');
+    }, [trackEvent]);
 
     const MOCK_SELECT_CRYPTO = [
         {
@@ -57,6 +64,10 @@ const Page = () => {
     const handlerChangeNetwork = (network: string) => {
         setSelectedNetwork(network);
         dispatch(setNetwork(network as NetworkType));
+        trackEvent('refill_network_selected', {
+            network,
+            crypto: crypto?.id || 'USDT',
+        });
     };
 
     const network = crypto.id === 'USDT' ? MOCK_SELECT_USDT : MOCK_SELECT_TON;
@@ -64,6 +75,10 @@ const Page = () => {
     // Функция перехода на страницу с QR-кодом
     const handleContinue = () => {
         if (crypto?.id && selectedNetwork) {
+            trackEvent('refill_continue_clicked', {
+                crypto: crypto.id,
+                network: selectedNetwork,
+            });
             router.push(`/refilled/${crypto.id}/${selectedNetwork}`);
         }
     };
@@ -77,7 +92,10 @@ const Page = () => {
             <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[4rem] font-semibold">
                 <div
                     className="absolute left-[0] top-1/2 translate-y-[-50%] bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
-                    onClick={() => router.back()}
+                    onClick={() => {
+                        trackEvent('refill_page_closed');
+                        router.back();
+                    }}
                 >
                     <ArrowLeft />
                 </div>
