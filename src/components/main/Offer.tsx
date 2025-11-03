@@ -13,7 +13,7 @@ const Offer = () => {
 
     const handleShare = async () => {
         const shareText = 'Пригласи своих друзей в Lynx Wallet Bot!';
-        const shareUrl = 'https://t.me/lynx_wallet_test_bot/start';
+        const shareUrl = 'https://t.me/lynx_wallet_bot/start';
 
         try {
             // Проверяем, находимся ли мы в Telegram Web App
@@ -21,7 +21,7 @@ const Offer = () => {
                 // Используем нативный Telegram Share через t.me/share/url
                 // Это откроет нативное Telegram окно для выбора чата/контакта
                 const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(
-                    'https://t.me/lynx_wallet_test_bot/start'
+                    'https://t.me/lynx_wallet_bot/start'
                 )}&text=${encodeURIComponent('Пригласи своих друзей в Lynx Wallet Bot!')}`;
 
                 // Пытаемся использовать Telegram Web App API метод openLink
