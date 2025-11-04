@@ -45,7 +45,7 @@ const AddToHome = ({ isOpen, setIsOpen }: AddToHomeProps) => {
                                 домой» и следуйте дальнейшим инструкциям.
                             </p>
                             <Button variant="gray" onClick={() => setIsOpen(false)}>
-                                Не сейчас
+                                Закрыть
                             </Button>
                         </div>
                     </div>

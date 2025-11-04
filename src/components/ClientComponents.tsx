@@ -213,6 +213,13 @@ export default function ClientComponents({ children }: ClientComponentsProps) {
                 WebApp.ready();
                 WebApp.disableVerticalSwipes();
                 WebApp.isClosingConfirmationEnabled = true;
+
+                // Устанавливаем цвет шапки приложения
+                // Можно использовать hex цвет (например: '#1a1a1a') или 'bg_color' для использования темы
+                if (WebApp.setHeaderColor) {
+                    WebApp.setHeaderColor('#FFBE00'); // Замените на нужный цвет
+                }
+
                 setTelegramData({
                     ...WebApp.initDataUnsafe,
                     platform: WebApp.platform || 'unknown',
