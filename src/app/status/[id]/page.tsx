@@ -156,16 +156,17 @@ export default function QrStatusPage() {
     return (
         <div className="min-h-[100dvh] relative bg-[var(--bg-main)] overflow-hidden flex flex-col items-center px-[1.6rem] pb-[calc(var(--safe-bottom)+1.6rem)] py-[2rem]">
             <Toast open={toastOpen} message={toastMessage} onClose={closeToast} />
-            <div
-                className={`w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-33.4rem] ${
-                    order.status === 'success' ? 'bg-[#34C85A4D]' : 'bg-[#007AFF4D]'
-                } blur-[10rem] rounded-[50%] `}
-            />
-            <div
-                className={`w-[60rem] h-[50rem] absolute top-[7.4rem] right-[-33.4rem] ${
-                    order.status === 'success' ? 'bg-[#34C85A4D]' : 'bg-[#007AFF4D]'
-                } blur-[10rem] rounded-[50%] `}
-            />
+            {order.status === 'success' ? (
+                <>
+                    <div className="w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-33.4rem] bg-[#34C85A4D] blur-[10rem] rounded-[50%]" />
+                    <div className="w-[60rem] h-[50rem] absolute top-[7.4rem] right-[-33.4rem] bg-[#34C85A4D] blur-[10rem] rounded-[50%]" />
+                </>
+            ) : (
+                <>
+                    <div className="w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-33.4rem] bg-[#007AFF4D] blur-[10rem] rounded-[50%]" />
+                    <div className="w-[60rem] h-[50rem] absolute top-[7.4rem] right-[-33.4rem] bg-[#007AFF4D] blur-[10rem] rounded-[50%]" />
+                </>
+            )}
             <div className="w-full max-w-[400px] mx-auto relative ">
                 <div className="flex flex-col items-center  mb-[8rem]">
                     <div className=" text-[1.8rem] mb-[1rem] font-semibold text-[var(--text-main)]">
@@ -225,7 +226,10 @@ export default function QrStatusPage() {
                             <button
                                 className="text-[var(--text-secondary)]"
                                 onClick={() => {
-                                    trackEvent('payment_status_order_id_copied', { order_id: id, order_uuid: order.uuid });
+                                    trackEvent('payment_status_order_id_copied', {
+                                        order_id: id,
+                                        order_uuid: order.uuid,
+                                    });
                                     copyWithToast(order.uuid, 'ID скопировано');
                                 }}
                                 disabled={isCopying}
