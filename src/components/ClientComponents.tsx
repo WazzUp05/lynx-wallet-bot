@@ -210,6 +210,7 @@ export default function ClientComponents({ children }: ClientComponentsProps) {
         import('@twa-dev/sdk').then(({ default: WebApp }) => {
             // Проверяем, что мы действительно в Telegram WebApp
             if (WebApp?.initDataUnsafe?.user) {
+                WebApp.expand();
                 WebApp.ready();
                 WebApp.disableVerticalSwipes();
                 WebApp.isClosingConfirmationEnabled = true;
