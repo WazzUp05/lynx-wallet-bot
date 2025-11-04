@@ -158,13 +158,49 @@ export default function QrStatusPage() {
             <Toast open={toastOpen} message={toastMessage} onClose={closeToast} />
             {order.status === 'success' ? (
                 <>
-                    <div className="w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-33.4rem] bg-[#34C85A4D] blur-[10rem] rounded-[50%]" />
-                    <div className="w-[60rem] h-[50rem] absolute top-[7.4rem] right-[-33.4rem] bg-[#34C85A4D] blur-[10rem] rounded-[50%]" />
+                    <div
+                        key="success-left"
+                        className="w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-33.4rem] bg-[#34C85A4D] blur-[10rem] rounded-[50%] will-change-[filter,background-color]"
+                        style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            WebkitTransform: 'translateZ(0)',
+                        }}
+                    />
+                    <div
+                        key="success-right"
+                        className="w-[60rem] h-[50rem] absolute top-[7.4rem] right-[-33.4rem] bg-[#34C85A4D] blur-[10rem] rounded-[50%] will-change-[filter,background-color]"
+                        style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            WebkitTransform: 'translateZ(0)',
+                        }}
+                    />
                 </>
             ) : (
                 <>
-                    <div className="w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-33.4rem] bg-[#007AFF4D] blur-[10rem] rounded-[50%]" />
-                    <div className="w-[60rem] h-[50rem] absolute top-[7.4rem] right-[-33.4rem] bg-[#007AFF4D] blur-[10rem] rounded-[50%]" />
+                    <div
+                        key="processing-left"
+                        className="w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-33.4rem] bg-[#007AFF4D] blur-[10rem] rounded-[50%] will-change-[filter,background-color]"
+                        style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            WebkitTransform: 'translateZ(0)',
+                        }}
+                    />
+                    <div
+                        key="processing-right"
+                        className="w-[60rem] h-[50rem] absolute top-[7.4rem] right-[-33.4rem] bg-[#007AFF4D] blur-[10rem] rounded-[50%] will-change-[filter,background-color]"
+                        style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            WebkitTransform: 'translateZ(0)',
+                        }}
+                    />
                 </>
             )}
             <div className="w-full max-w-[400px] mx-auto relative ">
@@ -179,7 +215,7 @@ export default function QrStatusPage() {
                         {order.status === 'success' ? (
                             <Image src="/tick-circle-big.svg" alt="Paid" width={40} height={40} />
                         ) : (
-                            <Image src="/loading.gif" alt="Waiting" width={100} height={100} />
+                            <Loader className="w-[4rem] h-[4rem]" />
                         )}
                     </div>
                     <div className="text-[2.5rem] text-[var(--text-main)] font-semibold mb-[1rem]">
