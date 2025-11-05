@@ -10,6 +10,7 @@ import QuestionIcon from '@/components/icons/message-question.svg';
 import PhoneScreenIcon from '@/components/icons/phone-screen.svg';
 import AddToHome from '@/components/AddToHome';
 import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+
 const Page = () => {
     const user = useAppSelector(getUser);
     const loadingApp = useAppSelector(getLoading);
