@@ -60,14 +60,9 @@ const NavBottom = () => {
                 ),
         },
         {
-            href: 'https://t.me/Lynxwalletsupport_bot',
+            href: 'https://t.me/lynx_help',
             label: 'Чат',
-            icon:
-                pathname === '/qr' ? (
-                    <ChatActiveIcon width={28} height={28} className="w-[2.8rem] h-[2.8rem]" />
-                ) : (
-                    <ChatIcon width={28} height={28} className="w-[2.8rem] h-[2.8rem]" />
-                ),
+            icon: <ChatIcon width={28} height={28} className="w-[2.8rem] h-[2.8rem]" />,
         },
         {
             href: '/profile',
