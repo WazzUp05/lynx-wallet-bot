@@ -7,6 +7,7 @@ import UserAutoUpdater from '@/components/UserAutoUpdater';
 import ServiceWorker from '@/components/ServiceWorker';
 import { TrackGroups, type TelegramWebAppData } from '@tonsolutions/telemetree-react';
 import { TelemetryProvider } from '@/lib/providers/TelemetryProvider';
+import { initMixpanel } from '@/lib/api/mixpanelClient';
 
 const TelegramAuthClient = dynamic(() => import('@/components/TelegramAuthClient'), { ssr: false });
 const TwaAnalyticsProvider = dynamic(
@@ -199,6 +200,10 @@ interface ClientComponentsProps {
 
 export default function ClientComponents({ children }: ClientComponentsProps) {
     const [telegramData, setTelegramData] = useState<TelegramWebAppData | null>(null);
+
+    useEffect(() => {
+        initMixpanel(); // Initialize Mixpanel
+    }, []);
 
     if (typeof window !== 'undefined') {
         patchTelemetreeConfigFetch();
