@@ -8,6 +8,7 @@ import { getHistory } from '@/lib/redux/selectors/historySelectors';
 import { getWallet } from '@/lib/redux/selectors/userSelectors';
 import { setOnboardingToStep5 } from '@/lib/redux/slices/appSlice';
 import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import mixpanel from 'mixpanel-browser';
 interface WalletItemDataProps {
     walletName?: string;
     walletIcon?: string;
@@ -38,6 +39,10 @@ const Wallets = ({ wallets }: WalletsProps) => {
     // Обработчик клика на кнопку "Пополнить"
     const handleTopUp = () => {
         trackEvent('button_clicked', {
+            label: 'Top Up Button',
+            category: 'Wallet',
+        });
+        mixpanel.track('Button Clicked Wallets Up', {
             label: 'Top Up Button',
             category: 'Wallet',
         });
