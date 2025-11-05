@@ -23,7 +23,9 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
     const { copyWithToast, isCopying, toastOpen, toastMessage, closeToast } = useCopyWithToast();
     const wallet = useAppSelector(getWallet);
     const srcQr = '/icons/USDT-TRC20.svg';
-    const address = wallet?.address || '';
+    // const address = wallet?.address || '';
+    const devMockAddress = process.env.NEXT_PUBLIC_DEV_MOCK_USER_ADDRESS;
+    const address = devMockAddress || wallet?.address || '';
     const [showTaxModal, setShowTaxModal] = useState(false);
     const [showMinAmountModal, setShowMinAmountModal] = useState(false);
     const { trackEvent } = useTelemetry();

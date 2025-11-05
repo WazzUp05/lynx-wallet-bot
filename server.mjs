@@ -2,6 +2,9 @@ import { createServer } from "https";
 import { parse } from "url";
 import next from "next";
 import fs from "fs";
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '.env.local' });
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
