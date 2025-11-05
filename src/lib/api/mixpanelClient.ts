@@ -8,5 +8,10 @@ export const initMixpanel = () => {
         return;
     }
 
-    mixpanel.init(MIXPANEL_TOKEN, { autocapture: true, debug: true });
+    mixpanel.init(MIXPANEL_TOKEN, {
+        autocapture: true,
+        debug: true,
+        record_sessions_percent: 100,
+        api_host: 'https://api-eu.mixpanel.com',
+    });
 };
