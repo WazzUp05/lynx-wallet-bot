@@ -18,24 +18,23 @@ const Offer = () => {
         try {
             // Проверяем, находимся ли мы в Telegram Web App
             if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
+                const webApp = window.Telegram.WebApp;
+
                 // Используем нативный Telegram Share через t.me/share/url
                 // Это откроет нативное Telegram окно для выбора чата/контакта
+                // Формат: https://t.me/share/url?url=<encoded_url>&text=<encoded_text>
                 const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(
-                    'https://t.me/lynx_wallet_bot'
-                )}&text=${encodeURIComponent('Пригласи своих друзей в Lynx Wallet Bot!')}`;
+                    shareUrl
+                )}&text=${encodeURIComponent(shareText)}`;
 
-                // Пытаемся использовать Telegram Web App API метод openLink
-                const webApp = window.Telegram.WebApp as typeof window.Telegram.WebApp & {
-                    openLink?: (url: string, options?: { try_instant_view?: boolean }) => void;
-                };
-
+                // Используем встроенный метод Telegram Web App API openLink
+                // Это откроет нативное окно шаринга Telegram, как при нажатии родной кнопки
                 if (typeof webApp.openLink === 'function') {
-                    // Используем встроенный метод Telegram Web App API
                     webApp.openLink(telegramShareUrl, { try_instant_view: false });
                 } else {
-                    // Fallback: используем window.open для Telegram Share
-                    // Это откроет нативное Telegram окно шаринга
-                    window.location.href = telegramShareUrl;
+                    // Fallback только для старых версий: используем window.open
+                    // НЕ используем window.location.href, так как это закроет Web App
+                    window.open(telegramShareUrl, '_blank');
                 }
                 return;
             }
@@ -84,9 +83,13 @@ const Offer = () => {
     if (needDeposit && waitingDeposit) {
         return null;
     }
+
     return (
         <div className="offer-slider mb-[2.4rem] px-[1.6rem]">
-            <div className="p-[1.6rem] bg-gradient-to-r from-[#000000] to-[#061BFF]  rounded-[2rem] w-full relative overflow-hidden">
+            <div
+                onClick={handleShare}
+                className="p-[1.6rem] bg-gradient-to-r from-[#000000] to-[#061BFF]  rounded-[2rem] w-full relative overflow-hidden"
+            >
                 <button
                     onClick={handleShare}
                     disabled={isCopying}
