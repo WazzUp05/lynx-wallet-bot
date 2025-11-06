@@ -21,7 +21,7 @@ import { fetchHistory } from '@/lib/redux/thunks/historyThunks';
 import { getHistory } from '@/lib/redux/selectors/historySelectors';
 import Loader from '@/components/ui/Loader';
 import { useCopyWithToast } from '@/hooks/useCopyWithToast';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 export default function HistoryDetailPage() {
     const params = useParams();
@@ -32,7 +32,7 @@ export default function HistoryDetailPage() {
     const { hash } = params as { hash: string };
     const loadingApp = useAppSelector(getLoading);
     const { copyWithToast, isCopying, toastOpen, toastMessage, closeToast } = useCopyWithToast();
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
     const [showModal, setShowModal] = useState(false);
 
     // Событие при открытии страницы

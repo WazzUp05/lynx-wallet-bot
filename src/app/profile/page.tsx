@@ -9,11 +9,11 @@ import ArrowRightIcon from '@/components/icons/right-arrow.svg';
 import QuestionIcon from '@/components/icons/message-question.svg';
 import PhoneScreenIcon from '@/components/icons/phone-screen.svg';
 import AddToHome from '@/components/AddToHome';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 const Page = () => {
     const user = useAppSelector(getUser);
     const loadingApp = useAppSelector(getLoading);
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
     const [isOpen, setIsOpen] = useState(false);
 
     // Событие при открытии страницы

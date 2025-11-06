@@ -17,7 +17,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { fetchUser } from '@/lib/redux/thunks/UserThunks';
 import { API_URL } from '@/lib/helpers/url';
 import { useCopyWithToast } from '@/hooks/useCopyWithToast';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 interface Order {
     id: number;
@@ -62,7 +62,7 @@ export default function QrStatusPage() {
     const dispatch = useAppDispatch();
     const loadingApp = useAppSelector(getLoading);
     const { copyWithToast, isCopying, toastOpen, toastMessage, closeToast } = useCopyWithToast();
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
     const [order, setOrder] = useState<Order | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);

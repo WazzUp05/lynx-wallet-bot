@@ -14,14 +14,14 @@ import { usePathname } from 'next/navigation';
 import { getLoading } from '@/lib/redux/selectors/userSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { getShouldDisableButtons } from '@/lib/redux/selectors/appSelectors';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 const NavBottom = () => {
     const pathname = usePathname();
     const loadingApp = useAppSelector(getLoading);
     const shouldDisableButtons = useAppSelector(getShouldDisableButtons);
 
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
 
     useEffect(() => {
         trackEvent('page_view', {

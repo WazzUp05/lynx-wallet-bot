@@ -12,7 +12,7 @@ import RightIcon from '@/components/icons/right-arrow.svg';
 import MinAmountModal from '@/components/modals/MinAmountModal';
 import TaxModal from '@/components/modals/TaxModal';
 import { setOnboardingCompleted, setWaitingForDeposit, setNeedDeposit } from '@/lib/redux/slices/appSlice';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 interface Step5Props {
     onNext: () => void;
@@ -26,7 +26,7 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
     const address = wallet?.address || '';
     const [showTaxModal, setShowTaxModal] = useState(false);
     const [showMinAmountModal, setShowMinAmountModal] = useState(false);
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
 
     React.useEffect(() => {
         trackEvent('wallet_deposit_screen_opened');

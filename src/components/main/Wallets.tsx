@@ -7,7 +7,7 @@ import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
 import { getHistory } from '@/lib/redux/selectors/historySelectors';
 import { getWallet } from '@/lib/redux/selectors/userSelectors';
 import { setOnboardingToStep5 } from '@/lib/redux/slices/appSlice';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 import mixpanel from 'mixpanel-browser';
 interface WalletItemDataProps {
     walletName?: string;
@@ -28,7 +28,7 @@ const Wallets = ({ wallets }: WalletsProps) => {
     const [isTopUpOpen, setTopUpOpen] = React.useState(false);
     const history = useAppSelector(getHistory);
     const wallet = useAppSelector(getWallet);
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
     // Функция для проверки условий: нет истории и баланс 0
     const shouldShowOnboarding = () => {
         const hasBalance = wallet?.balance_usdt && wallet.balance_usdt > 0;
