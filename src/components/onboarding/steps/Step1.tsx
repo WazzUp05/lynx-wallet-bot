@@ -4,14 +4,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Button } from '../../ui/Button';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 interface Step1Props {
     onNext: () => void;
 }
 
 const Step1: React.FC<Step1Props> = ({ onNext }) => {
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
     React.useEffect(() => {
         trackEvent('onboarding_started');
     }, []);

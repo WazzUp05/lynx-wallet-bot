@@ -11,7 +11,7 @@ import { getHistory } from '@/lib/redux/selectors/historySelectors';
 import { getLoading } from '@/lib/redux/selectors/userSelectors';
 import Loader from '@/components/ui/Loader';
 import Link from 'next/link';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 interface HistoryItem {
     id: number;
@@ -48,7 +48,7 @@ const Page = () => {
     const historyItems = useAppSelector(getHistory) as HistoryItem[];
     const loadingApp = useAppSelector(getLoading);
     const user = useAppSelector((state) => state.user.data);
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
     const [historyLoading, setHistoryLoading] = React.useState(true);
 
     // Событие при открытии страницы

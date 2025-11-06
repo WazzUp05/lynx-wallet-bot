@@ -17,7 +17,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { fetchUser } from '@/lib/redux/thunks/UserThunks';
 import { API_URL } from '@/lib/helpers/url';
 import { useCopyWithToast } from '@/hooks/useCopyWithToast';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 interface Order {
     id: number;
@@ -62,7 +62,7 @@ export default function QrStatusPage() {
     const dispatch = useAppDispatch();
     const loadingApp = useAppSelector(getLoading);
     const { copyWithToast, isCopying, toastOpen, toastMessage, closeToast } = useCopyWithToast();
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
     const [order, setOrder] = useState<Order | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -156,16 +156,53 @@ export default function QrStatusPage() {
     return (
         <div className="min-h-[100dvh] relative bg-[var(--bg-main)] overflow-hidden flex flex-col items-center px-[1.6rem] pb-[calc(var(--safe-bottom)+1.6rem)] py-[2rem]">
             <Toast open={toastOpen} message={toastMessage} onClose={closeToast} />
-            <div
-                className={`w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-33.4rem] ${
-                    order.status === 'success' ? 'bg-[#34C85A4D]' : 'bg-[#007AFF4D]'
-                } blur-[10rem] rounded-[50%] `}
-            />
-            <div
-                className={`w-[60rem] h-[50rem] absolute top-[7.4rem] right-[-33.4rem] ${
-                    order.status === 'success' ? 'bg-[#34C85A4D]' : 'bg-[#007AFF4D]'
-                } blur-[10rem] rounded-[50%] `}
-            />
+            {order.status === 'success' ? (
+                <>
+                    <div
+                        key="success-left"
+                        className="w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-33.4rem] bg-[#34C85A4D] blur-[10rem] rounded-[50%] will-change-[filter,background-color]"
+                        style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            WebkitTransform: 'translateZ(0)',
+                        }}
+                    />
+                    <div
+                        key="success-right"
+                        className="w-[60rem] h-[50rem] absolute top-[7.4rem] right-[-33.4rem] bg-[#34C85A4D] blur-[10rem] rounded-[50%] will-change-[filter,background-color]"
+                        style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            WebkitTransform: 'translateZ(0)',
+                        }}
+                    />
+                </>
+            ) : (
+                <>
+                    <div
+                        key="processing-left"
+                        className="w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-33.4rem] bg-[#007AFF4D] blur-[10rem] rounded-[50%] will-change-[filter,background-color]"
+                        style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            WebkitTransform: 'translateZ(0)',
+                        }}
+                    />
+                    <div
+                        key="processing-right"
+                        className="w-[60rem] h-[50rem] absolute top-[7.4rem] right-[-33.4rem] bg-[#007AFF4D] blur-[10rem] rounded-[50%] will-change-[filter,background-color]"
+                        style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            WebkitTransform: 'translateZ(0)',
+                        }}
+                    />
+                </>
+            )}
             <div className="w-full max-w-[400px] mx-auto relative ">
                 <div className="flex flex-col items-center  mb-[8rem]">
                     <div className=" text-[1.8rem] mb-[1rem] font-semibold text-[var(--text-main)]">
@@ -178,7 +215,7 @@ export default function QrStatusPage() {
                         {order.status === 'success' ? (
                             <Image src="/tick-circle-big.svg" alt="Paid" width={40} height={40} />
                         ) : (
-                            <Image src="/loading.gif" alt="Waiting" width={100} height={100} />
+                            <Loader className="w-[4rem] h-[4rem]" />
                         )}
                     </div>
                     <div className="text-[2.5rem] text-[var(--text-main)] font-semibold mb-[1rem]">
@@ -225,7 +262,10 @@ export default function QrStatusPage() {
                             <button
                                 className="text-[var(--text-secondary)]"
                                 onClick={() => {
-                                    trackEvent('payment_status_order_id_copied', { order_id: id, order_uuid: order.uuid });
+                                    trackEvent('payment_status_order_id_copied', {
+                                        order_id: id,
+                                        order_uuid: order.uuid,
+                                    });
                                     copyWithToast(order.uuid, 'ID скопировано');
                                 }}
                                 disabled={isCopying}

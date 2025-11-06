@@ -9,10 +9,10 @@ import TimeIcon from '@/components/icons/time.svg';
 // import Profile2UserIcon from '@/components/icons/profile-2user.svg';
 import FaqItem from '@/components/FaqItem';
 import Image from 'next/image';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 const Page = () => {
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
 
     // Событие при открытии страницы
     useEffect(() => {

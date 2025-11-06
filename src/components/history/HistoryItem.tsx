@@ -8,14 +8,14 @@ import PlusIcon from '@/components/icons/plus.svg';
 import ArrowUpIcon from '@/components/icons/arrow-up.svg';
 import ClockIcon from '@/components/icons/clock-small.svg';
 import Link from 'next/link';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 type HistoryItemProps = {
     item: HistoryItemType;
 };
 
 const HistoryItem = ({ item }: HistoryItemProps) => {
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
 
     const getTypeImage = (type: string) => {
         switch (type) {

@@ -4,14 +4,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Button } from '../../ui/Button';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 interface Step3Props {
     onNext: () => void;
 }
 
 const Step3: React.FC<Step3Props> = ({ onNext }) => {
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
     return (
         <div className="flex-1 flex flex-col items-center bg-[url('/onboarding/bg.png')] bg-cover bg-center justify-end">
             <div className="w-full flex flex-col items-center relative flex-1">

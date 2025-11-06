@@ -17,7 +17,7 @@ import { getLoading, getUser, getWallet } from '@/lib/redux/selectors/userSelect
 import { API_URL } from '@/lib/helpers/url';
 import CloseIcon from '@/components/icons/close.svg';
 import Image from 'next/image';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 export default function QrScanPage() {
     const [scanned, setScanned] = useState<string | null>(null);
@@ -30,12 +30,13 @@ export default function QrScanPage() {
     const loadingApp = useAppSelector(getLoading);
     const user = useAppSelector(getUser);
     const [toastMsg, setToastMsg] = useState('');
+    const [isPaying, setIsPaying] = useState(false);
     const dispatch = useAppDispatch();
     const router = useRouter();
     const wallet = useAppSelector(getWallet);
     const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
     const usdtRate = useAppSelector(getRatesQuoteRub);
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
 
     const merchant_id = user.data?.id;
 
@@ -187,6 +188,7 @@ export default function QrScanPage() {
     const handlePay = async () => {
         if (!qrInfo) return;
 
+        setIsPaying(true);
         trackEvent('qr_payment_initiated', {
             rub_amount: qrInfo.rubAmount,
             usdt_amount: qrInfo.usdtAmount,
@@ -221,6 +223,7 @@ export default function QrScanPage() {
                     usdt_amount: qrInfo.usdtAmount,
                     error: data.message || 'unknown_error',
                 });
+                setIsPaying(false);
                 return;
             }
 
@@ -239,6 +242,7 @@ export default function QrScanPage() {
                 usdt_amount: qrInfo.usdtAmount,
                 error: e instanceof Error ? e.message : 'network_error',
             });
+            setIsPaying(false);
         }
     };
 
@@ -354,10 +358,17 @@ export default function QrScanPage() {
                             <Button
                                 variant="yellow"
                                 onClick={handlePay}
-                                disabled={balance_usdt ? balance_usdt < qrInfo.usdtAmount : true}
+                                disabled={isPaying || (balance_usdt ? balance_usdt < qrInfo.usdtAmount : true)}
                                 className="mb-2"
                             >
-                                Оплатить
+                                {isPaying ? (
+                                    <div className="flex items-center justify-center gap-[0.8rem]">
+                                        <div className="w-[1.6rem] h-[1.6rem] border-2 border-[var(--yellow)] border-t-transparent rounded-full animate-spin" />
+                                        <span>Обработка...</span>
+                                    </div>
+                                ) : (
+                                    'Оплатить'
+                                )}
                             </Button>
                         </>
                     )}

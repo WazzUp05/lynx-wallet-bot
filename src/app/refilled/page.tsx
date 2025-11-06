@@ -10,7 +10,7 @@ import { NetworkType, setNetwork } from '@/lib/redux/slices/walletSlice';
 import { useRouter } from 'next/navigation';
 import { getLoading, getWallet } from '@/lib/redux/selectors/userSelectors';
 import Loader from '@/components/ui/Loader';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 const MOCK_SELECT_USDT = [
     {
@@ -44,7 +44,7 @@ const Page = () => {
     const crypto = useAppSelector(getCrypto);
     const wallet = useAppSelector(getWallet);
     const loadingApp = useAppSelector(getLoading);
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
     const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
 
     // Событие при открытии страницы

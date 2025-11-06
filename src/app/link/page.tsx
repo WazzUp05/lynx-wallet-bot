@@ -17,7 +17,7 @@ import Loader from '@/components/ui/Loader';
 import { getLoading, getUser, getWallet } from '@/lib/redux/selectors/userSelectors';
 import { API_URL } from '@/lib/helpers/url';
 import Input from '@/components/ui/Input';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 export default function LinkPage() {
     const [link, setLink] = useState<string>('');
@@ -27,6 +27,7 @@ export default function LinkPage() {
     const [loadingLink, setLoadingLink] = useState(false);
     const [linkInfo, setLinkInfo] = useState<{ rubAmount: number; usdtAmount: number } | null>(null);
     const [error, setError] = useState('');
+    const [isPaying, setIsPaying] = useState(false);
     const loadingApp = useAppSelector(getLoading);
     const user = useAppSelector(getUser);
     const [toastMsg, setToastMsg] = useState('');
@@ -37,7 +38,7 @@ export default function LinkPage() {
     const usdtRate = useAppSelector(getRatesQuoteRub);
 
     const merchant_id = user.data?.id;
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
 
     // Событие при открытии страницы
     useEffect(() => {
@@ -192,6 +193,7 @@ export default function LinkPage() {
     const handlePay = async () => {
         if (!linkInfo) return;
 
+        setIsPaying(true);
         trackEvent('link_payment_initiated', {
             rub_amount: linkInfo.rubAmount,
             usdt_amount: linkInfo.usdtAmount,
@@ -226,6 +228,7 @@ export default function LinkPage() {
                     usdt_amount: linkInfo.usdtAmount,
                     error: data.message || 'unknown_error',
                 });
+                setIsPaying(false);
                 return;
             }
 
@@ -244,6 +247,7 @@ export default function LinkPage() {
                 usdt_amount: linkInfo.usdtAmount,
                 error: e instanceof Error ? e.message : 'network_error',
             });
+            setIsPaying(false);
         }
     };
 
@@ -391,10 +395,17 @@ export default function LinkPage() {
                             <Button
                                 variant="yellow"
                                 onClick={handlePay}
-                                disabled={balance_usdt ? balance_usdt < linkInfo.usdtAmount : true}
+                                disabled={isPaying || (balance_usdt ? balance_usdt < linkInfo.usdtAmount : true)}
                                 className="mb-2"
                             >
-                                Оплатить
+                                {isPaying ? (
+                                    <div className="flex items-center justify-center gap-[0.8rem]">
+                                        <div className="w-[1.6rem] h-[1.6rem] border-2 border-[var(--yellow)] border-t-transparent rounded-full animate-spin" />
+                                        <span>Обработка...</span>
+                                    </div>
+                                ) : (
+                                    'Оплатить'
+                                )}
                             </Button>
                         </>
                     )}

@@ -14,14 +14,14 @@ import { usePathname } from 'next/navigation';
 import { getLoading } from '@/lib/redux/selectors/userSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { getShouldDisableButtons } from '@/lib/redux/selectors/appSelectors';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 const NavBottom = () => {
     const pathname = usePathname();
     const loadingApp = useAppSelector(getLoading);
     const shouldDisableButtons = useAppSelector(getShouldDisableButtons);
 
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
 
     useEffect(() => {
         trackEvent('page_view', {
@@ -60,15 +60,9 @@ const NavBottom = () => {
                 ),
         },
         {
-            // href: 'https://t.me/Lynxwalletsupport_bot',
             href: '/chat',
             label: 'Чат',
-            icon:
-                pathname === '/qr' ? (
-                    <ChatActiveIcon width={28} height={28} className="w-[2.8rem] h-[2.8rem]" />
-                ) : (
-                    <ChatIcon width={28} height={28} className="w-[2.8rem] h-[2.8rem]" />
-                ),
+            icon: <ChatIcon width={28} height={28} className="w-[2.8rem] h-[2.8rem]" />,
         },
         {
             href: '/profile',
