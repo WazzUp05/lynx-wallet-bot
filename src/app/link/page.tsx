@@ -17,7 +17,7 @@ import Loader from '@/components/ui/Loader';
 import { getLoading, getUser, getWallet } from '@/lib/redux/selectors/userSelectors';
 import { API_URL } from '@/lib/helpers/url';
 import Input from '@/components/ui/Input';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 export default function LinkPage() {
     const [link, setLink] = useState<string>('');
@@ -38,7 +38,7 @@ export default function LinkPage() {
     const usdtRate = useAppSelector(getRatesQuoteRub);
 
     const merchant_id = user.data?.id;
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
 
     // Событие при открытии страницы
     useEffect(() => {

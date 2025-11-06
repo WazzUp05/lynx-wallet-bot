@@ -17,7 +17,7 @@ import { getLoading, getUser, getWallet } from '@/lib/redux/selectors/userSelect
 import { API_URL } from '@/lib/helpers/url';
 import CloseIcon from '@/components/icons/close.svg';
 import Image from 'next/image';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 export default function QrScanPage() {
     const [scanned, setScanned] = useState<string | null>(null);
@@ -36,7 +36,7 @@ export default function QrScanPage() {
     const wallet = useAppSelector(getWallet);
     const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
     const usdtRate = useAppSelector(getRatesQuoteRub);
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
 
     const merchant_id = user.data?.id;
 

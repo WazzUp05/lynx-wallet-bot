@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import ArrowDownIcon from '@/components/icons/arrow-down.svg';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 interface FaqItemProps {
     question: string;
@@ -12,7 +12,7 @@ interface FaqItemProps {
 
 const FaqItem: React.FC<FaqItemProps> = ({ question, answer, defaultOpen = false }) => {
     const [isOpen, setIsOpen] = useState(defaultOpen);
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
 
     const handleToggle = () => {
         const newIsOpen = !isOpen;

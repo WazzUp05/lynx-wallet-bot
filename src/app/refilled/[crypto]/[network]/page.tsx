@@ -14,7 +14,7 @@ import { getLoading, getWallet } from '@/lib/redux/selectors/userSelectors';
 import Loader from '@/components/ui/Loader';
 import MinAmountModal from '@/components/modals/MinAmountModal';
 import { useCopyWithToast } from '@/hooks/useCopyWithToast';
-import { useTelemetry } from '@/lib/providers/TelemetryProvider';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 import { useEffect } from 'react';
 
 // Типизация для адресов
@@ -38,7 +38,7 @@ export default function RefilledQrPage() {
     const wallet = useAppSelector(getWallet);
     const loadingApp = useAppSelector(getLoading);
     const { crypto, network } = params as { crypto: string; network: string };
-    const { trackEvent } = useTelemetry();
+    const { trackEvent } = useMixpanel();
     const [showMinAmountModal, setShowMinAmountModal] = useState(false);
     const [showTaxModal, setShowTaxModal] = useState(false);
 
