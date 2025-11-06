@@ -60,7 +60,8 @@ const NavBottom = () => {
                 ),
         },
         {
-            href: 'https://t.me/Lynxwalletsupport_bot',
+            // href: 'https://t.me/Lynxwalletsupport_bot',
+            href: '/chat',
             label: 'Чат',
             icon:
                 pathname === '/qr' ? (
