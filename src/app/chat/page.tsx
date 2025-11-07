@@ -4,11 +4,13 @@ import ArrowLeft from '@/components/icons/arrow-left.svg'
 import Plus from '@/components/icons/plus-white.svg'
 import {  getUser } from '@/lib/redux/selectors/userSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
+import InputChat from '@/components/ui/InputChat';
 
 const Page = () => {
 
     const router = useRouter();
     const user = useAppSelector(getUser);
+ 
 
     return <div className="flex flex-col min-h-[100dvh] w-full px-[1.6rem] py-[2rem] pb-[calc(var(--safe-bottom)+1.6rem)] bg-[var(--bg-optional)]">
         <div className="relative">
@@ -30,9 +32,7 @@ const Page = () => {
             <button className='w-[3rem] h-[3rem] rounded-[2rem] center glass' onClick={() => {}}>
                 <Plus />
             </button>
-            {/* <div className="input-wrapper grow"> */}
-                <input className='glass grow rounded-[2rem] center px-[1rem] py-[0.8rem] fs-small' placeholder='Сообщение...' />
-            {/* </div> */}
+            <InputChat />
         </div>
     </div>
 }
