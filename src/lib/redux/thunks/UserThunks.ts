@@ -28,7 +28,7 @@ export const fetchUser = createAsyncThunk('me/fetchUser', async (_, { dispatch, 
                 telegram_id: merchant.telegram_id,
                 joined_at: merchant.created_at,
                 status: merchant.status,
-                avatar_url: merchant.photo_url,
+                avatar: merchant.photo_url,
             });
 
             // Можно также отметить событие авторизации
