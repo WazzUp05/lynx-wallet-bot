@@ -1,5 +1,12 @@
+'use client'
 import Arrow from '@/components/icons/arrow.svg'
-import React, { useState } from 'react'
+import React, { use, useState } from 'react'
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
+import { getSupportChatMessages } from '@/lib/redux/selectors/SupportChatSelector';
+import { v4 as uuidv4 } from 'uuid';
+import { addMessage } from '@/lib/redux/slices/SupportChatSlice';
+import { getUser } from '@/lib/redux/selectors/userSelectors';
+
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     placeholder?: string;
@@ -12,6 +19,10 @@ const InputChat = ({
     ...props
     }: InputProps) => {
 
+    const dispatch = useAppDispatch()
+    const messages = useAppSelector(getSupportChatMessages)
+    const user = useAppSelector(getUser);
+
     const [value, setValue] = useState('')
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,8 +33,20 @@ const InputChat = ({
 
     const handleSend = () => {
     if (!value.trim()) return
-    console.log('Отправлено сообщение:', value)
-    setValue('') 
+    setValue('')
+    dispatch(
+        addMessage({
+            type: 'user',
+            text: value.trim(),
+            timestamp: new Date(),
+            user: {
+                id:  user.data?.id ?? uuidv4(),
+                first_name: user.data?.first_name || '',
+                last_name: user.data?.last_name || '',
+                username: user.data?.username || '',
+            }
+        })
+    )
     }
     return (
         <div className='relative glass grow rounded-[2rem] center'>

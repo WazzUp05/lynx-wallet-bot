@@ -4,6 +4,7 @@ import appSlice from "../slices/appSlice";
 import userSlice from "../slices/userSlice";
 import rateSlice from "../slices/rateSlice";
 import historySlice from "../slices/historySlice";
+import SupportChatSlice from "../slices/SupportChatSlice";
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
         wallet: walletSlice,
         rate: rateSlice,
         history: historySlice,
+        supportChat: SupportChatSlice,
     },
 });
 

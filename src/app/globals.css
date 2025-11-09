@@ -20,12 +20,14 @@
     --bg-secondary: #1c1c1e;
     --bg-main: #161616;
     --bg-optional: #121214;
+    --bg-optional-opacity: rgba(18, 18, 20, 0.3);
     --dark-gray-main: #2a2e36;
     --dark-gray-secondary: #33373d;
     --dark-gray-optional: #2a2a2a;
     --text-main: #ebecef;
     --text-secondary: #939eb1;
     --text-optional: #58606d;
+    --text-additional: #444C57;
     --green-main: #34c85a;
     --green-secondary: #34c85a26;
     --red-main: #ff0719;
@@ -177,6 +179,12 @@
     font-weight: 400;
 }
 
+.fs-xx-small {
+    font-size: 1rem;
+    line-height: 1.2rem;
+    font-weight: 400;
+}
+    
 .fs-very-small-bold {
     font-size: 1.2rem;
     line-height: 1.3rem;
