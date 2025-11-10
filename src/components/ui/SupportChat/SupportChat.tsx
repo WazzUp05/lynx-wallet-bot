@@ -1,12 +1,13 @@
 'use client';
 import { TelegramUser } from '@/lib/telegram/types';
-import { useEffect, useRef, useState } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { getSupportChatMessages } from '@/lib/redux/selectors/SupportChatSelector';
 
 import { getUser } from '@/lib/redux/selectors/userSelectors';
 import { useRouter } from 'next/navigation';
 import ArrowLeft from '@/components/icons/arrow-left.svg';
+import ArrowDown from '@/components/icons/arrow-down.svg';
 import Message from './Message';
 import { v4 as uuidv4 } from 'uuid';
 import { addMessage } from '@/lib/redux/slices/SupportChatSlice';
@@ -76,15 +77,17 @@ const MOCK_BOT_MESSAGES: MessageType[] = [
   },
 ];
 
-const Chat = () => {
+const Chat: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [stickyDate, setStickyDate] = useState<string | null>(null);
+  const [showScrollToBottom, setShowScrollToBottom] = useState(false);
   const messages = useAppSelector(getSupportChatMessages);
   const router = useRouter();
   const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    // моковые сообщения от бота при первом открытии чата
     const timers: NodeJS.Timeout[] = [];
 
     if (messages.length > 1) return;
@@ -105,23 +108,21 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
+    // обновление липкой даты при скролле
+    const elem = containerRef.current;
+    if (!elem) return;
 
     const update = () => {
-      const scrollTop = el.scrollTop;
-      // Находим все элементы сообщений (они помечены data-ts)
-      const msgEls = Array.from(el.querySelectorAll<HTMLElement>('[data-ts]'));
+      const scrollTop = elem.scrollTop;
+      const msgEls = Array.from(elem.querySelectorAll<HTMLElement>('[data-timestamp]'));
       let current: HTMLElement | null = null;
-      for (const m of msgEls) {
-        // offsetTop относительно контейнера — выбираем последний элемент, который уже выше порога
-        if (m.offsetTop <= scrollTop + 10) current = m;
+      for (const msg of msgEls) {
+        if (msg.offsetTop <= scrollTop + 10) current = msg;
       }
-      // если ничего не найдено — покажем дату первого сообщения (вверху)
       if (!current && msgEls.length) current = msgEls[0];
 
       if (current) {
-        const ts = current.getAttribute('data-ts');
+        const ts = current.getAttribute('data-timestamp');
         if (ts) {
           const date = new Date(Number(ts));
           const label = formatDateLabel(date);
@@ -133,9 +134,43 @@ const Chat = () => {
     };
 
     update();
-    el.addEventListener('scroll', update, { passive: true });
-    return () => el.removeEventListener('scroll', update);
-  }, [messages]); // пересчитываем при изменении списка сообщений
+    elem.addEventListener('scroll', update, { passive: true });
+    return () => elem.removeEventListener('scroll', update);
+  }, [messages]);
+
+  useEffect(() => {
+    // прокрутка вниз при новом сообщении
+    const elem = containerRef.current;
+    if (!elem) return;
+    elem.scrollTo({
+      top: elem.scrollHeight,
+      behavior: 'smooth',
+    });
+  }, [messages.length]);
+
+  useEffect(() => {
+    // проверка скрола
+    const elem = containerRef.current;
+    if (!elem) return;
+
+    const handleScroll = () => {
+      const isAtBottom = elem.scrollHeight - elem.scrollTop - elem.clientHeight < 50;
+      setShowScrollToBottom(!isAtBottom);
+    };
+
+    elem.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => elem.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToBottom = () => {
+    const elem = containerRef.current;
+    if (!elem) return;
+    elem.scrollTo({
+      top: elem.scrollHeight,
+      behavior: 'smooth',
+    });
+  };
 
   const formatDateLabel = function formatDateLabel(date: Date): string {
     const today = new Date();
@@ -168,7 +203,7 @@ const Chat = () => {
     >
       <div className="sticky top-0 z-50 bg-[var(--bg-optional-opacity)] backdrop-blur-[2px] backdrop-saturate-250 py-[1rem] ">
         <div
-          className="absolute top-[1rem] left-0 bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center text-[var(--text-secondary)]"
+          className="absolute top-[1rem] left-0 bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center"
           onClick={() => {
             router.back();
           }}
@@ -194,6 +229,17 @@ const Chat = () => {
       {messages.map((msg, index) => {
         return <Message key={msg.msgId} messages={messages} msg={msg} index={index} />;
       })}
+
+      {showScrollToBottom && (
+        <div>
+          <div
+            className="fixed glass z-50 bottom-[5rem] right-[3.5rem] w-[3.5rem] h-[3.5rem] center opacity-100 rounded-full"
+            onClick={scrollToBottom}
+          >
+            <ArrowDown />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

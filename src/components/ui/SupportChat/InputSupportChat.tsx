@@ -12,7 +12,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
 }
 
-const InputChat = ({ placeholder = 'Сообщение...', onChange, ...props }: InputProps) => {
+const InputChat: React.FC<InputProps> = ({ placeholder = 'Сообщение...', onChange, ...props }) => {
   const dispatch = useAppDispatch();
   const messages = useAppSelector(getSupportChatMessages);
   const user = useAppSelector(getUser);
@@ -42,15 +42,25 @@ const InputChat = ({ placeholder = 'Сообщение...', onChange, ...props }
       })
     );
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
   return (
     <div className="relative glass grow rounded-[2rem] center">
       <input
         className="pl-[1rem] py-[0.8rem] fs-very-small pr-[3rem] 
-                              focus:outline-none focus:ring-0 w-full bg-transparent"
+                  focus:outline-none focus:ring-0 w-full bg-transparent wrap-normal text-wrap"
         placeholder={placeholder}
         onChange={handleChange}
         value={value}
         {...props}
+        type="text"
+        onKeyDown={handleKeyDown}
       />
       {value.trim().length > 0 && (
         <button

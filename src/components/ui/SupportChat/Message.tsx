@@ -1,3 +1,4 @@
+'use client';
 import { MessageType } from './SupportChat';
 import avatar from '@/components/icons/Avatar.jpg';
 import Image from 'next/image';
@@ -7,13 +8,13 @@ import { addMessage } from '@/lib/redux/slices/SupportChatSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 
-type Props = {
+type MessageProps = {
   messages: MessageType[];
   msg: MessageType;
   index: number;
 };
 
-const Message = ({ messages, msg, index }: Props) => {
+const Message: React.FC<MessageProps> = ({ messages, msg, index }) => {
   const nextMsg = messages[index + 1];
   const showAvatar = msg.type === 'bot' && (!nextMsg || nextMsg.type !== msg.type);
   const dispatch = useAppDispatch();
@@ -39,7 +40,7 @@ const Message = ({ messages, msg, index }: Props) => {
   };
 
   return (
-    <div data-ts={String(msg.timestamp.valueOf())} className="flex flex-col">
+    <div data-timestamp={String(msg.timestamp.valueOf())} className="flex flex-col">
       {msg.type === 'bot' && (
         <div className="flex">
           {showAvatar ? (
@@ -75,10 +76,9 @@ const Message = ({ messages, msg, index }: Props) => {
         </div>
       )}
       {msg.type === 'user' && (
-        <div className="flex justify-between">
-          <div className="w-[4rem] h-[4rem]"></div>
+        <div className="ml-[4em] flex justify-end">
           <div className="flex flex-col gap-[-0.8rem] bg-[var(--text-additional)] rounded-[2rem] px-[1.2rem] py-[1rem]">
-            <div className="self-start fs-very-small text-[var(--text-main)] whitespace-pre-wrap break-words pr-[3em]">
+            <div className="self-end fs-very-small text-[var(--text-main)] whitespace-pre-wrap break-all pr-[3em]">
               {msg.text}
             </div>
             <div className="self-end fs-xx-small text-[var(--text-secondary)]">
