@@ -3,342 +3,361 @@
 @import 'slick-carousel/slick/slick-theme.css';
 
 :root {
-    --background: #ffffff;
-    --foreground: #171717;
-    --blue: #007aff;
-    --gray: #9c9da4;
-    --yellow: #ffbe00;
-    --yellow-secondary: #f1b90c26;
-    --yellow-optional: #f1b90c0d;
-    --green: #34c759;
-    --red: #ff0719;
-    --bg-red: #ffe2e7;
-    --bg-green: #d9eee7;
-    --bg-blue: #e0ebf9;
-    --white-15: rgba(255, 255, 255, 0.15);
-    --nav-bottom-height: calc(6.5rem);
-    --bg-secondary: #1c1c1e;
-    --bg-main: #161616;
-    --bg-optional: #121214;
-    --bg-optional-opacity: rgba(18, 18, 20, 0.3);
-    --dark-gray-main: #2a2e36;
-    --dark-gray-secondary: #33373d;
-    --dark-gray-optional: #2a2a2a;
-    --text-main: #ebecef;
-    --text-secondary: #939eb1;
-    --text-optional: #58606d;
-    --text-additional: #444C57;
-    --green-main: #34c85a;
-    --green-secondary: #34c85a26;
-    --red-main: #ff0719;
-    --red-secondary: #ff071926;
-    --c-glass: #0000005c;
-    --c-glass-gray: #2a2e3633;
-    --c-light: #ffffff5c;
-    --c-dark: #000;
-    --c-content: #e1e1e1;
-    --c-action: #03d5ff;
-    --c-bg: #1b1b1d;
-    --glass-reflex-dark: 2;
-    --glass-reflex-light: 0.3;
-    --saturation: 150%;
-    --safe-bottom: env(safe-area-inset-bottom);
-    --safe-top: var(--tg-safe-area-inset-top, env(safe-area-inset-top, 0px));
+  --background: #ffffff;
+  --foreground: #171717;
+  --blue: #007aff;
+  --gray: #9c9da4;
+  --yellow: #ffbe00;
+  --yellow-secondary: #f1b90c26;
+  --yellow-optional: #f1b90c0d;
+  --green: #34c759;
+  --red: #ff0719;
+  --bg-red: #ffe2e7;
+  --bg-green: #d9eee7;
+  --bg-blue: #e0ebf9;
+  --white-15: rgba(255, 255, 255, 0.15);
+  --nav-bottom-height: calc(6.5rem);
+  --bg-secondary: #1c1c1e;
+  --bg-main: #161616;
+  --bg-optional: #121214;
+  --bg-optional-opacity: rgba(18, 18, 20, 0.3);
+  --dark-gray-main: #2a2e36;
+  --dark-gray-secondary: #33373d;
+  --dark-gray-optional: #2a2a2a;
+  --text-main: #ebecef;
+  --text-secondary: #939eb1;
+  --text-optional: #58606d;
+  --text-additional: #444c57;
+  --green-main: #34c85a;
+  --green-secondary: #34c85a26;
+  --red-main: #ff0719;
+  --red-secondary: #ff071926;
+  --c-glass: #0000005c;
+  --c-glass-gray: #2a2e3633;
+  --c-light: #ffffff5c;
+  --c-dark: #000;
+  --c-content: #e1e1e1;
+  --c-action: #03d5ff;
+  --c-bg: #1b1b1d;
+  --glass-reflex-dark: 2;
+  --glass-reflex-light: 0.3;
+  --saturation: 150%;
+  --safe-bottom: env(safe-area-inset-bottom);
+  --safe-top: var(--tg-safe-area-inset-top, env(safe-area-inset-top, 0px));
 
-    /* iOS specific safe area fixes */
-    --ios-safe-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
-    --ios-safe-top: max(0px, env(safe-area-inset-top, 0px));
+  /* iOS specific safe area fixes */
+  --ios-safe-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+  --ios-safe-top: max(0px, env(safe-area-inset-top, 0px));
 }
 .no-scrollbar {
-    scrollbar-width: none !important;
-    &::-webkit-scrollbar {
-        display: none !important;
-    }
+  scrollbar-width: none !important;
+  &::-webkit-scrollbar {
+    display: none !important;
+  }
 }
 
 /* Safe area support for iOS */
 @supports (padding: max(0px)) {
-    .safe-area-bottom {
-        padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
-    }
+  .safe-area-bottom {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
 
-    .safe-area-top {
-        padding-top: max(0.5rem, env(safe-area-inset-top));
-    }
+  .safe-area-top {
+    padding-top: max(0.5rem, env(safe-area-inset-top));
+  }
 }
 
 @theme inline {
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --font-sans: var(--font-geist-sans);
-    --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-        --background: #0a0a0a;
-        --foreground: #ededed;
-    }
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
 }
 
 .safe-area {
-    padding-bottom: constant(safe-area-inset-bottom);
-    padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .gradient {
-    background: linear-gradient(180deg, #ffdb70 0%, #ffbe00 100%);
+  background: linear-gradient(180deg, #ffdb70 0%, #ffbe00 100%);
 }
 
 .glass {
-    /* Fallback для браузеров без поддержки backdrop-filter */
-    background-color: rgba(188, 187, 187, 0.36);
-    -webkit-backdrop-filter: blur(8px) saturate(150%);
-    /* cssnano keep */
-    backdrop-filter: blur(8px) saturate(150%);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
-        inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
-        inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
-        inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
-        inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
-        inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
-        inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
-        inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
-        0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
-        0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+  /* Fallback для браузеров без поддержки backdrop-filter */
+  background-color: rgba(188, 187, 187, 0.36);
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+  /* cssnano keep */
+  backdrop-filter: blur(8px) saturate(150%);
+  box-shadow:
+    inset 0 0 0 1px
+      color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+    inset 1.8px 3px 0px -2px
+      color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+    inset -2px -2px 0px -2px
+      color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+    inset -3px -8px 1px -6px
+      color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+    inset -0.3px -1px 4px 0px
+      color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
+    inset -1.5px 2.5px 0px -2px
+      color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+    inset 0px 3px 4px -2px
+      color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+    inset 2px -6.5px 1px -4px
+      color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+    0px 1px 5px 0px
+      color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+    0px 6px 16px 0px
+      color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
 }
 
 @supports (backdrop-filter: blur(1px)) {
-    .glass {
-        background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
-    }
-    .glass-btn {
-        background-color: color-mix(in srgb, var(--c-glass-gray) 12%, #2a2e3633);
-    }
+  .glass {
+    background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+  }
+  .glass-btn {
+    background-color: color-mix(in srgb, var(--c-glass-gray) 12%, #2a2e3633);
+  }
 }
 
 .glass-active:after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: block;
-    width: 100%;
-    height: calc(100% - 10px);
-    border-radius: 99em;
-    background-color: color-mix(in srgb, var(--c-glass) 36%, transparent);
-    z-index: -1;
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
-        inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
-        inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
-        inset -2px -6px 1px -5px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
-        inset -1px 2px 3px -1px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
-        inset 0px -4px 1px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
-        0px 3px 6px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  width: 100%;
+  height: calc(100% - 10px);
+  border-radius: 99em;
+  background-color: color-mix(in srgb, var(--c-glass) 36%, transparent);
+  z-index: -1;
+  box-shadow:
+    inset 0 0 0 1px
+      color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+    inset 2px 1px 0px -1px
+      color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+    inset -1.5px -1px 0px -1px
+      color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+    inset -2px -6px 1px -5px
+      color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+    inset -1px 2px 3px -1px
+      color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+    inset 0px -4px 1px -2px
+      color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+    0px 3px 6px 0px
+      color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
 }
 
 .link {
-    color: var(--yellow);
-    text-decoration: underline;
+  color: var(--yellow);
+  text-decoration: underline;
 }
 
 .fs-vbig {
-    font-size: 3rem;
-    line-height: 130%;
-    font-weight: 600;
+  font-size: 3rem;
+  line-height: 130%;
+  font-weight: 600;
 }
 
 .fs-bold {
-    font-size: 2.5rem;
-    line-height: 130%;
-    font-weight: 600;
+  font-size: 2.5rem;
+  line-height: 130%;
+  font-weight: 600;
 }
 
 .fs-regular {
-    font-size: 1.6rem;
-    line-height: 130%;
-    font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 130%;
+  font-weight: 400;
 }
 
 .fs-regular-bold {
-    font-size: 1.6rem;
-    line-height: 130%;
-    font-weight: 600;
-} 
+  font-size: 1.6rem;
+  line-height: 130%;
+  font-weight: 600;
+}
 
 .fs-small {
-    font-size: 1.5rem;
-    line-height: 130%;
-    font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 130%;
+  font-weight: 400;
 }
 
 .fs-very-small {
-    font-size: 1.2rem;
-    line-height: 1.3rem;
-    font-weight: 400;
+  font-size: 1.2rem;
+  line-height: 1.3rem;
+  font-weight: 400;
 }
 
 .fs-xx-small {
-    font-size: 1rem;
-    line-height: 1.2rem;
-    font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.2rem;
+  font-weight: 400;
 }
-    
+
 .fs-very-small-bold {
-    font-size: 1.2rem;
-    line-height: 1.3rem;
-    font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.3rem;
+  font-weight: 600;
 }
 
 .fs-button {
-    font-size: 1.6rem;
-    line-height: 130%;
-    font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 130%;
+  font-weight: 600;
 }
 
 .box-shadow {
-    box-shadow: 0.1px 0px 1rem 0px #0000001a;
+  box-shadow: 0.1px 0px 1rem 0px #0000001a;
 }
 
 .shadow-text {
-    text-shadow: 0px 4px 4px #00000040;
+  text-shadow: 0px 4px 4px #00000040;
 }
 
 html {
-    font-size: 10px;
-    scroll-behavior: smooth;
-    scroll-padding-top: 10rem;
+  font-size: 10px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 10rem;
 }
 
 @media screen and (max-width: 374px) {
-    html {
-        font-size: 10px;
-    }
+  html {
+    font-size: 10px;
+  }
 }
 
 @media screen and (min-width: 375px) and (max-width: 991px) {
-    html {
-        font-size: calc(10px + 10 * (100vw - 375px) / 392);
-    }
+  html {
+    font-size: calc(10px + 10 * (100vw - 375px) / 392);
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1023px) {
-    html {
-        font-size: calc(8px + 2.7 * (100vw - 768px) / 255);
-    }
+  html {
+    font-size: calc(8px + 2.7 * (100vw - 768px) / 255);
+  }
 }
 
 @media (min-width: 1024px) and (max-width: 1279px) {
-    html {
-        font-size: calc(7.4px + 2 * (100vw - 1024px) / 256);
-    }
+  html {
+    font-size: calc(7.4px + 2 * (100vw - 1024px) / 256);
+  }
 }
 
 @media (min-width: 1280px) and (max-width: 1439px) {
-    html {
-        font-size: calc(9px + 0.5 * (100vw - 1280px) / 160);
-    }
+  html {
+    font-size: calc(9px + 0.5 * (100vw - 1280px) / 160);
+  }
 }
 
 @media (min-width: 1440px) {
-    html {
-        font-size: calc((10px * (100vw - 1600px) / 240));
-    }
+  html {
+    font-size: calc((10px * (100vw - 1600px) / 240));
+  }
 }
 
 body {
-    font-size: 1.6rem;
-    line-height: 2.4rem;
-    background: var(--bg-optional);
-    color: var(--text-main);
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  background: var(--bg-optional);
+  color: var(--text-main);
 }
 
 /* Custom Scrollbar Styles */
 ::-webkit-scrollbar {
-    width: 0.6rem;
-    height: 0.6rem;
+  width: 0.6rem;
+  height: 0.6rem;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 1rem;
+  background: transparent;
+  border-radius: 1rem;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--dark-gray-main);
-    border-radius: 1rem;
-    transition: background 0.3s ease;
+  background: var(--dark-gray-main);
+  border-radius: 1rem;
+  transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--dark-gray-secondary);
+  background: var(--dark-gray-secondary);
 }
 
 ::-webkit-scrollbar-thumb:active {
-    background: var(--yellow);
+  background: var(--yellow);
 }
 
 /* Firefox Scrollbar */
 * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--dark-gray-main) transparent;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dark-gray-main) transparent;
 }
 
 /* Slick Slider Custom Styles */
 .offer-slider .slick-slider {
-    position: relative;
+  position: relative;
 }
 
 .offer-slider .slick-slide > div {
-    margin: 0;
+  margin: 0;
 }
 
 .offer-slider .slick-dots {
-    bottom: 1rem;
-    position: relative;
-    display: flex !important;
-    justify-content: center;
-    gap: 0.6rem;
-    margin-top: 1rem;
-    padding: 0;
-    list-style: none;
+  bottom: 1rem;
+  position: relative;
+  display: flex !important;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding: 0;
+  list-style: none;
 }
 
 .offer-slider .slick-dots li {
-    width: 0.6rem;
-    height: 0.6rem;
-    margin: 0;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin: 0;
 }
 
 .offer-slider .slick-dots li button {
-    width: 0.6rem;
-    height: 0.6rem;
-    padding: 0;
-    background: var(--text-optional);
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    font-size: 0;
-    transition: all 0.3s ease;
+  width: 0.6rem;
+  height: 0.6rem;
+  padding: 0;
+  background: var(--text-optional);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 0;
+  transition: all 0.3s ease;
 }
 
 .offer-slider .slick-dots li button:before {
-    display: none;
+  display: none;
 }
 
 .offer-slider .slick-dots li.slick-active button {
-    background: var(--yellow);
-    width: 1.6rem;
-    border-radius: 0.8rem;
+  background: var(--yellow);
+  width: 1.6rem;
+  border-radius: 0.8rem;
 }
 
 .offer-slider .slick-track {
-    display: flex;
+  display: flex;
 }
 
 .offer-slider .slick-slide {
-    height: auto;
+  height: auto;
 }
 
 /* 
@@ -379,161 +398,161 @@ body {
 <div className="center-absolute">Абсолютно центрированный</div>
 */
 .center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .center-h {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .center-v {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .center-text {
-    text-align: center;
+  text-align: center;
 }
 
 .center-absolute {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .center-absolute-h {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .center-absolute-v {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* Дополнительные варианты центрирования */
 .center-grid {
-    display: grid;
-    place-items: center;
+  display: grid;
+  place-items: center;
 }
 
 .center-grid-h {
-    display: grid;
-    justify-items: center;
+  display: grid;
+  justify-items: center;
 }
 
 .center-grid-v {
-    display: grid;
-    align-items: center;
+  display: grid;
+  align-items: center;
 }
 
 /* Центрирование с помощью margin */
 .center-margin {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .center-margin-v {
-    margin: auto 0;
+  margin: auto 0;
 }
 
 .center-margin-both {
-    margin: auto;
+  margin: auto;
 }
 
 /* Центрирование для inline элементов */
 .center-inline {
-    text-align: center;
+  text-align: center;
 }
 
 .center-inline-block {
-    display: inline-block;
-    text-align: center;
+  display: inline-block;
+  text-align: center;
 }
 
 /* Центрирование с flex-direction */
 .center-column {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .center-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Дополнительные стили для мобильных устройств */
 @media screen and (max-width: 768px) {
-    .nav-bottom-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
+  .nav-bottom-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
 
-    /* Исправление для Android Chrome */
-    .nav-bottom-container a {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        position: relative;
-    }
+  /* Исправление для Android Chrome */
+  .nav-bottom-container a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+  }
 
-    /* Улучшенная поддержка центрирования на мобильных */
-    .center,
-    .center-h,
-    .center-v,
-    .center-column,
-    .center-row {
-        -webkit-justify-content: center;
-        justify-content: center;
-        -webkit-align-items: center;
-        align-items: center;
-        -webkit-box-pack: center;
-        -webkit-box-align: center;
-    }
+  /* Улучшенная поддержка центрирования на мобильных */
+  .center,
+  .center-h,
+  .center-v,
+  .center-column,
+  .center-row {
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+  }
 
-    /* Дополнительная поддержка для старых Android браузеров */
-    .center-grid,
-    .center-grid-h,
-    .center-grid-v {
-        -webkit-display: grid;
-        display: grid;
-    }
+  /* Дополнительная поддержка для старых Android браузеров */
+  .center-grid,
+  .center-grid-h,
+  .center-grid-v {
+    -webkit-display: grid;
+    display: grid;
+  }
 
-    .center-grid {
-        -webkit-place-items: center;
-        place-items: center;
-    }
+  .center-grid {
+    -webkit-place-items: center;
+    place-items: center;
+  }
 
-    .center-grid-h {
-        -webkit-justify-items: center;
-        justify-items: center;
-    }
+  .center-grid-h {
+    -webkit-justify-items: center;
+    justify-items: center;
+  }
 
-    .center-grid-v {
-        -webkit-align-items: center;
-        align-items: center;
-    }
+  .center-grid-v {
+    -webkit-align-items: center;
+    align-items: center;
+  }
 }
 
 /* iOS specific fixes */
 @supports (-webkit-touch-callout: none) {
-    /* iPhone specific styles */
-    .nav-bottom-ios {
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-        background: rgba(42, 46, 54, 0.8);
-    }
+  /* iPhone specific styles */
+  .nav-bottom-ios {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background: rgba(42, 46, 54, 0.8);
+  }
 }

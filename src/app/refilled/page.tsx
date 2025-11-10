@@ -13,110 +13,112 @@ import Loader from '@/components/ui/Loader';
 import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 const MOCK_SELECT_USDT = [
-    {
-        id: 'TRC20',
-        label: 'TRC20',
-        description: 'Комиссия 2.75 USDT',
-        iconUrl: '/icons/trc20.svg',
-    },
-    // {
-    //     id: "TON",
-    //     label: "TON",
-    //     description: "Комиссия 2.75 USDT",
-    //     iconUrl: "/icons/ton.svg",
-    // },
+  {
+    id: 'TRC20',
+    label: 'TRC20',
+    description: 'Комиссия 2.75 USDT',
+    iconUrl: '/icons/trc20.svg',
+  },
+  // {
+  //     id: "TON",
+  //     label: "TON",
+  //     description: "Комиссия 2.75 USDT",
+  //     iconUrl: "/icons/ton.svg",
+  // },
 ];
 
 const MOCK_SELECT_TON = [
-    {
-        id: 'TON',
-        label: 'TON',
-        description: 'Комиссия 0.2 TON',
-        iconUrl: '/icons/ton.svg',
-    },
+  {
+    id: 'TON',
+    label: 'TON',
+    description: 'Комиссия 0.2 TON',
+    iconUrl: '/icons/ton.svg',
+  },
 ];
 
 const Page = () => {
-    const router = useRouter();
-    const dispatch = useAppDispatch();
-    const defaultNetwork = useAppSelector(getNetworkType);
-    const [selectedNetwork, setSelectedNetwork] = useState<string>(defaultNetwork);
-    const crypto = useAppSelector(getCrypto);
-    const wallet = useAppSelector(getWallet);
-    const loadingApp = useAppSelector(getLoading);
-    const { trackEvent } = useMixpanel();
-    const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const defaultNetwork = useAppSelector(getNetworkType);
+  const [selectedNetwork, setSelectedNetwork] = useState<string>(defaultNetwork);
+  const crypto = useAppSelector(getCrypto);
+  const wallet = useAppSelector(getWallet);
+  const loadingApp = useAppSelector(getLoading);
+  const { trackEvent } = useMixpanel();
+  const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
 
-    // Событие при открытии страницы
-    useEffect(() => {
-        trackEvent('refill_page_opened');
-    }, [trackEvent]);
+  // Событие при открытии страницы
+  useEffect(() => {
+    trackEvent('refill_page_opened');
+  }, [trackEvent]);
 
-    const MOCK_SELECT_CRYPTO = [
-        {
-            id: 'USDT',
-            label: 'USDT',
-            description: balance_usdt ? `${balance_usdt} USDT` : '0.00 USDT',
-            iconUrl: '/icons/usdt.svg',
-        },
-    ];
+  const MOCK_SELECT_CRYPTO = [
+    {
+      id: 'USDT',
+      label: 'USDT',
+      description: balance_usdt ? `${balance_usdt} USDT` : '0.00 USDT',
+      iconUrl: '/icons/usdt.svg',
+    },
+  ];
 
-    const handlerChangeNetwork = (network: string) => {
-        setSelectedNetwork(network);
-        dispatch(setNetwork(network as NetworkType));
-        trackEvent('refill_network_selected', {
-            network,
-            crypto: crypto?.id || 'USDT',
-        });
-    };
+  const handlerChangeNetwork = (network: string) => {
+    setSelectedNetwork(network);
+    dispatch(setNetwork(network as NetworkType));
+    trackEvent('refill_network_selected', {
+      network,
+      crypto: crypto?.id || 'USDT',
+    });
+  };
 
-    const network = crypto.id === 'USDT' ? MOCK_SELECT_USDT : MOCK_SELECT_TON;
+  const network = crypto.id === 'USDT' ? MOCK_SELECT_USDT : MOCK_SELECT_TON;
 
-    // Функция перехода на страницу с QR-кодом
-    const handleContinue = () => {
-        if (crypto?.id && selectedNetwork) {
-            trackEvent('refill_continue_clicked', {
-                crypto: crypto.id,
-                network: selectedNetwork,
-            });
-            router.push(`/refilled/${crypto.id}/${selectedNetwork}`);
-        }
-    };
-
-    if (loadingApp) {
-        return <Loader className="h-[100dvh]" />;
+  // Функция перехода на страницу с QR-кодом
+  const handleContinue = () => {
+    if (crypto?.id && selectedNetwork) {
+      trackEvent('refill_continue_clicked', {
+        crypto: crypto.id,
+        network: selectedNetwork,
+      });
+      router.push(`/refilled/${crypto.id}/${selectedNetwork}`);
     }
+  };
 
-    return (
-        <div className="p-[1.6rem] pb-[calc(var(--safe-bottom)+1.6rem)] flex flex-col min-h-[100dvh]">
-            <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[4rem] font-semibold">
-                <div
-                    className="absolute left-[0] top-1/2 translate-y-[-50%] bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
-                    onClick={() => {
-                        trackEvent('refill_page_closed');
-                        router.back();
-                    }}
-                >
-                    <ArrowLeft />
-                </div>
-                <span className="text-white">Пополнить</span>
-            </div>
-            <div className="mb-[3rem]">
-                <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">
-                    Криптовалюта
-                </p>
-                <SelectCrypto cryptos={MOCK_SELECT_CRYPTO} />
-            </div>
-            <div className="mb-[3rem]">
-                <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">Сеть</p>
-                <SelectCustom
-                    options={network}
-                    value={selectedNetwork}
-                    onChange={handlerChangeNetwork}
-                    className="mb-[3rem]"
-                />
-            </div>
-            {/* <div className="mb-[3rem]">
+  if (loadingApp) {
+    return <Loader className="h-[100dvh]" />;
+  }
+
+  return (
+    <div className="p-[1.6rem] pb-[calc(var(--safe-bottom)+1.6rem)] flex flex-col min-h-[100dvh]">
+      <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[4rem] font-semibold">
+        <div
+          className="absolute left-[0] top-1/2 translate-y-[-50%] bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
+          onClick={() => {
+            trackEvent('refill_page_closed');
+            router.back();
+          }}
+        >
+          <ArrowLeft />
+        </div>
+        <span className="text-white">Пополнить</span>
+      </div>
+      <div className="mb-[3rem]">
+        <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">
+          Криптовалюта
+        </p>
+        <SelectCrypto cryptos={MOCK_SELECT_CRYPTO} />
+      </div>
+      <div className="mb-[3rem]">
+        <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">
+          Сеть
+        </p>
+        <SelectCustom
+          options={network}
+          value={selectedNetwork}
+          onChange={handlerChangeNetwork}
+          className="mb-[3rem]"
+        />
+      </div>
+      {/* <div className="mb-[3rem]">
                 <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[#08091C]">Скоро</p>
                 <div
                     className={`flex items-center mb-[1rem] w-full gap-[1rem] py-[1rem] px-[1.6rem] rounded-[1.5rem] box-shadow transition
@@ -153,11 +155,11 @@ const Page = () => {
                     </div>
                 </div>
             </div> */}
-            <Button variant="yellow" className="mt-auto w-full" onClick={handleContinue}>
-                Продолжить
-            </Button>
-        </div>
-    );
+      <Button variant="yellow" className="mt-auto w-full" onClick={handleContinue}>
+        Продолжить
+      </Button>
+    </div>
+  );
 };
 
 export default Page;

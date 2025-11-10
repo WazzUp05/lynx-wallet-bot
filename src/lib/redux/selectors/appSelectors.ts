@@ -8,15 +8,15 @@ const getOnboardingStep = (state: RootState): number => state.app.onboardingStep
 const getIsFirstTime = (state: RootState): boolean => state.app.isFirstTime;
 
 const getShouldDisableButtons = (state: RootState): boolean => {
-    return state.app.isWaitingForDeposit || state.app.needDeposit;
+  return state.app.isWaitingForDeposit || state.app.needDeposit;
 };
 
 export {
-    getOnboardingCompleted,
-    getHideBalance,
-    getWaitingForDeposit,
-    getNeedDeposit,
-    getOnboardingStep,
-    getIsFirstTime,
-    getShouldDisableButtons,
+  getOnboardingCompleted,
+  getHideBalance,
+  getWaitingForDeposit,
+  getNeedDeposit,
+  getOnboardingStep,
+  getIsFirstTime,
+  getShouldDisableButtons,
 };
