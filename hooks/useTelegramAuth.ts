@@ -9,7 +9,7 @@ import { useRawInitData } from '@telegram-apps/sdk-react';
 import { fetchUser } from '@/lib/redux/thunks/UserThunks';
 import mixpanel from 'mixpanel-browser';
 
-mixpanel.init('YOUR_MIXPANEL_TOKEN', { debug: true }); // 👈 только один раз при старте
+mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN || '', { debug: true }); // 👈 только один раз при старте
 
 export function useTelegramAuth() {
     const dispatch = useAppDispatch();
@@ -39,10 +39,13 @@ export function useTelegramAuth() {
         }
 
         let telegramUser = null;
+        let startParam = null;
+
         try {
             const parsed = parse(actualInitData);
             telegramUser = parsed.user || null;
-            console.log('Telegram user:', telegramUser);
+            startParam = parsed.start_param || null;
+            console.log('Telegram user:', telegramUser, 'start_param:', startParam);
         } catch (e) {
             console.error('Failed to parse Telegram user:', e);
         }
@@ -77,10 +80,12 @@ export function useTelegramAuth() {
                                 telegram_id: user.id,
                                 avatar_url: user.photo_url,
                                 joined_at: new Date().toISOString(),
+                                source: startParam || 'unknown', // 👈 добавляем источник
                             });
                             mixpanel.track('User Authenticated', {
                                 telegram_id: user.id,
                                 username: user.username,
+                                source: startParam || 'unknown', // 👈 фиксируем событие с источником
                             });
                             localStorage.setItem('mp_identified', mpId);
                         }
