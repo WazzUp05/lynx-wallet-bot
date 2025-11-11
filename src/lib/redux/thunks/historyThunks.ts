@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { API_URL } from '@/lib/helpers/url';
+import { apiFetch } from '@/lib/helpers/url';
 import { setHistory } from '../slices/historySlice';
 import { RootState } from '@/lib/redux/store';
 
@@ -12,7 +12,7 @@ export const fetchHistory = createAsyncThunk('history/fetchHistory', async (_, {
         return;
     }
 
-    const res = await fetch(`${API_URL}/merchant/history`, {
+    const res = await apiFetch('/merchant/history', {
         headers: {
             Accept: 'application/json',
             'X-Telegram-ID': telegramId.toString(),

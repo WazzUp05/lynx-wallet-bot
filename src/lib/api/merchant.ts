@@ -1,15 +1,15 @@
-import { API_URL } from '../helpers/url';
+import { apiFetch } from '../helpers/url';
 import { TelegramUser } from '../telegram/types';
 
 export async function checkAndSyncMerchant(user: TelegramUser) {
     // 1. Проверяем наличие мерчанта
-    const checkRes = await fetch(`${API_URL}/check/${user.id}`);
+    const checkRes = await apiFetch(`/check/${user.id}`);
     const checkData = await checkRes.json();
     console.log('checkData', checkData);
 
     if (checkData.success) {
         // 2. Если найден, получаем merchant/me
-        const meRes = await fetch(`${API_URL}/merchant/me`, {
+        const meRes = await apiFetch('/merchant/me', {
             headers: {
                 Accept: 'application/json',
                 'X-Telegram-ID': String(user.id),
@@ -20,7 +20,7 @@ export async function checkAndSyncMerchant(user: TelegramUser) {
         return meData;
     } else {
         // 3. Если не найден, регистрируем мерчанта
-        const signupRes = await fetch(`${API_URL}/merchant/signup`, {
+        const signupRes = await apiFetch('/merchant/signup', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
