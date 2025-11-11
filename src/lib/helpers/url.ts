@@ -1,4 +1,4 @@
-const PRIMARY_API_URL = 'https://stage.lynxrussia.ru/api';
+const PRIMARY_API_URL = 'https://stage-proxy.lynxrussia.ru/api';
 const FALLBACK_API_URL = 'https://stage-proxy.lynxrussia.ru/api';
 const DEFAULT_TIMEOUT_MS = 7000;
 
