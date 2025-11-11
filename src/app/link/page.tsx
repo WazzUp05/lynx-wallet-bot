@@ -15,7 +15,7 @@ import { fetchRates } from '@/lib/redux/thunks/rateThunks';
 import { useRouter } from 'next/navigation';
 import Loader from '@/components/ui/Loader';
 import { getLoading, getUser, getWallet } from '@/lib/redux/selectors/userSelectors';
-import { API_URL } from '@/lib/helpers/url';
+import { apiFetch } from '@/lib/helpers/url';
 import Input from '@/components/ui/Input';
 import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
@@ -211,7 +211,7 @@ export default function LinkPage() {
         // alert(JSON.stringify(order, null, 2));
 
         try {
-            const res = await fetch(`${API_URL}/orders`, {
+            const res = await apiFetch('/orders', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
                 body: JSON.stringify(order),

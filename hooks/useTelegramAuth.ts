@@ -31,7 +31,7 @@ export function useTelegramAuth() {
             'user=%7B%22id%22%3A123456%2C%22first_name%22%3A%22Dev%22%2C%22last_name%22%3A%22User%22%2C%22username%22%3A%22devuser%22%7D';
         const isDev = process.env.NODE_ENV === 'development';
         const actualInitData = rawInitData || (isDev ? devInitData : '');
-
+        console.log('actualInitData:', actualInitData);
         if (!actualInitData) {
             dispatch(setLoading(false));
             dispatch(clearUser());
