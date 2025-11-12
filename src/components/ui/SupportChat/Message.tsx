@@ -1,4 +1,5 @@
 'use client';
+
 import { MessageType } from './SupportChat';
 import avatar from '@/components/icons/Avatar.jpg';
 import Image from 'next/image';
@@ -50,10 +51,10 @@ const Message: React.FC<MessageProps> = ({ messages, msg, index }) => {
           )}
           <div className="flex flex-col gap-[-0.8rem] bg-[var(--bg-secondary)] ml-[0.8rem] rounded-[1rem] pt-[0.8rem] pb-[1rem] px-[1.2rem]">
             <div className="self-start pr-[2em] ">
-              <div className="text-[var(--text-secondary)] fs-very-small mb-[0.4rem]">
+              <div className="text-[var(--text-secondary)] fs-very-small  mb-[0.4rem]">
                 {msg.user?.first_name}
               </div>
-              <div className="text-[var(--text-main)] fs-very-small">{msg.text}</div>
+              <div className="text-[var(--text-main)] fs-very-small ">{msg.text}</div>
             </div>
             <div className="self-end fs-xx-small text-[var(--text-secondary)]">
               {msg.timestamp.getHours().toString().padStart(2, '0')}:
