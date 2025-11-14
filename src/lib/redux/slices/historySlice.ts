@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface HistoryItem {
     id: number;
@@ -27,7 +27,7 @@ const initialState: HistoryState = {
 };
 
 const historySlice = createSlice({
-    name: "history",
+    name: 'history',
     initialState,
     reducers: {
         setHistory(state, action: PayloadAction<HistoryItem[]>) {

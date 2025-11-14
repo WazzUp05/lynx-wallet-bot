@@ -46,7 +46,9 @@ const WalletItem: React.FC<WalletItemProps> = ({
                 <div className="flex flex-col w-full">
                     <p
                         className={`text-[1.8rem] leading-[130%] ${
-                            soon || shouldDisableButtons ? 'text-[var(--text-optional)]' : 'text-[var(--text-main)]'
+                            soon || shouldDisableButtons
+                                ? 'text-[var(--text-optional)]'
+                                : 'text-[var(--text-main)]'
                         } font-bold `}
                     >
                         {!hideBalance ? (fiatBalance ? fiatBalance + ' ₽' : '0 ₽') : '********'}

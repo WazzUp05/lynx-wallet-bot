@@ -5,7 +5,11 @@ import QrIcon from '@/components/icons/qr.svg';
 import LinkIcon from '@/components/icons/link.svg';
 import Link from 'next/link';
 import { useAppSelector } from '@/lib/redux/hooks';
-import { getNeedDeposit, getShouldDisableButtons, getWaitingForDeposit } from '@/lib/redux/selectors/appSelectors';
+import {
+    getNeedDeposit,
+    getShouldDisableButtons,
+    getWaitingForDeposit,
+} from '@/lib/redux/selectors/appSelectors';
 
 interface NavigationProps {
     onTopUp?: () => void;
@@ -21,7 +25,9 @@ const Navigation: React.FC<NavigationProps> = ({ onTopUp }) => {
             <button className={`w-[7.3rem] text-[var(--text-main)]`} onClick={onTopUp}>
                 <div
                     className={`bg-[#2A2E3633] glass glass-btn ${
-                        !waitingDeposit && needDeposit ? 'gradient text-[var(--bg-secondary)]' : 'text-[var(--yellow)]'
+                        !waitingDeposit && needDeposit
+                            ? 'gradient text-[var(--bg-secondary)]'
+                            : 'text-[var(--yellow)]'
                     } w-full h-[5.5rem] rounded-[2rem] center mb-[0.5rem]`}
                 >
                     <PlusIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
@@ -49,7 +55,9 @@ const Navigation: React.FC<NavigationProps> = ({ onTopUp }) => {
             >
                 <div
                     className={`bg-[#2A2E3633] glass glass-btn ${
-                        shouldDisableButtons ? 'text-[var(--dark-gray-secondary)]' : 'text-[var(--yellow)]'
+                        shouldDisableButtons
+                            ? 'text-[var(--dark-gray-secondary)]'
+                            : 'text-[var(--yellow)]'
                     } w-full  h-[5.5rem] rounded-[2rem] center  mb-[0.5rem]`}
                 >
                     <QrIcon width={30} height={30} className="w-[3rem] h-[3rem]" />
@@ -71,7 +79,9 @@ const Navigation: React.FC<NavigationProps> = ({ onTopUp }) => {
             >
                 <div
                     className={`bg-[#2A2E3633] glass glass-btn ${
-                        shouldDisableButtons ? 'text-[var(--dark-gray-secondary)]' : 'text-[var(--yellow)]'
+                        shouldDisableButtons
+                            ? 'text-[var(--dark-gray-secondary)]'
+                            : 'text-[var(--yellow)]'
                     } w-full  h-[5.5rem] rounded-[2rem] center mb-[0.5rem]`}
                 >
                     <LinkIcon width={30} height={30} className="w-[3rem] h-[3rem]" />

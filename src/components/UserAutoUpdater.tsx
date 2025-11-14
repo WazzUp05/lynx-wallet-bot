@@ -1,9 +1,9 @@
 // src/components/UserAutoUpdater.tsx
-"use client";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { fetchUser } from "@/lib/redux/thunks/UserThunks";
-import { getUser } from "@/lib/redux/selectors/userSelectors";
+'use client';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { fetchUser } from '@/lib/redux/thunks/UserThunks';
+import { getUser } from '@/lib/redux/selectors/userSelectors';
 
 const UserAutoUpdater = () => {
     const dispatch = useAppDispatch();

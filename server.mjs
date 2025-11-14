@@ -1,15 +1,18 @@
-import { createServer } from "https";
-import { parse } from "url";
-import next from "next";
-import fs from "fs";
+import { createServer } from 'https';
+import { parse } from 'url';
+import next from 'next';
+import fs from 'fs';
+import dotenv from 'dotenv';
 
-const dev = process.env.NODE_ENV !== "production";
+dotenv.config({ path: '.env.local' });
+
+const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
 const httpsOptions = {
-    key: fs.readFileSync("./key.pem"),
-    cert: fs.readFileSync("./cert.pem"),
+    key: fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./cert.pem'),
 };
 
 app.prepare().then(() => {
@@ -18,6 +21,6 @@ app.prepare().then(() => {
         handle(req, res, parsedUrl);
     }).listen(3000, (err) => {
         if (err) throw err;
-        console.log("> Ready on https://localhost:3000");
+        console.log('> Ready on https://localhost:3000');
     });
 });

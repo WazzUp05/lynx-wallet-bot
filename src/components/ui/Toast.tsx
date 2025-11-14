@@ -12,7 +12,13 @@ interface ToastProps {
     type?: 'success' | 'error' | 'waiting' | 'warrning';
 }
 
-export const Toast: React.FC<ToastProps> = ({ open, message, onClose, duration = 2000, type = 'success' }) => {
+export const Toast: React.FC<ToastProps> = ({
+    open,
+    message,
+    onClose,
+    duration = 2000,
+    type = 'success',
+}) => {
     useEffect(() => {
         if (!open) return;
         const timer = setTimeout(onClose, duration);

@@ -68,7 +68,8 @@ const Page = () => {
                             setIsOpen(true);
                         }}
                     >
-                        Добавить <ArrowRightIcon width={12} height={12} className="w-[1.2rem] h-[1.2rem]" />
+                        Добавить{' '}
+                        <ArrowRightIcon width={12} height={12} className="w-[1.2rem] h-[1.2rem]" />
                     </button>
                 </div>
             </div>
@@ -92,7 +93,9 @@ const Page = () => {
                     </span>
                 </Link>
             </div>
-            <p className="text-[1.4rem] leading-[130%]  text-[var(--text-secondary)] text-center">v0.10.12</p>
+            <p className="text-[1.4rem] leading-[130%]  text-[var(--text-secondary)] text-center">
+                v0.10.12
+            </p>
             <AddToHome isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
     );

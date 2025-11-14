@@ -252,7 +252,14 @@ export default function QrScanPage() {
 
     return (
         <div className="flex flex-col items-center justify-center pt-[2rem] min-h-[80vh] p-[1.6rem] pb-[calc(var(--safe-bottom)+1.6rem)]">
-            {toast && <Toast open={toast} message={toastMsg} type="error" onClose={() => setToast(false)} />}
+            {toast && (
+                <Toast
+                    open={toast}
+                    message={toastMsg}
+                    type="error"
+                    onClose={() => setToast(false)}
+                />
+            )}
             <div className="flex w-full items-center justify-between mb-[1rem]">
                 <button
                     className="bg-[var(--bg-secondary)]  rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
@@ -266,9 +273,17 @@ export default function QrScanPage() {
                 Мы можем распознавать только QR-коды от&nbsp;платёжных терминалов
             </p>
             <div className="rounded-2xl overflow-hidden mb-4 bg-[#e5e5e5]">
-                <QrScanner onResult={handleScan} paused={loadingQr || qrInfo ? true : false} torch finder zoom={true} />
+                <QrScanner
+                    onResult={handleScan}
+                    paused={loadingQr || qrInfo ? true : false}
+                    torch
+                    finder
+                    zoom={true}
+                />
             </div>
-            <p className="text-center text-[var(--text-secondary)] mb-2">Наведите камеру на QR-код</p>
+            <p className="text-center text-[var(--text-secondary)] mb-2">
+                Наведите камеру на QR-код
+            </p>
             {/* <span className="flex items-center gap-[0.4rem]">
                 <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : "--"} RUB
             </span> */}
@@ -290,10 +305,12 @@ export default function QrScanPage() {
                         height={80}
                         className="mb-[1.6rem] w-[8rem] h-[8rem]"
                     />
-                    <h2 className="text-[2.5rem] leading-[130%]  font-semibold mb-[0.8rem]">QR-код не подходит</h2>
+                    <h2 className="text-[2.5rem] leading-[130%]  font-semibold mb-[0.8rem]">
+                        QR-код не подходит
+                    </h2>
                     <p className="text-[1.4rem] leading-[130%] text-[var(--[var(--text-secondary)])]">
-                        Отсканированный QR-код не действителен. Попробуйте ещё раз или запросите новый QR-код для
-                        оплаты.
+                        Отсканированный QR-код не действителен. Попробуйте ещё раз или запросите
+                        новый QR-код для оплаты.
                     </p>
                 </div>
             </Modal>
@@ -334,7 +351,8 @@ export default function QrScanPage() {
                                         </span>
                                         <ArrowRightIcon className="text-[var(--text-secondary)]" />
                                         <span className="flex items-center gap-[0.4rem] text-[var(--text-main)]">
-                                            <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : '--'} RUB
+                                            <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : '--'}{' '}
+                                            RUB
                                         </span>
                                     </p>
                                 </div>
@@ -349,7 +367,9 @@ export default function QrScanPage() {
                             <div className="flex items-center justify-between w-full mt-[2rem] mb-[3rem]">
                                 <div className="flex flex-col text-[1.5rem] leading-[130%]">
                                     <p className="font-semibold text-[var(--text-main)]">Итого:</p>
-                                    <p className="text-[var(--[var(--text-secondary)])]">Комиссия 0%</p>
+                                    <p className="text-[var(--[var(--text-secondary)])]">
+                                        Комиссия 0%
+                                    </p>
                                 </div>
                                 <p className="text-[2.5rem] font-semibold leading-[130%] text-[var(--text-main)]">
                                     {qrInfo.usdtAmount ? qrInfo.usdtAmount : '--'} USDT
@@ -358,7 +378,10 @@ export default function QrScanPage() {
                             <Button
                                 variant="yellow"
                                 onClick={handlePay}
-                                disabled={isPaying || (balance_usdt ? balance_usdt < qrInfo.usdtAmount : true)}
+                                disabled={
+                                    isPaying ||
+                                    (balance_usdt ? balance_usdt < qrInfo.usdtAmount : true)
+                                }
                                 className="mb-2"
                             >
                                 {isPaying ? (

@@ -29,22 +29,23 @@ const MinAmountModal = ({ showModal, onClose }: MinAmountModalProps) => {
                         <li className="flex items-start gap-[1rem] mb-[1.5rem] text-[1.2rem] leading-[130%]">
                             <span className="mt-[0.7rem] w-[0.7rem] h-[0.7rem] rounded-full bg-[var(--yellow)] flex-shrink-0" />
                             <span>
-                                Чтобы перевод был подтверждён и средства появились на балансе, общая сумма ваших
-                                транзакций должна превышать <b>5 USDT</b>.
+                                Чтобы перевод был подтверждён и средства появились на балансе, общая
+                                сумма ваших транзакций должна превышать <b>5 USDT</b>.
                             </span>
                         </li>
                         <li className="flex items-start gap-[1rem] mb-[1.5rem] text-[1.2rem] leading-[130%]">
                             <span className="mt-[0.7rem] w-[0.7rem] h-[0.7rem] rounded-full bg-[var(--yellow)] flex-shrink-0" />
                             <span>
-                                Можно сделать один перевод больше <b>5 USDT</b> или несколько мелких, чтобы в сумме
-                                получилось больше.
+                                Можно сделать один перевод больше <b>5 USDT</b> или несколько
+                                мелких, чтобы в сумме получилось больше.
                             </span>
                         </li>
                     </ul>
                 </div>
 
                 <p className="text-[1.2rem] leading-[130%] text-[var(--text-secondary)]">
-                    Это требование связано с ограничениями сети. Lynx Wallet не получает выгоды от этого правила.
+                    Это требование связано с ограничениями сети. Lynx Wallet не получает выгоды от
+                    этого правила.
                 </p>
             </div>
         </Modal>

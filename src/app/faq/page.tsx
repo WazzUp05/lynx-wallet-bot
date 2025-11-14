@@ -209,7 +209,8 @@ const Page = () => {
                     className="mb-[3rem] w-[12rem] h-[4.6rem]"
                 />
                 <p className="flex gap-[0.5rem]  text-[1.6rem] leading-[130%] text-[var(--text-secondary)] mb-[3rem]">
-                    <span>*</span> Под термином «Оплата» понимается процесс обмена товаров или услуг на криптовалюту.
+                    <span>*</span> Под термином «Оплата» понимается процесс обмена товаров или услуг
+                    на криптовалюту.
                 </p>
                 <p className="text-[1.6rem] leading-[130%] text-[var(--text-secondary)]">
                     {new Date().getFullYear()}, Lynx LLC
