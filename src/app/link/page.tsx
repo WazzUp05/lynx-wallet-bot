@@ -25,7 +25,9 @@ export default function LinkPage() {
     const [modalOpen, setModalOpen] = useState(false);
     const [timer, setTimer] = useState(30);
     const [loadingLink, setLoadingLink] = useState(false);
-    const [linkInfo, setLinkInfo] = useState<{ rubAmount: number; usdtAmount: number } | null>(null);
+    const [linkInfo, setLinkInfo] = useState<{ rubAmount: number; usdtAmount: number } | null>(
+        null
+    );
     const [error, setError] = useState('');
     const [isPaying, setIsPaying] = useState(false);
     const loadingApp = useAppSelector(getLoading);
@@ -257,7 +259,14 @@ export default function LinkPage() {
 
     return (
         <div className="p-[1.6rem] pb-[calc(var(--safe-bottom)+1.6rem)] flex flex-col min-h-[100dvh]">
-            {toast && <Toast open={toast} message={toastMsg} type="error" onClose={() => setToast(false)} />}
+            {toast && (
+                <Toast
+                    open={toast}
+                    message={toastMsg}
+                    type="error"
+                    onClose={() => setToast(false)}
+                />
+            )}
             <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[3.2rem] font-semibold">
                 <div
                     className="absolute left-[0] top-1/2 translate-y-[-50%] bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
@@ -287,7 +296,8 @@ export default function LinkPage() {
                         2
                     </span>
                     <p className="text-[1.3rem] leading-[130%]  text-[var(--text-main)]">
-                        Когда появится QR-код, наведите на него камеру телефона и откройте ссылку в браузере.
+                        Когда появится QR-код, наведите на него камеру телефона и откройте ссылку в
+                        браузере.
                     </p>
                 </div>
                 <div className="flex items-start gap-[0.6rem]">
@@ -295,7 +305,8 @@ export default function LinkPage() {
                         3
                     </span>
                     <p className="text-[1.3rem] leading-[130%]  text-[var(--text-main)]">
-                        Откроется страница оплаты. Скопируйте ссылку (URL) из адресной строки — она должна начинаться с{' '}
+                        Откроется страница оплаты. Скопируйте ссылку (URL) из адресной строки — она
+                        должна начинаться с{' '}
                         <span className="text-[var(--yellow)]">https://qr.nspk.ru/.</span>
                     </p>
                 </div>
@@ -313,7 +324,8 @@ export default function LinkPage() {
                     <WarrningLeftIcon width={20} height={20} />
                 </div>
                 <span className="text-[var(--text-main)]">
-                    Этот способ работает только через QR-код, отсканированный с компьютера или другого устройства.
+                    Этот способ работает только через QR-код, отсканированный с компьютера или
+                    другого устройства.
                 </span>
             </div>
             <div className=" bg-[var(--bg-secondary)] px-[1.6rem] py-[2rem] rounded-[2rem]">
@@ -364,7 +376,8 @@ export default function LinkPage() {
                                         Сумма
                                     </p>
                                     <p className="text-[1.4rem] font-semibold leading-[130%]">
-                                        {linkInfo.rubAmount ? linkInfo.rubAmount.toFixed(2) : '--'} RUB
+                                        {linkInfo.rubAmount ? linkInfo.rubAmount.toFixed(2) : '--'}{' '}
+                                        RUB
                                     </p>
                                 </div>
                                 <div className="flex items-center justify-between w-full">
@@ -377,7 +390,8 @@ export default function LinkPage() {
                                         </span>
                                         <ArrowRightIcon className="text-[var(--text-secondary)]" />
                                         <span className="flex items-center gap-[0.4rem] text-[var(--text-main)]">
-                                            <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : '--'} RUB
+                                            <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : '--'}{' '}
+                                            RUB
                                         </span>
                                     </p>
                                 </div>
@@ -386,7 +400,9 @@ export default function LinkPage() {
                             <div className="flex items-center justify-between w-full mt-[2rem] mb-[3rem]">
                                 <div className="flex flex-col text-[1.5rem] leading-[130%]">
                                     <p className="font-semibold text-[var(--text-main)]">Итого:</p>
-                                    <p className="text-[var(--[var(--text-secondary)])]">Комиссия 0%</p>
+                                    <p className="text-[var(--[var(--text-secondary)])]">
+                                        Комиссия 0%
+                                    </p>
                                 </div>
                                 <p className="text-[2.5rem] font-semibold leading-[130%] text-[var(--text-main)]">
                                     {linkInfo.usdtAmount ? linkInfo.usdtAmount : '--'} USDT
@@ -395,7 +411,10 @@ export default function LinkPage() {
                             <Button
                                 variant="yellow"
                                 onClick={handlePay}
-                                disabled={isPaying || (balance_usdt ? balance_usdt < linkInfo.usdtAmount : true)}
+                                disabled={
+                                    isPaying ||
+                                    (balance_usdt ? balance_usdt < linkInfo.usdtAmount : true)
+                                }
                                 className="mb-2"
                             >
                                 {isPaying ? (

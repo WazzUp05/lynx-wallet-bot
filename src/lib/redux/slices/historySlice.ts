@@ -1,39 +1,39 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface HistoryItem {
-  id: number;
-  type: string;
-  amount: number;
-  sent_amount: number;
-  commission: number;
-  transaction_hash: string;
-  transaction_id: string;
-  receiver: string;
-  status: string;
-  merchant_id: number;
-  created_at: string;
-  updated_at: string;
-  // Необязательные поля:
-  url?: string | null;
-  // Добавь другие необязательные поля, если появятся
+    id: number;
+    type: string;
+    amount: number;
+    sent_amount: number;
+    commission: number;
+    transaction_hash: string;
+    transaction_id: string;
+    receiver: string;
+    status: string;
+    merchant_id: number;
+    created_at: string;
+    updated_at: string;
+    // Необязательные поля:
+    url?: string | null;
+    // Добавь другие необязательные поля, если появятся
 }
 
 interface HistoryState {
-  items: HistoryItem[];
+    items: HistoryItem[];
 }
 
 const initialState: HistoryState = {
-  items: [],
+    items: [],
 };
 
 const historySlice = createSlice({
-  name: 'history',
-  initialState,
-  reducers: {
-    setHistory(state, action: PayloadAction<HistoryItem[]>) {
-      state.items = action.payload;
+    name: 'history',
+    initialState,
+    reducers: {
+        setHistory(state, action: PayloadAction<HistoryItem[]>) {
+            state.items = action.payload;
+        },
     },
-  },
 });
 
 export const { setHistory } = historySlice.actions;

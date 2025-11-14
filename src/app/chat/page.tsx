@@ -1,20 +1,17 @@
 'use client';
 
-import {getLoading} from '@/lib/redux/selectors/userSelectors'
+import { getLoading } from '@/lib/redux/selectors/userSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
 import React from 'react';
 import InputSupportChat from '@/components/ui/SupportChat/InputSupportChat';
 import Chat from '@/components/ui/SupportChat/SupportChat';
 import Loader from '@/components/ui/Loader';
 
-
-
 const Page = () => {
-
     const loadingApp = useAppSelector(getLoading);
 
     if (loadingApp) {
-         return <Loader className="h-[100dvh]" />;
+        return <Loader className="h-[100dvh]" />;
     }
 
     return (
@@ -23,6 +20,6 @@ const Page = () => {
             <InputSupportChat />
         </div>
     );
-    };
+};
 
 export default Page;

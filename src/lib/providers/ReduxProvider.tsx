@@ -6,9 +6,9 @@ import { fetchRates } from '@/lib/redux/thunks/rateThunks';
 import { useEffect } from 'react';
 
 export function ReduxProvider({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    store.dispatch(fetchRates());
-  }, []);
+    useEffect(() => {
+        store.dispatch(fetchRates());
+    }, []);
 
-  return <Provider store={store}>{children}</Provider>;
+    return <Provider store={store}>{children}</Provider>;
 }

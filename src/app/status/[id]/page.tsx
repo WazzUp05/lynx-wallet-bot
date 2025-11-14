@@ -236,13 +236,17 @@ export default function QrStatusPage() {
                 </div>
                 <div className="bg-[var(--bg-secondary)] rounded-[1.5rem] box-shadow p-[1.5rem] mb-[1rem]">
                     <div className="flex justify-between mb-[1rem]">
-                        <span className="text-[var(--text-secondary)] text-[1.4rem] leading-[130%]">Сумма</span>
+                        <span className="text-[var(--text-secondary)] text-[1.4rem] leading-[130%]">
+                            Сумма
+                        </span>
                         <span className="font-semibold text-[1.4rem] text-[var(--text-main)] leading-[130%]">
                             {order.amount_formatted}
                         </span>
                     </div>
                     <div className="flex items-center justify-between w-full  ">
-                        <p className="text-[1.4rem] leading-[130%] text-[var(--text-secondary)]">Курс обмена</p>
+                        <p className="text-[1.4rem] leading-[130%] text-[var(--text-secondary)]">
+                            Курс обмена
+                        </p>
                         <p className="text-[1.4rem] font-semibold leading-[130%] flex items-center gap-[0.4rem]  text-[var(--text-main)]">
                             <span className="flex items-center gap-[0.4rem]">
                                 <UsdtIcon width={15} height={15} /> 1 USDT
@@ -256,7 +260,9 @@ export default function QrStatusPage() {
                 </div>
                 <div className="bg-[var(--bg-secondary)] rounded-[1.5rem] box-shadow p-[1.5rem] mb-[2rem]">
                     <div className="flex justify-between">
-                        <span className="text-[var(--text-secondary)] text-[1.4rem] leading-[130%]">ID заявки</span>
+                        <span className="text-[var(--text-secondary)] text-[1.4rem] leading-[130%]">
+                            ID заявки
+                        </span>
                         <span className="font-semibold text-[1.4rem] leading-[130%] flex items-center gap-[0.5rem]  text-[var(--text-main)]">
                             <span className="max-w-[14.4rem] truncate">{order.uuid}</span>
                             <button

@@ -1,55 +1,53 @@
-import Docx from '@/components/icons/docx.svg'
-import Pdf from '@/components/icons/pdf.svg'
-import Xlsx from '@/components/icons/xlsx.svg'
+import Docx from '@/components/icons/docx.svg';
+import Pdf from '@/components/icons/pdf.svg';
+import Xlsx from '@/components/icons/xlsx.svg';
 import { MessageType } from '@/components/ui/SupportChat/SupportChat';
 
-
 type FileMessageProps = {
-    msg: MessageType,
-}
+    msg: MessageType;
+};
 
-const FileMessage: React.FC<FileMessageProps> = ({msg}) => {
-
-    
-    const formatSize = (bytes: number ) => {
-        if (bytes < 1024) return  `${bytes} Б`;
+const FileMessage: React.FC<FileMessageProps> = ({ msg }) => {
+    const formatSize = (bytes: number) => {
+        if (bytes < 1024) return `${bytes} Б`;
         if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} КБ`;
-        return  `${(bytes / (1024 * 1024)).toFixed(1)} МБ`;
+        return `${(bytes / (1024 * 1024)).toFixed(1)} МБ`;
     };
 
     const size = msg.fileSize ? formatSize(msg.fileSize) : '';
 
-    const ext = msg.text?.split(".").pop()?.toLowerCase();
+    const ext = msg.text?.split('.').pop()?.toLowerCase();
 
-  const IconComponent =
-        ext === 'pdf' ? Pdf
-      : ext === 'doc' || ext === 'docx' ? Docx
-      : ext === 'xls' || ext === 'xlsx' ? Xlsx
-      : Docx;
+    const IconComponent =
+        ext === 'pdf'
+            ? Pdf
+            : ext === 'doc' || ext === 'docx'
+              ? Docx
+              : ext === 'xls' || ext === 'xlsx'
+                ? Xlsx
+                : Docx;
 
     return (
         <div className="ml-[4em] flex justify-end">
-          <div className="flex flex-col gap-[-0.8rem] bg-[var(--text-additional)] rounded-[2rem] px-[1.2rem] py-[1rem]">
             <div className="flex flex-col gap-[-0.8rem] bg-[var(--text-additional)] rounded-[2rem] px-[1.2rem] py-[1rem]">
-                <div className='self-end flex gap-[1rem]'>
-                    <IconComponent heigh={30} width={25} className='w-full h-full self-start'/>
-                    <div className='flex flex-col pr-[3em] gap-[1rem]'>
-                        <div className="fs-very-small text-[var(--text-main)] whitespace-pre-wrap break-all ">
-                        {msg.text}
-                    </div>
-                    <div className='fs-xx-small text-[var(--text-secondary)]'>
-                        {size}
+                <div className="flex flex-col gap-[-0.8rem] bg-[var(--text-additional)] rounded-[2rem] px-[1.2rem] py-[1rem]">
+                    <div className="self-end flex gap-[1rem]">
+                        <IconComponent heigh={30} width={25} className="w-full h-full self-start" />
+                        <div className="flex flex-col pr-[3em] gap-[1rem]">
+                            <div className="fs-very-small text-[var(--text-main)] whitespace-pre-wrap break-all ">
+                                {msg.text}
+                            </div>
+                            <div className="fs-xx-small text-[var(--text-secondary)]">{size}</div>
+                        </div>
                     </div>
                 </div>
-            </div> 
-            </div> 
-            <div className="self-end fs-xx-small text-[var(--text-secondary)]">
-              {msg.timestamp.getHours().toString().padStart(2, '0')}:
-              {msg.timestamp.getMinutes().toString().padStart(2, '0')}
+                <div className="self-end fs-xx-small text-[var(--text-secondary)]">
+                    {msg.timestamp.getHours().toString().padStart(2, '0')}:
+                    {msg.timestamp.getMinutes().toString().padStart(2, '0')}
+                </div>
             </div>
-          </div>
         </div>
-    )
-}
+    );
+};
 
-export default FileMessage
+export default FileMessage;

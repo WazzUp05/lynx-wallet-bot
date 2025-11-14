@@ -7,14 +7,14 @@ import historySlice from '../slices/historySlice';
 import SupportChatSlice from '../slices/SupportChatSlice';
 
 export const store = configureStore({
-  reducer: {
-    app: appSlice,
-    user: userSlice,
-    wallet: walletSlice,
-    rate: rateSlice,
-    history: historySlice,
-    supportChat: SupportChatSlice,
-  },
+    reducer: {
+        app: appSlice,
+        user: userSlice,
+        wallet: walletSlice,
+        rate: rateSlice,
+        history: historySlice,
+        supportChat: SupportChatSlice,
+    },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
