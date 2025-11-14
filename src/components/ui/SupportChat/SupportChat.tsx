@@ -16,13 +16,15 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 export type MessageType = {
-  type: 'user' | 'bot' | 'date' | 'buttons';
+  type: 'user' | 'bot' | 'date' | 'buttons' | 'file' | 'image';
   timestamp: Date;
   msgId: string;
   text?: string;
   user?: TelegramUser;
-  relatedTo?: string;
   buttons?: ButtonsType;
+  file?: File | string
+  fileSize?: number;
+  image?: string
 };
 
 type ButtonsType = {
@@ -135,7 +137,6 @@ const Chat: React.FC = () => {
       }
       setStickyDate(null);
     };
-
     update();
     elem.addEventListener('scroll', update, { passive: true });
     return () => elem.removeEventListener('scroll', update);
@@ -145,11 +146,14 @@ const Chat: React.FC = () => {
     // прокрутка вниз при новом сообщении
     const elem = containerRef.current;
     if (!elem) return;
-    elem.scrollTo({
-      top: elem.scrollHeight,
-      behavior: 'smooth',
+    requestAnimationFrame(() => {
+      elem.scrollTo({
+        top: elem.scrollHeight,
+        behavior: "smooth",
+      });
     });
-  }, [messages.length]);
+  
+  }, [messages]);
 
   useEffect(() => {
     // проверка скрола

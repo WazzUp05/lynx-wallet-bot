@@ -1,6 +1,6 @@
 'use client';
 
-import { MessageType } from './SupportChat';
+import { MessageType } from '@/components/ui/SupportChat/SupportChat';
 import avatar from '@/components/icons/Avatar.jpg';
 import Image from 'next/image';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -8,6 +8,7 @@ import { getUser } from '@/lib/redux/selectors/userSelectors';
 import { addMessage } from '@/lib/redux/slices/SupportChatSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
+import FileMessage from '@/components/ui/SupportChat/FileMessage'
 
 type MessageProps = {
   messages: MessageType[];
@@ -82,6 +83,32 @@ const Message: React.FC<MessageProps> = ({ messages, msg, index }) => {
             <div className="self-end fs-very-small text-[var(--text-main)] whitespace-pre-wrap break-all pr-[3em]">
               {msg.text}
             </div>
+            <div className="self-end fs-xx-small text-[var(--text-secondary)]">
+              {msg.timestamp.getHours().toString().padStart(2, '0')}:
+              {msg.timestamp.getMinutes().toString().padStart(2, '0')}
+            </div>
+          </div>
+        </div>
+      )}
+      {msg.type === 'file' && (
+        <FileMessage msg={msg}/>
+      )}
+      {msg.type === 'image' && msg.image &&(
+        <div className="ml-[4em] flex justify-end">
+          <div className="flex flex-col gap-[-0.8rem] bg-[var(--text-additional)] rounded-[2rem] px-[1.2rem] py-[1rem]">
+            <div className='self-end flex flex-col gap-[1rem]'>
+              <Image 
+              src={msg.image}
+              alt={msg.text || 'image'}
+              width={240}
+              height={0}
+              className='rounded-[2rem] object-cover max-w-full h-auto max-h-[50vh]'
+              />
+              <div className="fs-very-small text-[var(--text-main)] whitespace-pre-wrap break-all pr-[3em]">
+                {msg.text}
+              </div>
+            </div>
+           
             <div className="self-end fs-xx-small text-[var(--text-secondary)]">
               {msg.timestamp.getHours().toString().padStart(2, '0')}:
               {msg.timestamp.getMinutes().toString().padStart(2, '0')}
