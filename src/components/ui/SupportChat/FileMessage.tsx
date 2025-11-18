@@ -30,15 +30,15 @@ const FileMessage: React.FC<FileMessageProps> = ({ msg }) => {
     return (
         <div className="ml-[4em] flex justify-end">
             <div className="flex flex-col gap-[-0.8rem] bg-[var(--text-additional)] rounded-[2rem] px-[1.2rem] py-[1rem]">
-                <div className="flex flex-col gap-[-0.8rem] bg-[var(--text-additional)] rounded-[2rem] px-[1.2rem] py-[1rem]">
-                    <div className="self-end flex gap-[1rem]">
-                        <IconComponent heigh={30} width={25} className="w-full h-full self-start" />
-                        <div className="flex flex-col pr-[3em] gap-[1rem]">
-                            <div className="fs-very-small text-[var(--text-main)] whitespace-pre-wrap break-all ">
-                                {msg.text}
-                            </div>
-                            <div className="fs-xx-small text-[var(--text-secondary)]">{size}</div>
+                <div className="self-end flex gap-[1rem] items-start">
+                    <IconComponent 
+                    // height={30} width={25} 
+                    className="w-auto h-[2em] self-start shrink-[0]" />
+                    <div className="flex flex-col pr-[3em] gap-[0.5rem]">
+                        <div className="fs-very-small text-[var(--text-main)] whitespace-pre-wrap break-all ">
+                            {msg.text}
                         </div>
+                        <div className="fs-xx-small text-[var(--text-secondary)]">{size}</div>
                     </div>
                 </div>
                 <div className="self-end fs-xx-small text-[var(--text-secondary)]">

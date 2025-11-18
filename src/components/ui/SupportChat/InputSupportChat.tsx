@@ -10,6 +10,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import AddFileModal from '@/components/modals/AddFileModal';
 import Plus from '@/components/icons/plus-white.svg';
 import { MessageType } from '@/components/ui/SupportChat/SupportChat';
+import { HiddenFileInput, HiddenFileInputsRef } from '@/components/ui/SupportChat/HiddenFileInput';
 
 interface InputProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     placeholder?: string;
@@ -31,6 +32,7 @@ const InputSupportChat: React.FC<InputProps> = ({
 
     const [value, setValue] = useState('');
     const refTextArea = useRef<HTMLTextAreaElement>(null);
+    const hiddenInputsRef = useRef<HiddenFileInputsRef>(null);
 
     const [showModal, setShowModal] = useState(false);
     const handleClick = () => {
@@ -118,7 +120,8 @@ const InputSupportChat: React.FC<InputProps> = ({
 
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            handleSend(value, undefined);
+            handleSend(value, imgSrc);
+            if (path !== '/chat') router.push('/chat');
             return;
         }
     };
@@ -151,7 +154,13 @@ const InputSupportChat: React.FC<InputProps> = ({
             <AddFileModal
                 showModal={showModal}
                 setShowModal={setShowModal}
+                onOpenFiles={() => hiddenInputsRef.current?.openFiles()}
+                onOpenGallery={() => hiddenInputsRef.current?.openGallery()}
+            />
+            <HiddenFileInput
+                ref={hiddenInputsRef}
                 onSendFile={(file) => handleSend(undefined, file)}
+                setShowModal={setShowModal}
             />
             <div className="relative glass grow rounded-[2rem] center-v">
                 <textarea
@@ -167,13 +176,13 @@ const InputSupportChat: React.FC<InputProps> = ({
                 />
                 {(value.trim().length > 0 || mode === 'preview') && (
                     <button
-                        className="w-[2.5rem] h-[2.5rem] rounded-[1.5rem] center bg-[var(--yellow)] absolute right-[0.35rem] bottom-[0.25rem]"
+                        className="w-[2.5rem] h-[2.5rem]  rounded-[1.5rem] bg-[var(--yellow)] absolute right-[0.35rem] bottom-[0.25rem]"
                         onClick={() => {
                             handleSend(value, imgSrc);
                             if (path !== '/chat') router.push('/chat');
                         }}
                     >
-                        <Arrow />
+                        <Arrow className='m-auto'/>
                     </button>
                 )}
             </div>
