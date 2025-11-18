@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { forwardRef, useRef, useImperativeHandle } from 'react';
 
 export type HiddenFileInputsRef = {

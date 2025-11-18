@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import Modal from '@/components/Modal';
 import Camera from '@/components/icons/camera.svg';
 import Gallery from '@/components/icons/gallery.svg';

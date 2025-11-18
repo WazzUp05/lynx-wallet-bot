@@ -1,6 +1,6 @@
 'use client';
 import Webcam from 'react-webcam';
-import React, { useRef, useCallback, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import ArrowLeft from '@/components/icons/arrow-left.svg';
@@ -16,18 +16,52 @@ const CameraCapture = () => {
     const [imgSrc, setImgSrc] = useState<string | null>(null);
     const [cameraMode, setCameraMode] = useState('environment');
     const [mode, setMode] = useState<'camera' | 'preview'>('camera');
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const videoConstraints = {
         facingMode: { exact: cameraMode },
     };
 
-    const capture = useCallback(() => {
-        if (webcamRef.current) {
-            const imageSrc = webcamRef.current.getScreenshot();
-            setImgSrc(imageSrc);
-            setMode('preview');
+    const capture = () => {
+        const video = webcamRef.current?.video;
+        const container = containerRef.current;
+        if (!video || !container) return;
+
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
+
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
+
+        const videoAspect = videoWidth / videoHeight;
+        const containerAspect = containerWidth / containerHeight;
+
+        let sx = 0,
+            sy = 0,
+            sw = videoWidth,
+            sh = videoHeight;
+
+        if (videoAspect > containerAspect) {
+            sw = videoHeight * containerAspect;
+            sx = (videoWidth - sw) / 2;
+        } else {
+            sh = videoWidth / containerAspect;
+            sy = (videoHeight - sh) / 2;
         }
-    }, [webcamRef, setImgSrc]);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = containerWidth;
+        canvas.height = containerHeight;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+
+        const imageSrc = canvas.toDataURL('image/jpeg');
+
+        setImgSrc(imageSrc);
+        setMode('preview');
+    };
 
     const handleChangeCamMode = () => {
         if (cameraMode === 'environment') setCameraMode('user');
@@ -58,14 +92,16 @@ const CameraCapture = () => {
                     className="bg-[var(--bg-secondary)] self-end rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
                     onClick={() => router.back()}
                 >
-                    <CloseIcon width={15} height={15} className="w-[1.5rem] h-[1.5rem]" />
+                    <CloseIcon className="w-[1.5rem] h-[1.5rem]" />
                 </button>
             </div>
 
             {mode === 'camera' && (
                 <div className="flex flex-col gap-[1.6rem] grow">
-                    <div className="relative w-full aspect-[3/4] max-h-[72dvh] overflow-hidden">
-                        `{' '}
+                    <div
+                        ref={containerRef}
+                        className="relative w-full aspect-[3/4] max-h-[72dvh] overflow-hidden"
+                    >
                         <Webcam
                             audio={false}
                             ref={webcamRef}
@@ -96,9 +132,9 @@ const CameraCapture = () => {
                         <Image
                             src={imgSrc}
                             alt="Captured"
-                            className="w-auto h-auto max-h-[72dvh] object-cover"
-                            width={720}
-                            height={960}
+                            className="w-full h-auto object-cover"
+                            height={containerRef.current?.clientHeight}
+                            width={containerRef.current?.clientWidth}
                         />
                     </div>
                     <div className="p-[1.6rem]">

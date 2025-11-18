@@ -182,7 +182,7 @@ const InputSupportChat: React.FC<InputProps> = ({
                             if (path !== '/chat') router.push('/chat');
                         }}
                     >
-                        <Arrow className='m-auto'/>
+                        <Arrow className="m-auto" />
                     </button>
                 )}
             </div>
