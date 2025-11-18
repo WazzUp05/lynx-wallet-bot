@@ -7,10 +7,11 @@ import { getUser } from '@/lib/redux/selectors/userSelectors';
 import { useRouter } from 'next/navigation';
 import { addMessage } from '@/lib/redux/slices/SupportChatSlice';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 import ArrowLeft from '@/components/icons/arrow-left.svg';
 import ArrowDown from '@/components/icons/arrow-down.svg';
-import Message from './Message';
+import Message from '@/components/ui/SupportChat/Message';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -89,6 +90,12 @@ const Chat: React.FC = () => {
     const router = useRouter();
     const user = useAppSelector(getUser);
     const dispatch = useAppDispatch();
+    const {trackEvent} = useMixpanel()
+
+    const onBack = () => {
+        trackEvent('support_chat_closed')
+        router.push('/');
+    }
 
     useEffect(() => {
         // моковые сообщения от бота при первом открытии чата
@@ -209,9 +216,7 @@ const Chat: React.FC = () => {
             <div className="sticky top-0 z-50 bg-[var(--bg-optional-opacity)] backdrop-blur-[2px] backdrop-saturate-250 py-[1rem] ">
                 <div
                     className="absolute top-[1rem] left-0 bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center"
-                    onClick={() => {
-                        router.push('/');
-                    }}
+                    onClick={onBack}
                 >
                     <ArrowLeft />
                 </div>
