@@ -204,13 +204,13 @@ const Chat: React.FC = () => {
     return (
         <div
             ref={containerRef}
-            className="grow flex flex-col gap-[1rem] overflow-auto no-scrollbar relative  "
+            className="grow flex flex-col gap-[1rem] overflow-auto no-scrollbar relative mb-[0.5rem] "
         >
             <div className="sticky top-0 z-50 bg-[var(--bg-optional-opacity)] backdrop-blur-[2px] backdrop-saturate-250 py-[1rem] ">
                 <div
                     className="absolute top-[1rem] left-0 bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center"
                     onClick={() => {
-                        router.back();
+                        router.push('/');
                     }}
                 >
                     <ArrowLeft />

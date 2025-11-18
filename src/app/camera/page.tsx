@@ -112,13 +112,13 @@ const CameraCapture = () => {
                     </div>
                     <div className="flex justify-around items-center bg-[var(--bg-optional)]">
                         <button
-                            className="w-[50px] h-[50px] center rounded-full bg-[var(--dark-gray-main)]"
+                            className="w-[3em] h-[3em] center rounded-full bg-[var(--dark-gray-main)]"
                             onClick={() => handleChangeCamMode()}
                         >
-                            <Refresh className="w-[24px] h-[24px]" />
+                            <Refresh className="w-[1.4em] h-[1.4em]" />
                         </button>
                         <button className="center" onClick={() => capture()}>
-                            <Shooting className="w-[60px] h-[60px]" />
+                            <Shooting className="w-[3.5em] h-[3.5em]" />
                         </button>
                         {/* <button className='hidden w-[50px] h-[50px] center rounded-full bg-[var(--dark-gray-main)]'>
                             <Flash className='w-[24px] h-[24px]'/>
