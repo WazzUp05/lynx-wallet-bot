@@ -11,7 +11,11 @@ import WarrningLeftIcon from '@/components/icons/warrning-mark.svg';
 import RightIcon from '@/components/icons/right-arrow.svg';
 import MinAmountModal from '@/components/modals/MinAmountModal';
 import TaxModal from '@/components/modals/TaxModal';
-import { setOnboardingCompleted, setWaitingForDeposit, setNeedDeposit } from '@/lib/redux/slices/appSlice';
+import {
+    setOnboardingCompleted,
+    setWaitingForDeposit,
+    setNeedDeposit,
+} from '@/lib/redux/slices/appSlice';
 import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
 interface Step5Props {
@@ -23,7 +27,9 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
     const { copyWithToast, isCopying, toastOpen, toastMessage, closeToast } = useCopyWithToast();
     const wallet = useAppSelector(getWallet);
     const srcQr = '/icons/USDT-TRC20.svg';
-    const address = wallet?.address || '';
+    // const address = wallet?.address || '';
+    const devMockAddress = process.env.NEXT_PUBLIC_DEV_MOCK_USER_ADDRESS;
+    const address = devMockAddress || wallet?.address || '';
     const [showTaxModal, setShowTaxModal] = useState(false);
     const [showMinAmountModal, setShowMinAmountModal] = useState(false);
     const { trackEvent } = useMixpanel();
@@ -101,7 +107,8 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                         <WarrningLeftIcon width={20} height={20} />
                     </div>
                     <span className="text-[var(--text-main)]">
-                        Адрес принимает только USDT (сеть TRC20). Отправка через другие сети приведёт к потере средств.
+                        Адрес принимает только USDT (сеть TRC20). Отправка через другие сети
+                        приведёт к потере средств.
                     </span>
                 </div>
                 <div
@@ -136,7 +143,10 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                 </div>
             </div>
             <TaxModal showModal={showTaxModal} onClose={() => setShowTaxModal(false)} />
-            <MinAmountModal showModal={showMinAmountModal} onClose={() => setShowMinAmountModal(false)} />
+            <MinAmountModal
+                showModal={showMinAmountModal}
+                onClose={() => setShowMinAmountModal(false)}
+            />
             <Button
                 variant="yellow"
                 className="w-full mt-auto mb-[1.2rem]"

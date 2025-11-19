@@ -155,18 +155,24 @@ export default function HistoryDetailPage() {
                             <span className="text-[var(--text-secondary)] text-[1.4rem] leading-[130%]">
                                 Отправлено
                             </span>
-                            <span className="font-semibold text-[1.4rem] leading-[130%]">{tx.sent_amount} USDT</span>
+                            <span className="font-semibold text-[1.4rem] leading-[130%]">
+                                {tx.sent_amount} USDT
+                            </span>
                         </div>
                     )}
 
                     {tx.commission !== undefined && (
                         <div className="w-full  flex justify-between text-sm">
-                            <span className="text-[var(--text-secondary)] text-[1.4rem] leading-[130%]">Комиссия</span>
+                            <span className="text-[var(--text-secondary)] text-[1.4rem] leading-[130%]">
+                                Комиссия
+                            </span>
                             <span className="font-semibold text-[1.4rem] leading-[130%] flex items-center gap-[1rem]">
                                 {tx.commission} USDT
                                 <div
                                     onClick={() => {
-                                        trackEvent('transaction_tax_modal_opened', { transaction_hash: hash });
+                                        trackEvent('transaction_tax_modal_opened', {
+                                            transaction_hash: hash,
+                                        });
                                         setShowModal(true);
                                     }}
                                     className="relative top-[-0.2rem]"
@@ -196,11 +202,15 @@ export default function HistoryDetailPage() {
                                 Хэш транзакции
                             </span>
                             <span className="font-semibold text-[1.4rem] leading-[130%] flex items-center gap-[0.5rem]">
-                                <span className="max-w-[14.4rem] truncate">{tx.transaction_hash}</span>
+                                <span className="max-w-[14.4rem] truncate">
+                                    {tx.transaction_hash}
+                                </span>
                                 <button
                                     className="text-[var(--text-secondary)]"
                                     onClick={() => {
-                                        trackEvent('transaction_hash_copied', { transaction_hash: hash });
+                                        trackEvent('transaction_hash_copied', {
+                                            transaction_hash: hash,
+                                        });
                                         copyWithToast(tx.transaction_hash, 'Хэш скопирован');
                                     }}
                                     disabled={isCopying}
@@ -216,7 +226,9 @@ export default function HistoryDetailPage() {
                                 ID транзакции
                             </span>
                             <span className="font-semibold text-[1.4rem] leading-[130%] flex items-center gap-[0.5rem]">
-                                <span className="max-w-[14.4rem] truncate">{tx.transaction_id}</span>
+                                <span className="max-w-[14.4rem] truncate">
+                                    {tx.transaction_id}
+                                </span>
                                 <button
                                     className="text-[var(--text-secondary)]"
                                     onClick={() => {
@@ -265,7 +277,11 @@ export default function HistoryDetailPage() {
                 )}
             </div>
             {tx.url && (
-                <Button onClick={() => handleLinkClick(tx.url!)} className="w-full mt-[3rem]" variant="yellow">
+                <Button
+                    onClick={() => handleLinkClick(tx.url!)}
+                    className="w-full mt-[3rem]"
+                    variant="yellow"
+                >
                     Открыть в обозревателе
                 </Button>
             )}

@@ -1,5 +1,5 @@
-import { TelegramUser } from "@/lib/telegram/types";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { TelegramUser } from '@/lib/telegram/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Wallet {
     id: number;
@@ -35,7 +35,7 @@ const initialState: UserState = {
 };
 
 const userSlice = createSlice({
-    name: "user",
+    name: 'user',
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<UserProp>) => {

@@ -60,7 +60,7 @@ const NavBottom = () => {
                 ),
         },
         {
-            href: 'https://t.me/lynx_help',
+            href: '/chat',
             label: 'Чат',
             icon: <ChatIcon width={28} height={28} className="w-[2.8rem] h-[2.8rem]" />,
         },

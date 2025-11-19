@@ -108,7 +108,9 @@ const Page = () => {
                 <SelectCrypto cryptos={MOCK_SELECT_CRYPTO} />
             </div>
             <div className="mb-[3rem]">
-                <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">Сеть</p>
+                <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">
+                    Сеть
+                </p>
                 <SelectCustom
                     options={network}
                     value={selectedNetwork}

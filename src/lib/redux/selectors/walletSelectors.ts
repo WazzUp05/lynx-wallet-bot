@@ -1,4 +1,4 @@
-import { RootState } from "../store";
+import { RootState } from '../store';
 
 const getNetworkType = (state: RootState) => state.wallet.network;
 const getBalance = (state: RootState) => state.wallet.balance;

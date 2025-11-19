@@ -1,9 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
-import walletSlice from "../slices/walletSlice";
-import appSlice from "../slices/appSlice";
-import userSlice from "../slices/userSlice";
-import rateSlice from "../slices/rateSlice";
-import historySlice from "../slices/historySlice";
+import { configureStore } from '@reduxjs/toolkit';
+import walletSlice from '../slices/walletSlice';
+import appSlice from '../slices/appSlice';
+import userSlice from '../slices/userSlice';
+import rateSlice from '../slices/rateSlice';
+import historySlice from '../slices/historySlice';
+import supportChatSlice from '../slices/SupportChatSlice';
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
         wallet: walletSlice,
         rate: rateSlice,
         history: historySlice,
+        supportChat: supportChatSlice,
     },
 });
 

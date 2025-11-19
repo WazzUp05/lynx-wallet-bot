@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useTelegramAuth } from "../../hooks/useTelegramAuth";
+import { useTelegramAuth } from '../../hooks/useTelegramAuth';
 
 const TelegramAuthClient = () => {
     useTelegramAuth();

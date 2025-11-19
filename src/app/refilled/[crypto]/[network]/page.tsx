@@ -86,7 +86,11 @@ export default function RefilledQrPage() {
     };
 
     const srcQr =
-        network === 'TRC20' ? '/icons/USDT-TRC20.svg' : network === 'TON' ? '/icons/TON-TON.svg' : '/qr-demo.png';
+        network === 'TRC20'
+            ? '/icons/USDT-TRC20.svg'
+            : network === 'TON'
+              ? '/icons/TON-TON.svg'
+              : '/qr-demo.png';
 
     const upperCrypto = crypto?.toUpperCase();
     const upperNetwork = network?.toUpperCase();

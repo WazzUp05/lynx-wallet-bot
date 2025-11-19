@@ -38,10 +38,16 @@ const FaqItem: React.FC<FaqItemProps> = ({ question, answer, defaultOpen = false
                         isOpen ? 'rotate-180' : ''
                     }`}
                 >
-                    <ArrowDownIcon width={24} height={24} className="w-[2.4rem] h-[2.4rem] text-[var(--text-main)]" />
+                    <ArrowDownIcon
+                        width={24}
+                        height={24}
+                        className="w-[2.4rem] h-[2.4rem] text-[var(--text-main)]"
+                    />
                 </div>
             </button>
-            <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[500rem]' : 'max-h-0'}`}>
+            <div
+                className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[500rem]' : 'max-h-0'}`}
+            >
                 <div
                     className="mt-[3rem] text-[1.4rem] leading-[130%] text-[var(--text-secondary)]"
                     dangerouslySetInnerHTML={{ __html: answer }}
