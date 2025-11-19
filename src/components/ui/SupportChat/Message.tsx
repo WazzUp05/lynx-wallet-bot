@@ -5,7 +5,7 @@ import avatar from '@/components/icons/Avatar.jpg';
 import Image from 'next/image';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { getUser } from '@/lib/redux/selectors/userSelectors';
-import { addMessage } from '@/lib/redux/slices/supportChatSlice';
+import { addMessage } from '@/lib/redux/slices/SupportChatSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 import FileMessage from '@/components/ui/SupportChat/FileMessage';

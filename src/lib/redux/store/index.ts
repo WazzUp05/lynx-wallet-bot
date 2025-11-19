@@ -4,7 +4,7 @@ import appSlice from '../slices/appSlice';
 import userSlice from '../slices/userSlice';
 import rateSlice from '../slices/rateSlice';
 import historySlice from '../slices/historySlice';
-import supportChatSlice from '../slices/supportChatSlice';
+import supportChatSlice from '../slices/SupportChatSlice';
 
 export const store = configureStore({
     reducer: {

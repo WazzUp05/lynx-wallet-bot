@@ -2,10 +2,10 @@
 import { TelegramUser } from '@/lib/telegram/types';
 import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { getSupportChatMessages } from '@/lib/redux/selectors/supportChatSelector';
+import { getSupportChatMessages } from '@/lib/redux/selectors/SupportChatSelector';
 import { getUser } from '@/lib/redux/selectors/userSelectors';
 import { useRouter } from 'next/navigation';
-import { addMessage } from '@/lib/redux/slices/supportChatSlice';
+import { addMessage } from '@/lib/redux/slices/SupportChatSlice';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
