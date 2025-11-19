@@ -26,7 +26,6 @@ const FileMessage: React.FC<FileMessageProps> = ({ msg }) => {
               : ext === 'xls' || ext === 'xlsx'
                 ? Xlsx
                 : Docx;
-
     return (
         <div className="ml-[4em] flex justify-end">
             <div className="flex flex-col gap-[-0.8rem] bg-[var(--text-additional)] rounded-[2rem] px-[1.2rem] py-[1rem]">
