@@ -4,7 +4,7 @@ import Arrow from '@/components/icons/arrow.svg';
 import React, { useState, useRef, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { v4 as uuidv4 } from 'uuid';
-import { addMessage } from '@/lib/redux/slices/SupportChatSlice';
+import { addMessage } from '@/lib/redux/slices/supportChatSlice';
 import { getUser } from '@/lib/redux/selectors/userSelectors';
 import { useRouter, usePathname } from 'next/navigation';
 import AddFileModal from '@/components/modals/AddFileModal';

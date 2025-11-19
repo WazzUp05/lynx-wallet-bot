@@ -16,7 +16,7 @@ const initialState: SupportChatState = {
     ],
 };
 
-const SupportChatSlice = createSlice({
+const supportChatSlice = createSlice({
     name: 'supportChat',
     initialState,
     reducers: {
@@ -28,5 +28,5 @@ const SupportChatSlice = createSlice({
     },
 });
 
-export const { addMessage } = SupportChatSlice.actions;
-export default SupportChatSlice.reducer;
+export const { addMessage } = supportChatSlice.actions;
+export default supportChatSlice.reducer;

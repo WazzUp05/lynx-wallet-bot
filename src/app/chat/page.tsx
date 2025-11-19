@@ -2,21 +2,19 @@
 
 import { getLoading } from '@/lib/redux/selectors/userSelectors';
 import { useAppSelector } from '@/lib/redux/hooks';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import InputSupportChat from '@/components/ui/SupportChat/InputSupportChat';
 import Chat from '@/components/ui/SupportChat/SupportChat';
 import Loader from '@/components/ui/Loader';
 import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
-
 const Page = () => {
     const loadingApp = useAppSelector(getLoading);
-    const {trackEvent} = useMixpanel()
-
+    const { trackEvent } = useMixpanel();
 
     useEffect(() => {
-        trackEvent('support_chat_opened') 
-    },[trackEvent])
+        trackEvent('support_chat_opened');
+    }, [trackEvent]);
 
     if (loadingApp) {
         return <Loader className="h-[100dvh]" />;

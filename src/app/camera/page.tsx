@@ -110,6 +110,7 @@ const CameraCapture = () => {
                             className="absolute inset-0 w-full h-full object-cover"
                         />
                     </div>
+
                     <div className="flex justify-around items-center bg-[var(--bg-optional)]">
                         <button
                             className="w-[3em] h-[3em] center rounded-full bg-[var(--dark-gray-main)]"

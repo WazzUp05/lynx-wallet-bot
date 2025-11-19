@@ -2,10 +2,10 @@
 import { TelegramUser } from '@/lib/telegram/types';
 import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { getSupportChatMessages } from '@/lib/redux/selectors/SupportChatSelector';
+import { getSupportChatMessages } from '@/lib/redux/selectors/supportChatSelector';
 import { getUser } from '@/lib/redux/selectors/userSelectors';
 import { useRouter } from 'next/navigation';
-import { addMessage } from '@/lib/redux/slices/SupportChatSlice';
+import { addMessage } from '@/lib/redux/slices/supportChatSlice';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 
@@ -90,12 +90,12 @@ const Chat: React.FC = () => {
     const router = useRouter();
     const user = useAppSelector(getUser);
     const dispatch = useAppDispatch();
-    const {trackEvent} = useMixpanel()
+    const { trackEvent } = useMixpanel();
 
     const onBack = () => {
-        trackEvent('support_chat_closed')
+        trackEvent('support_chat_closed');
         router.push('/');
-    }
+    };
 
     useEffect(() => {
         // моковые сообщения от бота при первом открытии чата
