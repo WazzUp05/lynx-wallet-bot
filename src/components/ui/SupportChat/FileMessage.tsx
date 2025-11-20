@@ -2,6 +2,7 @@ import Docx from '@/components/icons/docx.svg';
 import Pdf from '@/components/icons/pdf.svg';
 import Xlsx from '@/components/icons/xlsx.svg';
 import { MessageType } from '@/components/ui/SupportChat/SupportChat';
+import React from 'react';
 
 type FileMessageProps = {
     msg: MessageType;
@@ -30,7 +31,11 @@ const FileMessage: React.FC<FileMessageProps> = ({ msg }) => {
         <div className="ml-[4em] flex justify-end">
             <div className="flex flex-col gap-[-0.8rem] bg-[var(--text-additional)] rounded-[2rem] px-[1.2rem] py-[1rem]">
                 <div className="self-end flex gap-[1rem] items-start">
-                    <IconComponent className="w-auto h-[2em] self-start shrink-[0]" />
+                    <IconComponent
+                        className="w-auto h-[2em] self-start shrink-[0]"
+                        loading="lazy"
+                        placeholder="blur"
+                    />
                     <div className="flex flex-col pr-[3em] gap-[0.5rem]">
                         <div className="fs-very-small text-[var(--text-main)] whitespace-pre-wrap break-all ">
                             {msg.text}

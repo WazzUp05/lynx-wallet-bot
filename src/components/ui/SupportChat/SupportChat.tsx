@@ -119,36 +119,6 @@ const Chat: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        // обновление липкой даты при скролле
-        const elem = containerRef.current;
-        if (!elem) return;
-
-        const update = () => {
-            const scrollTop = elem.scrollTop;
-            const msgEls = Array.from(elem.querySelectorAll<HTMLElement>('[data-timestamp]'));
-            let current: HTMLElement | null = null;
-            for (const msg of msgEls) {
-                if (msg.offsetTop <= scrollTop + 10) current = msg;
-            }
-            if (!current && msgEls.length) current = msgEls[0];
-
-            if (current) {
-                const ts = current.getAttribute('data-timestamp');
-                if (ts) {
-                    const date = new Date(Number(ts));
-                    const label = formatDateLabel(date);
-                    setStickyDate(label);
-                    return;
-                }
-            }
-            setStickyDate(null);
-        };
-        update();
-        elem.addEventListener('scroll', update, { passive: true });
-        return () => elem.removeEventListener('scroll', update);
-    }, [messages]);
-
-    useEffect(() => {
         // прокрутка вниз при новом сообщении
         const elem = containerRef.current;
         if (!elem) return;
@@ -161,13 +131,41 @@ const Chat: React.FC = () => {
     }, [messages]);
 
     useEffect(() => {
-        // проверка скрола
         const elem = containerRef.current;
         if (!elem) return;
 
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const ts = entry.target.getAttribute('data-timestamp');
+                        if (ts) setStickyDate(formatDateLabel(new Date(Number(ts))));
+                    }
+                });
+            },
+            { root: elem, rootMargin: '-60% 0px -20% 0px' }
+        );
+
+        const msgEls = Array.from(elem.querySelectorAll<HTMLElement>('[data-timestamp]'));
+        msgEls.forEach((el) => observer.observe(el));
+
+        return () => msgEls.forEach((el) => observer.unobserve(el));
+    }, [messages]);
+
+    useEffect(() => {
+        const elem = containerRef.current;
+        if (!elem) return;
+        let ticking = false;
+
         const handleScroll = () => {
-            const isAtBottom = elem.scrollHeight - elem.scrollTop - elem.clientHeight < 50;
-            setShowScrollToBottom(!isAtBottom);
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const isAtBottom = elem.scrollHeight - elem.scrollTop - elem.clientHeight < 50;
+                    setShowScrollToBottom(!isAtBottom);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         };
 
         elem.addEventListener('scroll', handleScroll);
@@ -178,10 +176,7 @@ const Chat: React.FC = () => {
     const scrollToBottom = () => {
         const elem = containerRef.current;
         if (!elem) return;
-        elem.scrollTo({
-            top: elem.scrollHeight,
-            behavior: 'smooth',
-        });
+        elem.scrollTo({ top: elem.scrollHeight, behavior: 'smooth' });
     };
 
     const formatDateLabel = function formatDateLabel(date: Date): string {
@@ -237,7 +232,10 @@ const Chat: React.FC = () => {
             )}
 
             {messages.map((msg, index) => {
-                return <Message key={msg.msgId} messages={messages} msg={msg} index={index} />;
+                const nextMsg = messages[index + 1];
+                const showAvatar = msg.type === 'bot' && (!nextMsg || nextMsg.type !== msg.type);
+
+                return <Message key={msg.msgId} showAvatar={showAvatar} msg={msg} />;
             })}
 
             {showScrollToBottom && (

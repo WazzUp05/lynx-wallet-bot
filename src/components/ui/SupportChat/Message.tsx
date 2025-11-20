@@ -9,16 +9,14 @@ import { addMessage } from '@/lib/redux/slices/SupportChatSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 import FileMessage from '@/components/ui/SupportChat/FileMessage';
+import React from 'react';
 
 type MessageProps = {
-    messages: MessageType[];
+    showAvatar: boolean;
     msg: MessageType;
-    index: number;
 };
 
-const Message: React.FC<MessageProps> = ({ messages, msg, index }) => {
-    const nextMsg = messages[index + 1];
-    const showAvatar = msg.type === 'bot' && (!nextMsg || nextMsg.type !== msg.type);
+const Message: React.FC<MessageProps> = React.memo(({ msg, showAvatar }) => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(getUser);
     const [hidden, setHidden] = useState(false);
@@ -104,6 +102,8 @@ const Message: React.FC<MessageProps> = ({ messages, msg, index }) => {
                                 alt={msg.text || 'image'}
                                 width={240}
                                 height={0}
+                                loading="lazy"
+                                placeholder="blur"
                                 className="rounded-[2rem] object-cover max-w-full h-auto max-h-[50vh]"
                             />
                             <div className="fs-very-small text-[var(--text-main)] whitespace-pre-wrap break-all pr-[3em]">
@@ -120,5 +120,6 @@ const Message: React.FC<MessageProps> = ({ messages, msg, index }) => {
             )}
         </div>
     );
-};
+});
+Message.displayName = 'Message';
 export default Message;
