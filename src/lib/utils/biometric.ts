@@ -71,6 +71,10 @@ function isMobileDevice(): boolean {
 
 /**
  * Проверка поддержки биометрии через WebAuthn API
+ *
+ * ВАЖНО: WebAuthn может быть недоступен в Telegram WebView на некоторых платформах
+ * (особенно на Android) из-за ограничений безопасности WebView.
+ *
  * @returns Promise<boolean> - поддерживается ли биометрия
  */
 export async function isBiometricSupported(): Promise<boolean> {
@@ -110,23 +114,75 @@ export async function isBiometricSupported(): Promise<boolean> {
     }
 
     // Проверяем наличие WebAuthn API
+    const hasCredentials = !!navigator.credentials;
+    const hasCredentialsCreate = !!(navigator.credentials && 'create' in navigator.credentials);
+    const hasPublicKeyCredential = 'PublicKeyCredential' in window;
+
+    alert(
+        `[Biometric] Проверка WebAuthn API: ${JSON.stringify({
+            hasCredentials,
+            hasCredentialsCreate,
+            hasPublicKeyCredential,
+            navigatorCredentials: !!navigator.credentials,
+            windowKeys: Object.keys(window).filter((key) => key.includes('Credential') || key.includes('PublicKey')),
+        })}`
+    );
+
     if (!navigator.credentials || !navigator.credentials.create) {
-        alert('[Biometric] Недоступна: WebAuthn API не поддерживается');
+        alert('[Biometric] Недоступна: WebAuthn API не поддерживается (navigator.credentials отсутствует)');
         return false;
     }
 
     // Проверяем, поддерживается ли платформенный аутентификатор (встроенная биометрия)
     try {
         if ('PublicKeyCredential' in window) {
-            const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+            // Дополнительная проверка: убеждаемся, что это действительно конструктор
+            const PublicKeyCred = (window as typeof window & { PublicKeyCredential?: typeof PublicKeyCredential })
+                .PublicKeyCredential;
+            if (!PublicKeyCred || typeof PublicKeyCred.isUserVerifyingPlatformAuthenticatorAvailable !== 'function') {
+                alert(
+                    '[Biometric] PublicKeyCredential найден, но метод isUserVerifyingPlatformAuthenticatorAvailable недоступен'
+                );
+                return false;
+            }
+
+            const available = await PublicKeyCred.isUserVerifyingPlatformAuthenticatorAvailable();
             alert(`[Biometric] Платформенный аутентификатор доступен: ${available}`);
             return available;
         } else {
-            alert('[Biometric] PublicKeyCredential не доступен в window');
+            // Детальная диагностика: что именно отсутствует
+            const windowType = typeof window;
+            const hasWindow = typeof window !== 'undefined';
+            const globalKeys =
+                typeof window !== 'undefined'
+                    ? Object.getOwnPropertyNames(window).filter(
+                          (key) => key.toLowerCase().includes('credential') || key.toLowerCase().includes('publickey')
+                      )
+                    : [];
+
+            const isSecureContext =
+                typeof window !== 'undefined' && 'isSecureContext' in window
+                    ? (window as Window & { isSecureContext?: boolean }).isSecureContext
+                    : false;
+            const hasPublicKeyCredentialInGlobal = typeof window !== 'undefined' && 'PublicKeyCredential' in window;
+
+            alert(
+                `[Biometric] PublicKeyCredential не доступен в window. Диагностика: ${JSON.stringify({
+                    windowType,
+                    hasWindow,
+                    globalKeys,
+                    navigatorUserAgent: navigator.userAgent,
+                    isSecureContext,
+                    hasPublicKeyCredentialInGlobal,
+                })}`
+            );
         }
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
-        alert(`[Biometric] Ошибка при проверке поддержки: ${errorMessage}`);
+        const errorStack = error instanceof Error ? error.stack : undefined;
+        alert(
+            `[Biometric] Ошибка при проверке поддержки: ${errorMessage}${errorStack ? `\nStack: ${errorStack}` : ''}`
+        );
         return false;
     }
 
