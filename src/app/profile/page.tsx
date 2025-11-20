@@ -11,7 +11,7 @@ import ArrowRightIcon from '@/components/icons/right-arrow.svg';
 import QuestionIcon from '@/components/icons/message-question.svg';
 import PhoneScreenIcon from '@/components/icons/phone-screen.svg';
 import KeyIcon from '@/components/icons/key.svg';
-import FaceIdIcon from '@/components/icons/face-id.svg';
+// import FaceIdIcon from '@/components/icons/face-id.svg';
 import PinCodeScreen from '@/components/pin/PinCodeScreen';
 import { Switch } from '@/components/ui/Switch';
 import AddToHome from '@/components/AddToHome';
@@ -158,7 +158,7 @@ const Page = () => {
                             ariaLabel={hasPin ? 'Выключить PIN-код' : 'Включить PIN-код'}
                         />
                     </div>
-                    <div className="flex items-center">
+                    {/* <div className="flex items-center">
                         <div
                             className={`w-[3.5rem] h-[3.5rem] mr-[1rem] rounded-[1rem] center ${
                                 hasPin ? 'bg-[var(--yellow-secondary)]' : 'bg-[var(--dark-gray-secondary)]'
@@ -169,13 +169,8 @@ const Page = () => {
                         <div className="flex-1 flex flex-col gap-[0.5rem]">
                             <p className="text-[1.5rem] leading-[130%] font-medium text-[var(--text-main)]">Face ID</p>
                         </div>
-                        <Switch
-                            checked={false}
-                            onChange={handleTogglePin}
-                            disabled
-                            ariaLabel={hasPin ? 'Выключить PIN-код' : 'Включить PIN-код'}
-                        />
-                    </div>
+                        <Switch checked={false} onChange={handleTogglePin} disabled />
+                    </div> */}
                 </div>
             </div>
 

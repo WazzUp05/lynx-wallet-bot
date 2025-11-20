@@ -12,8 +12,6 @@ const getPinSalt = (state: RootState): string | null => state.app.pinSalt;
 const getPinHash = (state: RootState): string | null => state.app.pinHash;
 const getShowPinOfferModal = (state: RootState): boolean => state.app.showPinOfferModal;
 const getPinChangeFlow = (state: RootState): boolean => state.app.pinChangeFlow;
-const getBiometricEnabled = (state: RootState): boolean => state.app.biometricEnabled;
-const getBiometricCredentialId = (state: RootState): string | null => state.app.biometricCredentialId;
 
 const getShouldDisableButtons = (state: RootState): boolean => {
     return state.app.isWaitingForDeposit || state.app.needDeposit;
@@ -32,7 +30,5 @@ export {
     getPinHash,
     getShowPinOfferModal,
     getPinChangeFlow,
-    getBiometricEnabled,
-    getBiometricCredentialId,
     getShouldDisableButtons,
 };

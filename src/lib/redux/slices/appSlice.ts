@@ -12,8 +12,6 @@ interface AppState {
     pinAuthRequired: boolean;
     showPinOfferModal: boolean; // показана ли модалка предложения PIN после онбординга
     pinChangeFlow: boolean; // флаг для потока изменения PIN (сначала auth, потом setup)
-    biometricEnabled: boolean; // включена ли биометрическая разблокировка
-    biometricCredentialId: string | null; // ID зарегистрированных биометрических данных (base64)
     // Добавляй сюда другие глобальные состояния приложения
 }
 
@@ -46,8 +44,6 @@ const initialState: AppState = {
     pinAuthRequired: false,
     showPinOfferModal: persistedState.showPinOfferModal ?? true, // по умолчанию показываем
     pinChangeFlow: false,
-    biometricEnabled: persistedState.biometricEnabled ?? false,
-    biometricCredentialId: persistedState.biometricCredentialId ?? null,
     ...persistedState, // Загружаем сохранённое состояние
 };
 
@@ -102,24 +98,6 @@ const appSlice = createSlice({
         setPinChangeFlow(state, action: PayloadAction<boolean>) {
             state.pinChangeFlow = action.payload;
         },
-        setBiometricEnabled(state, action: PayloadAction<boolean>) {
-            state.biometricEnabled = action.payload;
-            // Если отключаем биометрию, удаляем credential ID
-            if (!action.payload) {
-                state.biometricCredentialId = null;
-            }
-        },
-        setBiometricCredentialId(state, action: PayloadAction<string | null>) {
-            state.biometricCredentialId = action.payload;
-            // Если устанавливаем credential ID, включаем биометрию
-            if (action.payload) {
-                state.biometricEnabled = true;
-            }
-        },
-        clearBiometric(state) {
-            state.biometricEnabled = false;
-            state.biometricCredentialId = null;
-        },
         // Добавляй другие редьюсеры по мере необходимости
     },
     extraReducers: (builder) => {
@@ -141,8 +119,6 @@ const appSlice = createSlice({
                                 pinHash: state.pinHash,
                                 pinSalt: state.pinSalt,
                                 showPinOfferModal: state.showPinOfferModal,
-                                biometricEnabled: state.biometricEnabled,
-                                biometricCredentialId: state.biometricCredentialId,
                             })
                         );
                     } catch (error) {
@@ -167,8 +143,5 @@ export const {
     setPinAuthRequired,
     setShowPinOfferModal,
     setPinChangeFlow,
-    setBiometricEnabled,
-    setBiometricCredentialId,
-    clearBiometric,
 } = appSlice.actions;
 export default appSlice.reducer;
