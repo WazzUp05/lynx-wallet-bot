@@ -34,14 +34,82 @@ function arrayBufferToBase64(buffer: ArrayBuffer): string {
 }
 
 /**
+ * Проверка, что мы находимся в Telegram WebView
+ */
+function isTelegramWebView(): boolean {
+    if (typeof window === 'undefined') return false;
+
+    // Проверяем наличие Telegram WebApp API
+    const hasTelegramWebApp = !!(window as any).Telegram?.WebApp;
+
+    // Проверяем User-Agent на наличие Telegram
+    const userAgent = navigator.userAgent || '';
+    const isTelegramUA = /Telegram/i.test(userAgent);
+
+    return hasTelegramWebApp || isTelegramUA;
+}
+
+/**
+ * Проверка, что мы на мобильном устройстве (не desktop)
+ */
+function isMobileDevice(): boolean {
+    if (typeof window === 'undefined') return false;
+
+    const userAgent = navigator.userAgent || '';
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+
+    // Также проверяем платформу через Telegram WebApp, если доступна
+    if ((window as any).Telegram?.WebApp?.platform) {
+        const platform = (window as any).Telegram.WebApp.platform;
+        // Платформы: ios, android, web, macos, windows, linux, tdesktop, weba, unigram, unknown
+        return platform === 'ios' || platform === 'android';
+    }
+
+    return isMobile;
+}
+
+/**
  * Проверка поддержки биометрии через WebAuthn API
  * @returns Promise<boolean> - поддерживается ли биометрия
  */
 export async function isBiometricSupported(): Promise<boolean> {
-    if (typeof window === 'undefined') return false;
+    if (typeof window === 'undefined') {
+        alert('[Biometric] Window не доступен');
+        return false;
+    }
+
+    const isDev = process.env.NODE_ENV === 'development';
+    const isTelegram = isTelegramWebView();
+    const isMobile = isMobileDevice();
+
+    // Детальное логирование для отладки
+    alert(
+        `[Biometric] Проверка поддержки: ${JSON.stringify({
+            isDev,
+            isTelegram,
+            isMobile,
+            userAgent: navigator.userAgent,
+            platform: (window as any).Telegram?.WebApp?.platform,
+            hasTelegramWebApp: !!(window as any).Telegram?.WebApp,
+        })}`
+    );
+
+    // ВАЖНО: Биометрия должна работать только в Telegram WebView на мобильных устройствах
+    // На desktop (компьютере) биометрия не должна быть доступна
+    // В dev режиме разрешаем проверку для тестирования
+    if (!isDev && !isTelegram) {
+        alert('[Biometric] Недоступна: не в Telegram WebView');
+        return false;
+    }
+
+    if (!isDev && !isMobile) {
+        alert('[Biometric] Недоступна: не мобильное устройство');
+        return false;
+    }
 
     // Проверяем наличие WebAuthn API
     if (!navigator.credentials || !navigator.credentials.create) {
+        alert('[Biometric] Недоступна: WebAuthn API не поддерживается');
         return false;
     }
 
@@ -49,13 +117,17 @@ export async function isBiometricSupported(): Promise<boolean> {
     try {
         if ('PublicKeyCredential' in window) {
             const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+            alert(`[Biometric] Платформенный аутентификатор доступен: ${available}`);
             return available;
+        } else {
+            alert('[Biometric] PublicKeyCredential не доступен в window');
         }
     } catch (error) {
-        console.error('Ошибка при проверке поддержки биометрии:', error);
+        alert(`[Biometric] Ошибка при проверке поддержки: ${error}`);
         return false;
     }
 
+    alert('[Biometric] Недоступна: все проверки провалились');
     return false;
 }
 
