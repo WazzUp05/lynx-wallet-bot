@@ -150,31 +150,24 @@ export async function isBiometricSupported(): Promise<boolean> {
             alert(`[Biometric] Платформенный аутентификатор доступен: ${available}`);
             return available;
         } else {
-            // Детальная диагностика: что именно отсутствует
-            const windowType = typeof window;
-            const hasWindow = typeof window !== 'undefined';
-            const globalKeys =
-                typeof window !== 'undefined'
-                    ? Object.getOwnPropertyNames(window).filter(
-                          (key) => key.toLowerCase().includes('credential') || key.toLowerCase().includes('publickey')
-                      )
-                    : [];
+            // Обходной путь для Android WebView:
+            // Если navigator.credentials.create доступен, но PublicKeyCredential не в window,
+            // это может означать, что WebAuthn работает, но API скрыт в WebView
+            // Разрешаем попытку регистрации для мобильных устройств в Telegram WebView
+            if (isMobile && isTelegram) {
+                alert(
+                    `[Biometric] PublicKeyCredential не в window, но navigator.credentials.create доступен. ` +
+                        `Разрешаем попытку регистрации биометрии на мобильном устройстве в Telegram WebView.`
+                );
+                // Возвращаем true, чтобы позволить попытку регистрации
+                // Если регистрация не удастся, пользователь увидит ошибку
+                return true;
+            }
 
-            const isSecureContext =
-                typeof window !== 'undefined' && 'isSecureContext' in window
-                    ? (window as Window & { isSecureContext?: boolean }).isSecureContext
-                    : false;
-            const hasPublicKeyCredentialInGlobal = typeof window !== 'undefined' && 'PublicKeyCredential' in window;
-
+            // Для desktop или если не в Telegram - биометрия недоступна
             alert(
-                `[Biometric] PublicKeyCredential не доступен в window. Диагностика: ${JSON.stringify({
-                    windowType,
-                    hasWindow,
-                    globalKeys,
-                    navigatorUserAgent: navigator.userAgent,
-                    isSecureContext,
-                    hasPublicKeyCredentialInGlobal,
-                })}`
+                `[Biometric] PublicKeyCredential не доступен в window, и это не мобильное устройство в Telegram WebView. ` +
+                    `Биометрия недоступна.`
             );
         }
     } catch (error) {
@@ -228,10 +221,18 @@ export async function registerBiometric(userId: number, userName: string): Promi
         return null;
     }
 
+    // Проверяем наличие navigator.credentials.create
+    if (!navigator.credentials || !navigator.credentials.create) {
+        console.error('Ошибка: navigator.credentials.create недоступен');
+        return null;
+    }
+
     try {
         const challenge = generateChallenge();
         const userIdBuffer = new TextEncoder().encode(userId.toString());
 
+        // Используем navigator.credentials.create напрямую
+        // Даже если PublicKeyCredential не в window, метод может работать
         const credential = (await navigator.credentials.create({
             publicKey: {
                 challenge: new Uint8Array(challenge),
@@ -252,16 +253,35 @@ export async function registerBiometric(userId: number, userName: string): Promi
                 timeout: 60000, // 60 секунд на регистрацию
                 attestation: 'none', // не требуем attestation для приватности
             },
-        })) as PublicKeyCredential | null;
+        })) as Credential | null;
 
-        if (!credential || !credential.id) {
+        // Проверяем, что credential имеет свойство id (характерно для PublicKeyCredential)
+        if (!credential || !('id' in credential) || !credential.id) {
+            console.error('Ошибка: credential не содержит id или не является PublicKeyCredential');
             return null;
         }
 
-        // Сохраняем credential.id в base64 для удобства хранения
-        return credential.id;
+        // Сохраняем credential.id (может быть строкой или ArrayBuffer)
+        // Преобразуем в строку, если это ArrayBuffer
+        const credentialId = credential.id;
+        if (typeof credentialId === 'string') {
+            return credentialId;
+        } else if (credentialId && typeof credentialId === 'object' && 'byteLength' in credentialId) {
+            // Это ArrayBuffer или BufferSource, преобразуем в base64 строку
+            return arrayBufferToBase64(credentialId as ArrayBuffer);
+        }
+
+        return String(credentialId);
     } catch (error) {
-        console.error('Ошибка при регистрации биометрии:', error);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        const errorName = error instanceof Error ? error.name : 'UnknownError';
+        console.error('Ошибка при регистрации биометрии:', errorName, errorMessage);
+
+        // Детальная информация об ошибке для отладки
+        if (errorName === 'NotSupportedError' || errorName === 'NotAllowedError' || errorName === 'SecurityError') {
+            console.error(`WebAuthn ошибка: ${errorName} - ${errorMessage}`);
+        }
+
         return null;
     }
 }
