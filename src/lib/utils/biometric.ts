@@ -40,7 +40,7 @@ function isTelegramWebView(): boolean {
     if (typeof window === 'undefined') return false;
 
     // Проверяем наличие Telegram WebApp API
-    const hasTelegramWebApp = !!(window as any).Telegram?.WebApp;
+    const hasTelegramWebApp = !!window.Telegram?.WebApp;
 
     // Проверяем User-Agent на наличие Telegram
     const userAgent = navigator.userAgent || '';
@@ -59,8 +59,9 @@ function isMobileDevice(): boolean {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 
     // Также проверяем платформу через Telegram WebApp, если доступна
-    if ((window as any).Telegram?.WebApp?.platform) {
-        const platform = (window as any).Telegram.WebApp.platform;
+    const telegramWebApp = window.Telegram?.WebApp;
+    if (telegramWebApp?.platform) {
+        const platform = telegramWebApp.platform;
         // Платформы: ios, android, web, macos, windows, linux, tdesktop, weba, unigram, unknown
         return platform === 'ios' || platform === 'android';
     }
@@ -83,14 +84,15 @@ export async function isBiometricSupported(): Promise<boolean> {
     const isMobile = isMobileDevice();
 
     // Детальное логирование для отладки
+    const telegramWebApp = window.Telegram?.WebApp;
     alert(
         `[Biometric] Проверка поддержки: ${JSON.stringify({
             isDev,
             isTelegram,
             isMobile,
             userAgent: navigator.userAgent,
-            platform: (window as any).Telegram?.WebApp?.platform,
-            hasTelegramWebApp: !!(window as any).Telegram?.WebApp,
+            platform: telegramWebApp?.platform,
+            hasTelegramWebApp: !!telegramWebApp,
         })}`
     );
 
@@ -123,7 +125,8 @@ export async function isBiometricSupported(): Promise<boolean> {
             alert('[Biometric] PublicKeyCredential не доступен в window');
         }
     } catch (error) {
-        alert(`[Biometric] Ошибка при проверке поддержки: ${error}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        alert(`[Biometric] Ошибка при проверке поддержки: ${errorMessage}`);
         return false;
     }
 
