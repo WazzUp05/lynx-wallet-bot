@@ -4,17 +4,15 @@ import Onboarding from '@/components/onboarding/Onboarding';
 import Loader from '@/components/ui/Loader';
 import PinCodeScreen from '@/components/pin/PinCodeScreen';
 import SettingPinModal from '@/components/modals/SettingPinModal';
-import BiometricOfferModal from '@/components/modals/BiometricOfferModal';
 import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
 import {
     getHasPin,
     getOnboardingCompleted,
     getWaitingForDeposit,
     getShowPinOfferModal,
-    getBiometricEnabled,
 } from '@/lib/redux/selectors/appSelectors';
 import { getHistory } from '@/lib/redux/selectors/historySelectors';
-import { getWallet, getUser } from '@/lib/redux/selectors/userSelectors';
+import { getWallet } from '@/lib/redux/selectors/userSelectors';
 import {
     setIsFirstTime,
     setNeedDeposit,
@@ -22,13 +20,10 @@ import {
     setOnboardingCompleted,
     setOnboardingStep,
     setShowPinOfferModal,
-    setBiometricCredentialId,
 } from '@/lib/redux/slices/appSlice';
 import { fetchHistory } from '@/lib/redux/thunks/historyThunks';
 import { useEffect, useState } from 'react';
-import { getLoading } from '@/lib/redux/selectors/userSelectors';
-import { isBiometricSupported, registerBiometric, getBiometricType } from '@/lib/utils/biometric';
-import { Toast } from '@/components/ui/Toast';
+import { getLoading, getUser } from '@/lib/redux/selectors/userSelectors';
 
 export default function Home() {
     const dispatch = useAppDispatch();
@@ -43,11 +38,6 @@ export default function Home() {
     const user = useAppSelector(getUser);
 
     const [showPinSetup, setShowPinSetup] = useState(false);
-    const [showBiometricOffer, setShowBiometricOffer] = useState(false);
-    const [biometricType, setBiometricType] = useState<'face' | 'fingerprint' | 'unknown'>('unknown');
-    const [toastOpen, setToastOpen] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
-    const biometricEnabled = useAppSelector(getBiometricEnabled);
 
     // Проверяем, первый ли раз зашел пользователь
     useEffect(() => {
@@ -121,19 +111,9 @@ export default function Home() {
                     setShowPinSetup(false);
                     dispatch(setShowPinOfferModal(false));
                 }}
-                onSuccess={async () => {
+                onSuccess={() => {
                     setShowPinSetup(false);
                     dispatch(setShowPinOfferModal(false));
-
-                    // После успешной установки PIN проверяем поддержку биометрии
-                    if (user?.data && !biometricEnabled) {
-                        const supported = await isBiometricSupported();
-                        if (supported) {
-                            const type = getBiometricType();
-                            setBiometricType(type);
-                            setShowBiometricOffer(true);
-                        }
-                    }
                 }}
             />
         );
@@ -150,40 +130,6 @@ export default function Home() {
         setShowPinSetup(true);
     };
 
-    const handleEnableBiometric = async () => {
-        if (!user || !user.data) {
-            setToastMessage('Ошибка: пользователь не найден');
-            setToastOpen(true);
-            setShowBiometricOffer(false);
-            return;
-        }
-
-        try {
-            const userId = parseInt(user.data.telegram_id.toString(), 10);
-            const credentialId = await registerBiometric(userId, user.data.first_name || 'Пользователь');
-
-            if (credentialId) {
-                dispatch(setBiometricCredentialId(credentialId));
-                setToastMessage('Биометрия успешно включена');
-                setToastOpen(true);
-                setShowBiometricOffer(false);
-            } else {
-                setToastMessage('Не удалось зарегистрировать биометрию');
-                setToastOpen(true);
-                setShowBiometricOffer(false);
-            }
-        } catch (error) {
-            console.error('Ошибка при регистрации биометрии:', error);
-            setToastMessage('Ошибка при регистрации биометрии');
-            setToastOpen(true);
-            setShowBiometricOffer(false);
-        }
-    };
-
-    const handleCloseBiometricOffer = () => {
-        setShowBiometricOffer(false);
-    };
-
     return (
         <>
             <main>
@@ -192,20 +138,6 @@ export default function Home() {
             {shouldShowPinModal && (
                 <SettingPinModal showModal={true} onClose={handleClosePinModal} onCreatePin={handleCreatePin} />
             )}
-            {showBiometricOffer && (
-                <BiometricOfferModal
-                    showModal={true}
-                    onClose={handleCloseBiometricOffer}
-                    onEnable={handleEnableBiometric}
-                    biometricType={biometricType}
-                />
-            )}
-            <Toast
-                open={toastOpen}
-                message={toastMessage}
-                type={toastMessage.includes('успешно') ? 'success' : 'error'}
-                onClose={() => setToastOpen(false)}
-            />
         </>
     );
 }

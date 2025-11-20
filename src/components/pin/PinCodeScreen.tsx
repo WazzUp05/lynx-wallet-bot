@@ -3,17 +3,10 @@
 import { useCallback, useMemo, useState } from 'react';
 import CloseIcon from '@/components/icons/close.svg';
 import BackspaceIcon from '@/components/icons/back.svg';
-import FaceIdIcon from '@/components/icons/face-id.svg';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import {
-    getPinHash,
-    getPinSalt,
-    getBiometricEnabled,
-    getBiometricCredentialId,
-} from '@/lib/redux/selectors/appSelectors';
+import { getPinHash, getPinSalt } from '@/lib/redux/selectors/appSelectors';
 import { setPinAuthRequired, setPinData } from '@/lib/redux/slices/appSlice';
 import { PIN_LENGTH, generatePinSalt, hashPin } from '@/lib/utils/pin';
-import { authenticateBiometric } from '@/lib/utils/biometric';
 import { Toast } from '../ui/Toast';
 
 type PinCodeScreenProps = {
@@ -29,8 +22,6 @@ const PinCodeScreen = ({ mode, onCancel, onSuccess, title }: PinCodeScreenProps)
     const dispatch = useAppDispatch();
     const pinHash = useAppSelector(getPinHash);
     const pinSalt = useAppSelector(getPinSalt);
-    const biometricEnabled = useAppSelector(getBiometricEnabled);
-    const biometricCredentialId = useAppSelector(getBiometricCredentialId);
 
     const [pinInput, setPinInput] = useState('');
     const [firstPin, setFirstPin] = useState('');
@@ -39,7 +30,6 @@ const PinCodeScreen = ({ mode, onCancel, onSuccess, title }: PinCodeScreenProps)
     const [isProcessing, setIsProcessing] = useState(false);
     const [shake, setShake] = useState(false);
     const [toastOpen, setToastOpen] = useState(false);
-    const [biometricLoading, setBiometricLoading] = useState(false);
 
     const currentTitle = useMemo(() => {
         if (title) return title;
@@ -175,30 +165,6 @@ const PinCodeScreen = ({ mode, onCancel, onSuccess, title }: PinCodeScreenProps)
         }
     };
 
-    const handleBiometricAuth = useCallback(async () => {
-        if (biometricLoading || !biometricEnabled || !biometricCredentialId || mode !== 'auth') {
-            return;
-        }
-
-        setBiometricLoading(true);
-        try {
-            const success = await authenticateBiometric(biometricCredentialId);
-            if (success) {
-                dispatch(setPinAuthRequired(false));
-                setPinInput('');
-                setError('');
-                handleSuccess();
-            } else {
-                triggerError('Биометрическая аутентификация не удалась');
-            }
-        } catch (error) {
-            console.error('Ошибка при биометрической аутентификации:', error);
-            triggerError('Ошибка биометрической аутентификации');
-        } finally {
-            setBiometricLoading(false);
-        }
-    }, [biometricLoading, biometricEnabled, biometricCredentialId, mode, dispatch, handleSuccess, triggerError]);
-
     const renderDigitButton = (digit: string, index: number) => {
         if (!digit) {
             return <div key={`empty-${index}`} className="h-[7.6rem] w-[7.6rem]" />;
@@ -262,17 +228,6 @@ const PinCodeScreen = ({ mode, onCancel, onSuccess, title }: PinCodeScreenProps)
                 <div className="mb-[1.5rem] grid grid-cols-3 place-items-center gap-[2.4rem]">
                     {baseDigits.map((digit, index) => renderDigitButton(digit, index))}
                 </div>
-                {mode === 'auth' && biometricEnabled && biometricCredentialId && (
-                    <button
-                        type="button"
-                        onClick={handleBiometricAuth}
-                        disabled={biometricLoading || isProcessing}
-                        className="flex items-center justify-center gap-[0.8rem] px-[2rem] py-[1.2rem] rounded-[1.2rem] bg-[var(--bg-secondary)] text-[var(--text-main)] text-[1.4rem] leading-[130%] font-medium disabled:opacity-50 transition active:scale-95"
-                    >
-                        <FaceIdIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
-                        {biometricLoading ? 'Проверка...' : 'Разблокировать с Face ID'}
-                    </button>
-                )}
                 {mode === 'setup' && step === 'confirm' && (
                     <button
                         type="button"

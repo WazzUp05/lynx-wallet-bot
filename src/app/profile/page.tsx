@@ -2,21 +2,8 @@
 import Loader from '@/components/ui/Loader';
 import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
 import { getLoading, getUser } from '@/lib/redux/selectors/userSelectors';
-import {
-    getHasPin,
-    getPinChangeFlow,
-    getBiometricEnabled,
-    getBiometricCredentialId,
-} from '@/lib/redux/selectors/appSelectors';
-import {
-    clearPin,
-    setPinChangeFlow,
-    setBiometricEnabled,
-    setBiometricCredentialId,
-    clearBiometric,
-} from '@/lib/redux/slices/appSlice';
-import { isBiometricSupported, registerBiometric, getBiometricType } from '@/lib/utils/biometric';
-import { Toast } from '@/components/ui/Toast';
+import { getHasPin, getPinChangeFlow } from '@/lib/redux/selectors/appSelectors';
+import { clearPin, setPinChangeFlow } from '@/lib/redux/slices/appSlice';
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -35,33 +22,17 @@ const Page = () => {
     const loadingApp = useAppSelector(getLoading);
     const hasPin = useAppSelector(getHasPin);
     const pinChangeFlow = useAppSelector(getPinChangeFlow);
-    const biometricEnabled = useAppSelector(getBiometricEnabled);
-    const biometricCredentialId = useAppSelector(getBiometricCredentialId);
     const { trackEvent } = useMixpanel();
     const [isOpen, setIsOpen] = useState(false);
     const [showPinSetup, setShowPinSetup] = useState(false);
     const [showPinAuth, setShowPinAuth] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [isDeletingPin, setIsDeletingPin] = useState(false);
-    const [biometricSupported, setBiometricSupported] = useState(false);
-    const [biometricLoading, setBiometricLoading] = useState(false);
-    const [toastOpen, setToastOpen] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
-    const [toastType, setToastType] = useState<'success' | 'error'>('error');
 
     // Событие при открытии страницы
     useEffect(() => {
         trackEvent('profile_page_opened');
     }, [trackEvent]);
-
-    // Проверка поддержки биометрии
-    useEffect(() => {
-        const checkBiometricSupport = async () => {
-            const supported = await isBiometricSupported();
-            setBiometricSupported(supported);
-        };
-        checkBiometricSupport();
-    }, []);
 
     // Логика для изменения PIN (сначала auth, потом setup)
     useEffect(() => {
@@ -111,66 +82,6 @@ const Page = () => {
 
     const handleChangePin = () => {
         dispatch(setPinChangeFlow(true));
-    };
-
-    const handleToggleBiometric = async (checked: boolean) => {
-        // Биометрия работает только если есть PIN
-        if (!hasPin) {
-            setToastMessage('Сначала установите PIN-код');
-            setToastType('error');
-            setToastOpen(true);
-            return;
-        }
-
-        // Проверяем поддержку биометрии
-        if (!biometricSupported) {
-            setToastMessage('Биометрия не поддерживается на этом устройстве');
-            setToastType('error');
-            setToastOpen(true);
-            return;
-        }
-
-        if (checked) {
-            // Включаем биометрию - регистрируем
-            if (!user?.data) {
-                setToastMessage('Ошибка: пользователь не найден');
-                setToastType('error');
-                setToastOpen(true);
-                return;
-            }
-
-            setBiometricLoading(true);
-            try {
-                const userId = parseInt(user.data.telegram_id.toString(), 10);
-                const credentialId = await registerBiometric(userId, user.data.first_name || 'Пользователь');
-
-                if (credentialId) {
-                    dispatch(setBiometricCredentialId(credentialId));
-                    setToastMessage('Биометрия успешно включена');
-                    setToastType('success');
-                    setToastOpen(true);
-                    trackEvent('biometric_enabled');
-                } else {
-                    setToastMessage('Не удалось зарегистрировать биометрию');
-                    setToastType('error');
-                    setToastOpen(true);
-                }
-            } catch (error) {
-                console.error('Ошибка при регистрации биометрии:', error);
-                setToastMessage('Ошибка при регистрации биометрии');
-                setToastType('error');
-                setToastOpen(true);
-            } finally {
-                setBiometricLoading(false);
-            }
-        } else {
-            // Выключаем биометрию - удаляем credential ID
-            dispatch(clearBiometric());
-            setToastMessage('Биометрия отключена');
-            setToastType('success');
-            setToastOpen(true);
-            trackEvent('biometric_disabled');
-        }
     };
 
     if (loadingApp) {
@@ -250,27 +161,19 @@ const Page = () => {
                     <div className="flex items-center">
                         <div
                             className={`w-[3.5rem] h-[3.5rem] mr-[1rem] rounded-[1rem] center ${
-                                biometricEnabled && hasPin
-                                    ? 'bg-[var(--yellow-secondary)]'
-                                    : 'bg-[var(--dark-gray-secondary)]'
+                                hasPin ? 'bg-[var(--yellow-secondary)]' : 'bg-[var(--dark-gray-secondary)]'
                             }`}
                         >
                             <FaceIdIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                         </div>
                         <div className="flex-1 flex flex-col gap-[0.5rem]">
-                            <p className="text-[1.5rem] leading-[130%] font-medium text-[var(--text-main)]">
-                                {getBiometricType() === 'face'
-                                    ? 'Face ID'
-                                    : getBiometricType() === 'fingerprint'
-                                      ? 'Отпечаток пальца'
-                                      : 'Face ID'}
-                            </p>
+                            <p className="text-[1.5rem] leading-[130%] font-medium text-[var(--text-main)]">Face ID</p>
                         </div>
                         <Switch
-                            checked={biometricEnabled}
-                            onChange={handleToggleBiometric}
-                            disabled={!hasPin || !biometricSupported || biometricLoading}
-                            ariaLabel={biometricEnabled ? 'Выключить биометрию' : 'Включить биометрию'}
+                            checked={false}
+                            onChange={handleTogglePin}
+                            disabled
+                            ariaLabel={hasPin ? 'Выключить PIN-код' : 'Включить PIN-код'}
                         />
                     </div>
                 </div>
@@ -298,7 +201,6 @@ const Page = () => {
             </div>
             <p className="text-[1.4rem] leading-[130%]  text-[var(--text-secondary)] text-center">v0.10.12</p>
             <AddToHome isOpen={isOpen} setIsOpen={setIsOpen} />
-            <Toast open={toastOpen} message={toastMessage} type={toastType} onClose={() => setToastOpen(false)} />
 
             {/* Экран авторизации PIN для изменения или удаления */}
             {showPinAuth && (
