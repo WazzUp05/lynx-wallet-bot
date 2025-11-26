@@ -28,11 +28,11 @@ const SettingPinModal = ({ showModal, onClose, onCreatePin }: SettingPinModalPro
                     <br />
                     кошелёк PIN-кодом
                 </h2>
-                <p className="fs-regular text-[var(--text-main)] mb-[2.4rem] text-center">
-                    Установите PIN-код, чтобы добавить&nbsp;дополнительный уровень&nbsp;защиты ваших&nbsp;средств.
+                <p className="fs-regular text-[var(--text-main)] mb-[2.4rem] text-center max-w-[34rem] mx-auto">
+                    Установите PIN-код, чтобы добавить&nbsp;дополнительный уровень защиты ваших средств.
                 </p>
                 <Button variant="yellow" className="mb-[1.2rem]" onClick={handleCreatePin}>
-                    Придумать PIN-код и добавить
+                    Придумать PIN-код
                 </Button>
                 <Button variant="ghost" onClick={onClose}>
                     Сделаю позже

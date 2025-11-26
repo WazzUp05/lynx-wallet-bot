@@ -53,6 +53,7 @@ export default function Home() {
                 dispatch(setIsFirstTime(false));
                 dispatch(setNeedDeposit(false));
                 dispatch(setWaitingForDeposit(false));
+                dispatch(setOnboardingCompleted(true));
             }
         }
     }, [user, wallet, history, dispatch]);

@@ -26,7 +26,6 @@ const Page = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [showPinSetup, setShowPinSetup] = useState(false);
     const [showPinAuth, setShowPinAuth] = useState(false);
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [isDeletingPin, setIsDeletingPin] = useState(false);
 
     // Событие при открытии страницы
@@ -45,9 +44,10 @@ const Page = () => {
     const handlePinAuthSuccess = () => {
         setShowPinAuth(false);
         if (isDeletingPin) {
-            // Если это удаление, показываем модалку подтверждения
-            setShowDeleteConfirm(true);
             setIsDeletingPin(false);
+            if (window.confirm('Удалить PIN-код?\nПосле удаления PIN-кода защита кошелька будет отключена.')) {
+                dispatch(clearPin());
+            }
         } else {
             // Если это изменение, показываем экран создания нового PIN
             setShowPinSetup(true);
@@ -73,11 +73,6 @@ const Page = () => {
             setIsDeletingPin(true);
             setShowPinAuth(true);
         }
-    };
-
-    const handleDeletePin = () => {
-        dispatch(clearPin());
-        setShowDeleteConfirm(false);
     };
 
     const handleChangePin = () => {
@@ -214,34 +209,6 @@ const Page = () => {
             {/* Экран создания/изменения PIN */}
             {showPinSetup && (
                 <PinCodeScreen mode="setup" onCancel={handlePinSetupCancel} onSuccess={handlePinSetupSuccess} />
-            )}
-
-            {/* Модалка подтверждения удаления PIN */}
-            {showDeleteConfirm && (
-                <div className="fixed inset-0 z-[1100] bg-black/70 flex items-center justify-center px-[1.6rem]">
-                    <div className="bg-[var(--bg-optional)] rounded-[2rem] p-[2.4rem] w-full max-w-[40rem]">
-                        <h2 className="text-[2rem] font-medium text-[var(--text-main)] mb-[1.6rem] text-center">
-                            Удалить PIN-код?
-                        </h2>
-                        <p className="text-[1.5rem] leading-[130%] text-[var(--text-secondary)] mb-[2.4rem] text-center">
-                            После удаления PIN-кода защита кошелька будет отключена
-                        </p>
-                        <div className="flex flex-col gap-[1.2rem]">
-                            <button
-                                onClick={handleDeletePin}
-                                className="w-full bg-[var(--red)] text-white rounded-[1.6rem] p-[1.6rem] text-[1.6rem] font-medium"
-                            >
-                                Удалить
-                            </button>
-                            <button
-                                onClick={() => setShowDeleteConfirm(false)}
-                                className="w-full bg-[var(--bg-secondary)] text-[var(--text-main)] rounded-[1.6rem] p-[1.6rem] text-[1.6rem] font-medium"
-                            >
-                                Отмена
-                            </button>
-                        </div>
-                    </div>
-                </div>
             )}
         </div>
     );
