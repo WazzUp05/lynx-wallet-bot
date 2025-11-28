@@ -51,7 +51,9 @@ const Step4: React.FC<Step4Props> = ({ onNext }) => {
                 <SelectCrypto cryptos={MOCK_SELECT_CRYPTO} />
             </div>
             <div className="mb-[1.2rem]">
-                <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">Сеть</p>
+                <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">
+                    Сеть
+                </p>
                 <SelectCustom options={network} value={'TRC20'} onChange={() => {}} />
             </div>
             <WarrningBlock

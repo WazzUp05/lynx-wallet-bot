@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type NetworkType = "TRC20" | "TON";
+export type NetworkType = 'TRC20' | 'TON';
 
-export type CryptoType = "USDT" | "BTC" | "ETH" | "TON";
+export type CryptoType = 'USDT' | 'BTC' | 'ETH' | 'TON';
 
 export interface CryptoItem {
     description: string;
@@ -18,17 +18,17 @@ interface WalletState {
 
 const initialState: WalletState = {
     balance: 0,
-    network: "TRC20",
+    network: 'TRC20',
     crypto: {
-        description: "0.0 USDT",
-        iconUrl: "/icons/usdt.svg",
-        id: "USDT",
-        label: "USDT",
+        description: '0.0 USDT',
+        iconUrl: '/icons/usdt.svg',
+        id: 'USDT',
+        label: 'USDT',
     },
 };
 
 export const walletSlice = createSlice({
-    name: "wallet",
+    name: 'wallet',
     initialState,
     reducers: {
         setBalance(state, action: PayloadAction<number>) {

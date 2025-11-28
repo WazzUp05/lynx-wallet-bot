@@ -1,5 +1,5 @@
 export interface TelegramUser {
-    id: number;
+    id: number | string;
     first_name: string;
     last_name?: string;
     username?: string;
@@ -21,7 +21,7 @@ export interface TelegramWebApp {
     };
     version: string;
     platform: string;
-    colorScheme: "light" | "dark";
+    colorScheme: 'light' | 'dark';
     themeParams: {
         link_color?: string;
         button_color?: string;

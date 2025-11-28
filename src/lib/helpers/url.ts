@@ -81,7 +81,9 @@ export async function apiFetch(path: string, init: ApiFetchInit = {}) {
             if (shouldActivateFallback(error)) {
                 fallbackActivated = true;
                 if (process.env.NODE_ENV !== 'production') {
-                    console.warn('[apiFetch] Switching to fallback API URL due to primary request failure.');
+                    console.warn(
+                        '[apiFetch] Switching to fallback API URL due to primary request failure.'
+                    );
                 }
                 return fetch(buildUrl(path, FALLBACK_API_URL), requestInit);
             }

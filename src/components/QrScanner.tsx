@@ -1,4 +1,4 @@
-import { Scanner, TrackFunction, IDetectedBarcode } from "@yudiel/react-qr-scanner";
+import { Scanner, TrackFunction, IDetectedBarcode } from '@yudiel/react-qr-scanner';
 
 export interface IScannerComponents {
     tracker?: TrackFunction;

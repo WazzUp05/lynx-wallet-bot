@@ -1,7 +1,11 @@
 import React from 'react';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { getRatesQuoteRub } from '@/lib/redux/selectors/rateSelectors';
-import { getHideBalance, getShouldDisableButtons, getWaitingForDeposit } from '@/lib/redux/selectors/appSelectors';
+import {
+    getHideBalance,
+    getShouldDisableButtons,
+    getWaitingForDeposit,
+} from '@/lib/redux/selectors/appSelectors';
 import WarrningIcon from '@/components/icons/warrning-mark.svg';
 import ClockIcon from '@/components/icons/clock-bg.svg';
 
@@ -52,18 +56,23 @@ const Balance = ({ balance }: BalanceProps) => {
                         Ожидание зачисления
                     </div>
                     <div className="flex flex-col gap-[1.2rem] bg-[var(--yellow-optional)] rounded-[1.5rem] p-[1.6rem]">
-                        <div className={`w-full flex gap-[0.5rem] items-center  text-[1.2rem] leading-[130%]`}>
+                        <div
+                            className={`w-full flex gap-[0.5rem] items-center  text-[1.2rem] leading-[130%]`}
+                        >
                             <div className="text-[var(--text-main)]">
                                 <WarrningIcon width={16} height={16} />
                             </div>
-                            <span className="text-[var(--text-main)]">Может занимать до 30 минут.</span>
+                            <span className="text-[var(--text-main)]">
+                                Может занимать до 30 минут.
+                            </span>
                         </div>
                         <div className={`w-full flex gap-[0.5rem] text-[1.2rem] leading-[130%]`}>
                             <div className="text-[var(--text-main)]">
                                 <WarrningIcon width={16} height={16} />
                             </div>
                             <span className="text-[var(--text-main)] text-left">
-                                Если деньги не появились, обновите страницу при помощи кнопки в верхнем правом углу.
+                                Если деньги не появились, обновите страницу при помощи кнопки в
+                                верхнем правом углу.
                             </span>
                         </div>
                     </div>

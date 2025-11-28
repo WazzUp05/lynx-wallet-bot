@@ -12,7 +12,14 @@ interface ModalProps {
     swipeToClose?: boolean; // разрешить свайп вниз
 }
 
-const Modal = ({ open, title, onClose, children, closable = false, swipeToClose = true }: ModalProps) => {
+const Modal = ({
+    open,
+    title,
+    onClose,
+    children,
+    closable = false,
+    swipeToClose = true,
+}: ModalProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
 
@@ -39,7 +46,8 @@ const Modal = ({ open, title, onClose, children, closable = false, swipeToClose 
             if (viewport) {
                 // Сдвигаем модалку вверх на разницу между window.innerHeight и viewport.height
                 const keyboardHeight = window.innerHeight - viewport.height - viewport.offsetTop;
-                modalRef.current.style.transform = keyboardHeight > 0 ? `translateY(-${keyboardHeight}px)` : '';
+                modalRef.current.style.transform =
+                    keyboardHeight > 0 ? `translateY(-${keyboardHeight}px)` : '';
             }
         };
 
@@ -82,13 +90,21 @@ const Modal = ({ open, title, onClose, children, closable = false, swipeToClose 
                         {/* {swipeToClose && <DragIndicator className="mb-[1.6rem]" />} */}
                         {closable && (
                             <div className="flex w-full items-center justify-between mb-[1.6rem]">
-                                {title && <div className=" font-semibold text-[1.8rem] leading-[130%]">{title}</div>}
+                                {title && (
+                                    <div className=" font-semibold text-[1.8rem] leading-[130%]">
+                                        {title}
+                                    </div>
+                                )}
                                 <button
                                     className="bg-[var(--bg-secondary)]  rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
                                     onClick={onClose}
                                     aria-label="Закрыть"
                                 >
-                                    <CloseIcon width={15} height={15} className="w-[1.5rem] h-[1.5rem]" />
+                                    <CloseIcon
+                                        width={15}
+                                        height={15}
+                                        className="w-[1.5rem] h-[1.5rem]"
+                                    />
                                 </button>
                             </div>
                         )}

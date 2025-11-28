@@ -5,7 +5,10 @@ import React, { createContext, useContext, useCallback, useMemo } from 'react';
 import mixpanel from 'mixpanel-browser';
 
 // Тип для свойств событий телеметрии (JSON-совместимые типы)
-export type TelemetryEventProps = Record<string, string | number | boolean | null | undefined | string[] | number[]>;
+export type TelemetryEventProps = Record<
+    string,
+    string | number | boolean | null | undefined | string[] | number[]
+>;
 
 const MixpanelContext = createContext<{
     trackEvent: (event: string, props?: TelemetryEventProps) => Promise<void>;

@@ -32,7 +32,9 @@ const Step3: React.FC<Step3Props> = ({ onNext }) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="fs-bold text-center mb-[0.8rem]"
-                        dangerouslySetInnerHTML={{ __html: 'Пополните кошелёк и начните покупки в&nbsp;Lynx' }}
+                        dangerouslySetInnerHTML={{
+                            __html: 'Пополните кошелёк и начните покупки в&nbsp;Lynx',
+                        }}
                     />
                     <motion.p
                         initial={{ opacity: 0, y: 0 }}

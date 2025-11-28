@@ -41,8 +41,8 @@ const AddToHome = ({ isOpen, setIsOpen }: AddToHomeProps) => {
                                 </h2>
                             </div>
                             <p className="text-[1.3rem] leading-[130%] mb-[2.4rem] text-[var(--text-secondary)]">
-                                Нажмите на три точки в правом верхнем углу. Затем выберите пункт «Добавить на экран
-                                домой» и следуйте дальнейшим инструкциям.
+                                Нажмите на три точки в правом верхнем углу. Затем выберите пункт
+                                «Добавить на экран домой» и следуйте дальнейшим инструкциям.
                             </p>
                             <Button variant="gray" onClick={() => setIsOpen(false)}>
                                 Закрыть

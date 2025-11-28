@@ -49,7 +49,9 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
                 {getTypeImage(item.type)}
             </div>
             <div className="flex flex-col ">
-                <p className="text-[1.5rem] leading-[130%] text-[var(--text-main)]  font-semibold">{item.type}</p>
+                <p className="text-[1.5rem] leading-[130%] text-[var(--text-main)]  font-semibold">
+                    {item.type}
+                </p>
                 <p className="text-[1.5rem] leading-[130%] text-[var(--text-secondary)] max-w-[11.3rem] truncate">
                     {item.receiver}
                 </p>
@@ -73,9 +75,13 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
                 ) : item.status === 'Успешно' ? (
                     <div className="text-[1.2rem] leading-[130%] text-[var(--green)]">Успешно</div>
                 ) : item.status === 'Отклонено' ? (
-                    <div className="text-[1.2rem] leading-[130%] text-[var(--red)]">{item.status}</div>
+                    <div className="text-[1.2rem] leading-[130%] text-[var(--red)]">
+                        {item.status}
+                    </div>
                 ) : (
-                    <div className="text-[1.2rem] leading-[130%] text-[var(--text-main)]">{item.status}</div>
+                    <div className="text-[1.2rem] leading-[130%] text-[var(--text-main)]">
+                        {item.status}
+                    </div>
                 )}
             </div>
         </Link>

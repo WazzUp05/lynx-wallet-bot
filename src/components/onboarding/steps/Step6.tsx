@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
 import { getHistory } from '@/lib/redux/selectors/historySelectors';
 import { fetchHistory } from '@/lib/redux/thunks/historyThunks';
-import { setWaitingForDeposit, setOnboardingCompleted, setIsFirstTime } from '@/lib/redux/slices/appSlice';
+import {
+    setWaitingForDeposit,
+    setOnboardingCompleted,
+    setIsFirstTime,
+} from '@/lib/redux/slices/appSlice';
 import { Button } from '@/components/ui/Button';
 
 import WarrningBlock from '@/components/WarrningBlock';
@@ -130,7 +134,11 @@ const Step6: React.FC<Step6Props> = ({ onNext }) => {
                                 Отлично! Теперь вы можете совершить свою первую покупку.
                             </p>
                         )}
-                        <Button variant="yellow" className="w-full mt-auto" onClick={handleGoToWallet}>
+                        <Button
+                            variant="yellow"
+                            className="w-full mt-auto"
+                            onClick={handleGoToWallet}
+                        >
                             Перейти в кошелёк
                         </Button>
                     </>

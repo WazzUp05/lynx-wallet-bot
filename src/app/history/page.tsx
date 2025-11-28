@@ -122,10 +122,17 @@ const Page = () => {
     return (
         <div className="px-[1.6rem] py-[2rem] w-full bg-[var(--bg-optional)] min-h-[100dvh] flex flex-col pb-[calc(var(--safe-bottom)+1.6rem)]">
             {filteredHistoryDayType?.length > 0 && (
-                <h1 className="text-[2.5rem] leading-[130%] font-semibold  mb-[2rem]">История транзакций</h1>
+                <h1 className="text-[2.5rem] leading-[130%] font-semibold  mb-[2rem]">
+                    История транзакций
+                </h1>
             )}
             {filteredHistoryDayType?.length > 0 && (
-                <Tabs tabs={tabs} value={selectedTab} onChange={handleTabChange} className="mb-[3rem]" />
+                <Tabs
+                    tabs={tabs}
+                    value={selectedTab}
+                    onChange={handleTabChange}
+                    className="mb-[3rem]"
+                />
             )}
             {filteredHistoryDayType?.length > 0 ? (
                 <div className="flex flex-col gap-[3rem] overflow-y-auto h-full pb-[7rem] px-[0.2rem]">
@@ -151,14 +158,17 @@ const Page = () => {
                     <Link
                         href="/refilled"
                         className="w-full"
-                        onClick={() => trackEvent('history_empty_state_action', { action: 'refill_clicked' })}
+                        onClick={() =>
+                            trackEvent('history_empty_state_action', { action: 'refill_clicked' })
+                        }
                     >
                         <Button
                             variant="yellow"
                             fullWidth
                             className="flex text-[var(--bg-secondary)] items-center justify-center gap-[0.5rem]"
                         >
-                            <PlusIcon width={25} height={25} className="w-[2.5rem] h-[2.5rem]" /> Пополнить кошелёк
+                            <PlusIcon width={25} height={25} className="w-[2.5rem] h-[2.5rem]" />{' '}
+                            Пополнить кошелёк
                         </Button>
                     </Link>
                 </div>
