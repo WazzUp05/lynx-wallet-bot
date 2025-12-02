@@ -9,6 +9,8 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     className?: string;
     inputClassName?: string;
     buttonClassName?: string;
+    disabledClipboardCheck?: boolean;
+    children?: React.ReactNode;
 }
 
 /**
@@ -25,6 +27,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             className = "",
             inputClassName = "",
             buttonClassName = "",
+            disabledClipboardCheck = false,
+            children,
             ...props
         },
         ref
@@ -82,7 +86,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                             {...props}
                         />
 
-                        {clipboardText && (
+                        {!disabledClipboardCheck && clipboardText && (
                             <button
                                 type="button"
                                 onClick={handlePaste}
@@ -91,7 +95,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                                 {buttonText}
                             </button>
                         )}
+                        
+                        {children}
                     </div>
+
+                  
 
                     {error && (
                         <p className="text-[1.4rem] leading-[130%] mt-[1rem] text-[var(--red-main)]">

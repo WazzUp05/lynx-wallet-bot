@@ -178,6 +178,12 @@
     font-weight: 400;
 }
 
+.fs-regular-bold {
+    font-size: 1.6rem;
+    line-height: 130%;
+    font-weight: 700;
+}
+
 .fs-small {
     font-size: 1.5rem;
     line-height: 130%;

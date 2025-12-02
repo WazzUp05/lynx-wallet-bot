@@ -8,6 +8,20 @@ export async function POST(req: NextRequest) {
     const { initData } = body;
     console.log("initData", initData);
 
+        // Dev mock: если NEXT_PUBLIC_DEV_MOCK_USER_FUNDS=1 — пропускаем валидацию и возвращаем мок-юзера
+    if (process.env.NEXT_PUBLIC_DEV_MOCK_USER_FUNDS === "1") {
+        const mockUser = {
+            id: Number(process.env.NEXT_PUBLIC_DEV_MOCK_USER_ID || 123456789),
+            first_name: process.env.NEXT_PUBLIC_DEV_MOCK_USER_FIRST_NAME || "Dev",
+            last_name: process.env.NEXT_PUBLIC_DEV_MOCK_USER_LAST_NAME || "User",
+            username: process.env.NEXT_PUBLIC_DEV_MOCK_USER_USERNAME || "dev_user",
+            photo_url: process.env.NEXT_PUBLIC_DEV_MOCK_USER_PHOTO_URL || undefined,
+            // дополнительные поля для мерчанта (если нужны)
+        };
+        console.log("auth/telegram: using dev mock user", mockUser);
+        return Response.json({ ok: true, user: mockUser }, { status: 200 });
+    }
+
     if (!BOT_TOKEN) {
         return Response.json({ ok: false, error: "No BOT_TOKEN" }, { status: 500 });
     }

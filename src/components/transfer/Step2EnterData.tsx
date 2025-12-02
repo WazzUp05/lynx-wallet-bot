@@ -34,13 +34,17 @@ const Step2EnterData: React.FC<Step2Props> = ({
         <div className="flex flex-col justify-between min-h-[80dvh]">
             <div className="flex flex-col gap-[2rem]">
                 <div>
-                    <p>Адрес</p>
+                    <p className="fs-small mb-[1rem]">Адрес</p>
                     <Input placeholder={`Адрес в сети ${selectedNetwork}`} />
                 </div>
                 <div>
                     <div>
-                        <p>Сумма</p>
-                        <Input placeholder={`0,00 ${selectedCrypto}`} />
+                        <p className="fs-small mb-[1rem]">Сумма</p>
+                        <Input placeholder={`0,00 ${selectedCrypto}`} disabledClipboardCheck={true}>
+                            <button
+                                className="flex items-center gap-[0.8rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] bg-transparent hover:bg-[var(--bg-hover)] transition-colors duration-200 text-[#FFD700] text-[1.4rem]"
+                            >Всё</button>
+                        </Input>
                     </div>
                     <div className="flex bg-[var(--yellow-optional)] rounded-[1rem] p-[1rem] gap-[0.8rem] mt-[1rem] items-center">
                         <Exclamation
@@ -49,11 +53,11 @@ const Step2EnterData: React.FC<Step2Props> = ({
                             height={20}
                             className="w-[2rem] h-[2rem] rounded-full"
                         />
-                        <p className="fs-very-small">Сейчас доступны переводы только внутри Lynx</p>
+                        <p className="fs-very-small p-[0.7rem]">Сейчас доступны переводы только внутри Lynx</p>
                     </div>
                 </div>
                 <div className="">
-                    <p>Баланс</p>
+                    <p className="text-[var(--text-secondary)] fs-small">Баланс</p>
                     <div className="flex items-center w-full gap-[1rem]  p-[1.6rem] rounded-[2rem] box-shadow transition bg-[var(--bg-secondary)]">
                         <Image
                             src={selected?.iconUrl || ""}
@@ -63,8 +67,8 @@ const Step2EnterData: React.FC<Step2Props> = ({
                             className="w-[4rem] h-[4rem] rounded-full "
                         />
                         <div>
-                            <p>{`${balance_usdt} ${selectedCrypto}`}</p>
-                            <p>{`${convertedBalance} ₽`}</p>
+                            <p className="fs-regular-bold">{`${balance_usdt} ${selectedCrypto}`}</p>
+                            <p className="text-[var(--text-secondary)] fs-small">{`${convertedBalance} ₽`}</p>
                         </div>
                     </div>
                 </div>
