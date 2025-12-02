@@ -1,13 +1,13 @@
-'use client';
-import ArrowLeft from '@/components/icons/arrow-left.svg';
-import Step1SelectCurrency from '@/components/transfer/Step1SelectCurrency';
-import Step2EnterData from '@/components/transfer/Step2EnterData';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { getWallet } from '@/lib/redux/selectors/userSelectors';
-import { useCallback, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { getCrypto, getNetworkType } from '@/lib/redux/selectors/walletSelectors';
-import { NetworkType, setNetwork } from '@/lib/redux/slices/walletSlice';
+"use client";
+import ArrowLeft from "@/components/icons/arrow-left.svg";
+import Step1SelectCurrency from "@/components/transfer/Step1SelectCurrency";
+import Step2EnterData from "@/components/transfer/Step2EnterData";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { getWallet } from "@/lib/redux/selectors/userSelectors";
+import { useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
+import { getCrypto, getNetworkType } from "@/lib/redux/selectors/walletSelectors";
+import { NetworkType, setNetwork } from "@/lib/redux/slices/walletSlice";
 
 const Page = () => {
     const router = useRouter();
@@ -18,15 +18,15 @@ const Page = () => {
     const crypto = useAppSelector(getCrypto);
     const defaultNetwork = useAppSelector(getNetworkType);
     const [selectedNetwork, setSelectedNetwork] = useState<string>(defaultNetwork);
-    const [selectedCrypto, setSelectedCrypto] = useState<string>(crypto?.id || 'USDT');
+    const [selectedCrypto, setSelectedCrypto] = useState<string>(crypto?.id || "USDT");
     const dispatch = useAppDispatch();
 
     const MOCK_SELECT_CRYPTO = [
         {
-            id: 'USDT',
-            label: 'USDT',
-            description: balance_usdt ? `${balance_usdt} USDT` : '0.00 USDT',
-            iconUrl: '/icons/usdt.svg',
+            id: "USDT",
+            label: "USDT",
+            description: balance_usdt ? `${balance_usdt} USDT` : "0.00 USDT",
+            iconUrl: "/icons/usdt.svg",
         },
         // {
         //     id: 'TON',
@@ -38,23 +38,23 @@ const Page = () => {
 
     const MOCK_SELECT_USDT = [
         {
-            id: 'TRC20',
-            label: 'TRC20',
-            description: 'Комиссия 2.75 USDT',
-            iconUrl: '/icons/trc20.svg',
+            id: "TRC20",
+            label: "TRC20",
+            description: "Комиссия 2.75 USDT",
+            iconUrl: "/icons/trc20.svg",
         },
     ];
 
     const MOCK_SELECT_TON = [
         {
-            id: 'TON',
-            label: 'TON',
-            description: 'Комиссия 0.2 TON',
-            iconUrl: '/icons/ton.svg',
+            id: "TON",
+            label: "TON",
+            description: "Комиссия 0.2 TON",
+            iconUrl: "/icons/ton.svg",
         },
     ];
 
-    const network = crypto.id === 'USDT' ? MOCK_SELECT_USDT : MOCK_SELECT_TON;
+    const network = crypto.id === "USDT" ? MOCK_SELECT_USDT : MOCK_SELECT_TON;
 
     const handlerChangeNetwork = (network: string) => {
         setSelectedNetwork(network);
@@ -102,7 +102,7 @@ const Page = () => {
                         selectedCrypto={selectedCrypto}
                         handleNextStep={handleNextStep}
                         cryptos={MOCK_SELECT_CRYPTO}
-                        balance_usdt={balance_usdt} 
+                        balance_usdt={balance_usdt}
                     />
                 </div>
             )}

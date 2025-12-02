@@ -1,22 +1,22 @@
-'use client';
-import Link from 'next/link';
-import React, { useEffect } from 'react';
-import ArrowLeftIcon from '@/components/icons/arrow-left.svg';
-import MobileIcon from '@/components/icons/mobile.svg';
-import LockIcon from '@/components/icons/lock.svg';
-import QrIcon from '@/components/icons/qr.svg';
-import TimeIcon from '@/components/icons/time.svg';
+"use client";
+import Link from "next/link";
+import React, { useEffect } from "react";
+import ArrowLeftIcon from "@/components/icons/arrow-left.svg";
+import MobileIcon from "@/components/icons/mobile.svg";
+import LockIcon from "@/components/icons/lock.svg";
+import QrIcon from "@/components/icons/qr.svg";
+import TimeIcon from "@/components/icons/time.svg";
 // import Profile2UserIcon from '@/components/icons/profile-2user.svg';
-import FaqItem from '@/components/FaqItem';
-import Image from 'next/image';
-import { useMixpanel } from '@/lib/providers/MixpanelProvider';
+import FaqItem from "@/components/FaqItem";
+import Image from "next/image";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 
 const Page = () => {
     const { trackEvent } = useMixpanel();
 
     // Событие при открытии страницы
     useEffect(() => {
-        trackEvent('faq_page_opened');
+        trackEvent("faq_page_opened");
     }, [trackEvent]);
 
     return (
@@ -26,7 +26,7 @@ const Page = () => {
                     <Link
                         href="/profile"
                         className="w-[3.5rem] h-[3.5rem] bg-[var(--bg-secondary)] text-[var(--text-secondary)] rounded-[1rem] center"
-                        onClick={() => trackEvent('faq_back_clicked')}
+                        onClick={() => trackEvent("faq_back_clicked")}
                     >
                         <ArrowLeftIcon width={16} height={16} className="w-[1.6rem] h-[1.6rem]" />
                     </Link>
@@ -46,7 +46,7 @@ const Page = () => {
                             href="#application"
                             className="flex items-center gap-[1rem] justify-between bg-[var(--bg-main)] p-[1.6rem] text-[var(--text-secondary)] rounded-[1.5rem] text-[1.5rem] leading-[130%] font-semibold"
                         >
-                            Приложение{' '}
+                            Приложение{" "}
                             <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] center">
                                 <MobileIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                             </div>
@@ -55,7 +55,7 @@ const Page = () => {
                             href="#security"
                             className="flex items-center gap-[1rem] justify-between bg-[var(--bg-main)] p-[1.6rem] text-[var(--text-secondary)] rounded-[1.5rem] text-[1.5rem] leading-[130%] font-semibold"
                         >
-                            Безопасность{' '}
+                            Безопасность{" "}
                             <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] center">
                                 <LockIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                             </div>
@@ -64,7 +64,7 @@ const Page = () => {
                             href="#payments"
                             className="flex items-center gap-[1rem] justify-between bg-[var(--bg-main)] p-[1.6rem] text-[var(--text-secondary)] rounded-[1.5rem] text-[1.5rem] leading-[130%] font-semibold"
                         >
-                            Платежи и переводы{' '}
+                            Платежи и переводы{" "}
                             <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] center">
                                 <QrIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                             </div>
@@ -73,7 +73,7 @@ const Page = () => {
                             href="#plans"
                             className="flex items-center gap-[1rem] justify-between bg-[var(--bg-main)] p-[1.6rem] text-[var(--text-secondary)] rounded-[1.5rem] text-[1.5rem] leading-[130%] font-semibold"
                         >
-                            Наши планы{' '}
+                            Наши планы{" "}
                             <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] center">
                                 <TimeIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
                             </div>
@@ -209,7 +209,8 @@ const Page = () => {
                     className="mb-[3rem] w-[12rem] h-[4.6rem]"
                 />
                 <p className="flex gap-[0.5rem]  text-[1.6rem] leading-[130%] text-[var(--text-secondary)] mb-[3rem]">
-                    <span>*</span> Под термином «Оплата» понимается процесс обмена товаров или услуг на криптовалюту.
+                    <span>*</span> Под термином «Оплата» понимается процесс обмена товаров или услуг
+                    на криптовалюту.
                 </p>
                 <p className="text-[1.6rem] leading-[130%] text-[var(--text-secondary)]">
                     {new Date().getFullYear()}, Lynx LLC

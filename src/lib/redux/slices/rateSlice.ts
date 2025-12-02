@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const RATE_STORAGE_KEY = 'lynx_previous_rate';
+const RATE_STORAGE_KEY = "lynx_previous_rate";
 
 export interface Rate {
     id: number;
@@ -32,13 +32,13 @@ const calculatePercentChange = (currentPrice: number, previousPrice: number): nu
 };
 
 export const rateSlice = createSlice({
-    name: 'rate',
+    name: "rate",
     initialState,
     reducers: {
         setRates(state, action: PayloadAction<Rate[]>) {
             const newRates = action.payload;
 
-            if (newRates.length > 0 && typeof window !== 'undefined') {
+            if (newRates.length > 0 && typeof window !== "undefined") {
                 const currentRate = newRates[0];
                 const currentPrice = currentRate?.quote?.RUB?.price;
 

@@ -1,9 +1,9 @@
-import Image from 'next/image';
-import React from 'react';
-import RateUpIcon from '@/components/icons/rate-up.svg';
-import RateDownIcon from '@/components/icons/rate-down.svg';
-import { getHideBalance, getShouldDisableButtons } from '@/lib/redux/selectors/appSelectors';
-import { useAppSelector } from '@/lib/redux/hooks';
+import Image from "next/image";
+import React from "react";
+import RateUpIcon from "@/components/icons/rate-up.svg";
+import RateDownIcon from "@/components/icons/rate-down.svg";
+import { getHideBalance, getShouldDisableButtons } from "@/lib/redux/selectors/appSelectors";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 interface WalletItemProps {
     walletName?: string;
@@ -32,12 +32,12 @@ const WalletItem: React.FC<WalletItemProps> = ({
 
     return (
         <div
-            className={`p-[1.6rem] min-w-[23rem]  ${soon && 'pointer-events-none'} bg-[var(--bg-main)]
+            className={`p-[1.6rem] min-w-[23rem]  ${soon && "pointer-events-none"} bg-[var(--bg-main)]
               rounded-[2rem] flex flex-col gap-[1.6rem] items-center justify-center first:ml-[1.6rem] last:mr-[1.6rem]`}
         >
             <div className="flex w-full gap-[1rem]">
                 <Image
-                    src={walletIcon || '/wallet-icon.png'}
+                    src={walletIcon || "/wallet-icon.png"}
                     alt="Wallet Icon"
                     className={` w-[4rem] h-[4rem]`}
                     width={40}
@@ -46,23 +46,25 @@ const WalletItem: React.FC<WalletItemProps> = ({
                 <div className="flex flex-col w-full">
                     <p
                         className={`text-[1.8rem] leading-[130%] ${
-                            soon || shouldDisableButtons ? 'text-[var(--text-optional)]' : 'text-[var(--text-main)]'
+                            soon || shouldDisableButtons
+                                ? "text-[var(--text-optional)]"
+                                : "text-[var(--text-main)]"
                         } font-bold `}
                     >
-                        {!hideBalance ? (fiatBalance ? fiatBalance + ' ₽' : '0 ₽') : '********'}
+                        {!hideBalance ? (fiatBalance ? fiatBalance + " ₽" : "0 ₽") : "********"}
                     </p>
                     <p
                         className={`text-[1.4rem] leading-[130%] ${
                             soon || shouldDisableButtons
-                                ? 'text-[var(--text-optional)]'
-                                : 'text-[var(--text-secondary)]'
+                                ? "text-[var(--text-optional)]"
+                                : "text-[var(--text-secondary)]"
                         } `}
                     >
                         {!hideBalance
                             ? cryptoBalance
-                                ? cryptoBalance + ' ' + walletName
-                                : '0 ' + walletName
-                            : '********'}
+                                ? cryptoBalance + " " + walletName
+                                : "0 " + walletName
+                            : "********"}
                     </p>
                 </div>
             </div>
@@ -75,24 +77,24 @@ const WalletItem: React.FC<WalletItemProps> = ({
                     <>
                         <p
                             className={`text-[1.5rem] leading-[130%] text-[var(${
-                                shouldDisableButtons ? '--text-optional' : '--text-secondary'
+                                shouldDisableButtons ? "--text-optional" : "--text-secondary"
                             })] font-semibold mb-[0.3rem]`}
                         >
-                            {walletName || 'Wallet Name'}
+                            {walletName || "Wallet Name"}
                         </p>
 
                         <div className="flex items-center gap-[1rem]">
                             <p
                                 className={`text-[1.4rem] leading-[130%]  text-[var(${
-                                    shouldDisableButtons ? '--text-optional' : '--text-main'
+                                    shouldDisableButtons ? "--text-optional" : "--text-main"
                                 })]`}
                             >
-                                {rate ? Number(rate).toFixed(2) : '0.00'} ₽
+                                {rate ? Number(rate).toFixed(2) : "0.00"} ₽
                             </p>
                             {hasChange && isPositiveChange && (
                                 <span
                                     className={`flex text-[1.4rem] leading-[130%] items-center gap-[0.3rem] text-[var(${
-                                        shouldDisableButtons ? '--text-optional' : '--green-main'
+                                        shouldDisableButtons ? "--text-optional" : "--green-main"
                                     })]`}
                                 >
                                     <RateUpIcon /> {Math.abs(rateChange).toFixed(2)}%
@@ -101,7 +103,7 @@ const WalletItem: React.FC<WalletItemProps> = ({
                             {hasChange && isNegativeChange && (
                                 <span
                                     className={`flex text-[1.4rem] leading-[130%] items-center gap-[0.3rem] text-[var(${
-                                        shouldDisableButtons ? '--text-optional' : '--red-main'
+                                        shouldDisableButtons ? "--text-optional" : "--red-main"
                                     })]`}
                                 >
                                     <RateDownIcon /> {Math.abs(rateChange).toFixed(2)}%

@@ -1,14 +1,14 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { apiFetch } from '@/lib/helpers/url';
-import { setUser } from '../slices/userSlice';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { apiFetch } from "@/lib/helpers/url";
+import { setUser } from "../slices/userSlice";
 
-export const fetchUser = createAsyncThunk('me/fetchUser', async (_, { dispatch, getState }) => {
+export const fetchUser = createAsyncThunk("me/fetchUser", async (_, { dispatch, getState }) => {
     const { user } = getState() as { user: { data: { telegram_id: number } } };
 
-    const res = await apiFetch('/merchant/me', {
+    const res = await apiFetch("/merchant/me", {
         headers: {
-            Accept: 'application/json',
-            'X-Telegram-ID': user.data.telegram_id.toString(),
+            Accept: "application/json",
+            "X-Telegram-ID": user.data.telegram_id.toString(),
         },
     });
     const data = await res.json();

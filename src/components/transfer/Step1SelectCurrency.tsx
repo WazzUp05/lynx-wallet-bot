@@ -1,7 +1,7 @@
-'use client';
-import SelectCrypto from '@/components/SelectCrypto';
-import { SelectCustom } from '@/components/ui/SelectCustom';
-import { Button } from '../ui/Button';
+"use client";
+import SelectCrypto from "@/components/SelectCrypto";
+import { SelectCustom } from "@/components/ui/SelectCustom";
+import { Button } from "../ui/Button";
 
 type Step1Props = {
     // balance: number | undefined;

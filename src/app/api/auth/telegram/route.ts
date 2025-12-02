@@ -26,7 +26,10 @@ export async function POST(req: NextRequest) {
             .join("\n");
 
         const secretKey = crypto.createHmac("sha256", "WebAppData").update(BOT_TOKEN).digest();
-        const calculatedHash = crypto.createHmac("sha256", secretKey).update(dataCheckString).digest("hex");
+        const calculatedHash = crypto
+            .createHmac("sha256", secretKey)
+            .update(dataCheckString)
+            .digest("hex");
 
         if (calculatedHash !== hash) {
             return Response.json({ ok: false, error: "Invalid hash" }, { status: 403 });

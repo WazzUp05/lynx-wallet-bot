@@ -1,10 +1,10 @@
-import Image from 'next/image';
-import Modal from './Modal';
-import { useState } from 'react';
-import { SelectCustom } from './ui/SelectCustom';
-import { CryptoItem, setCrypto } from '@/lib/redux/slices/walletSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { getCrypto } from '@/lib/redux/selectors/walletSelectors';
+import Image from "next/image";
+import Modal from "./Modal";
+import { useState } from "react";
+import { SelectCustom } from "./ui/SelectCustom";
+import { CryptoItem, setCrypto } from "@/lib/redux/slices/walletSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { getCrypto } from "@/lib/redux/selectors/walletSelectors";
 
 interface TypeCryptoProps {
     cryptos: {

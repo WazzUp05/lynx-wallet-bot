@@ -1,11 +1,14 @@
 // src/lib/providers/TelemetryProvider.tsx
-'use client';
+"use client";
 
-import React, { createContext, useContext, useCallback, useMemo } from 'react';
-import mixpanel from 'mixpanel-browser';
+import React, { createContext, useContext, useCallback, useMemo } from "react";
+import mixpanel from "mixpanel-browser";
 
 // Тип для свойств событий телеметрии (JSON-совместимые типы)
-export type TelemetryEventProps = Record<string, string | number | boolean | null | undefined | string[] | number[]>;
+export type TelemetryEventProps = Record<
+    string,
+    string | number | boolean | null | undefined | string[] | number[]
+>;
 
 const MixpanelContext = createContext<{
     trackEvent: (event: string, props?: TelemetryEventProps) => Promise<void>;
@@ -18,8 +21,8 @@ export const MixpanelProvider = ({ children }: { children: React.ReactNode }) =>
         try {
             mixpanel.track(event, props ?? {});
         } catch (error) {
-            if (process.env.NODE_ENV !== 'production') {
-                console.warn('[Telemetry] track error', error);
+            if (process.env.NODE_ENV !== "production") {
+                console.warn("[Telemetry] track error", error);
             }
         }
     }, []);
