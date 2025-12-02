@@ -13,9 +13,10 @@ interface TypeCryptoProps {
         description: string;
         iconUrl: string;
     }[];
+    setSelectedCrypto?: (crypto: string) => void;
 }
 
-const SelectCrypto = ({ cryptos }: TypeCryptoProps) => {
+const SelectCrypto = ({ cryptos, setSelectedCrypto }: TypeCryptoProps) => {
     const dispatch = useAppDispatch();
     const crypto = useAppSelector(getCrypto);
     const [modalOpen, setModalOpen] = useState(false);
@@ -27,6 +28,7 @@ const SelectCrypto = ({ cryptos }: TypeCryptoProps) => {
         const found = cryptos.find((opt) => opt.id === id);
         if (found) {
             dispatch(setCrypto(found as CryptoItem));
+            if (setSelectedCrypto) setSelectedCrypto(found.id);
             setModalOpen(false);
         }
     };

@@ -4,6 +4,7 @@ import { setUser } from '../slices/userSlice';
 
 export const fetchUser = createAsyncThunk('me/fetchUser', async (_, { dispatch, getState }) => {
     const { user } = getState() as { user: { data: { telegram_id: number } } };
+
     const res = await apiFetch('/merchant/me', {
         headers: {
             Accept: 'application/json',
