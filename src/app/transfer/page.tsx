@@ -28,12 +28,12 @@ const Page = () => {
             description: balance_usdt ? `${balance_usdt} USDT` : '0.00 USDT',
             iconUrl: '/icons/usdt.svg',
         },
-        {
-            id: 'TON',
-            label: 'TON',
-            description: 'Комиссия 2.75 USDT',
-            iconUrl: '/icons/ton.svg',
-        },
+        // {
+        //     id: 'TON',
+        //     label: 'TON',
+        //     description: 'Комиссия 2.75 USDT',
+        //     iconUrl: '/icons/ton.svg',
+        // },
     ];
 
     const MOCK_SELECT_USDT = [
@@ -101,6 +101,8 @@ const Page = () => {
                         selectedNetwork={selectedNetwork}
                         selectedCrypto={selectedCrypto}
                         handleNextStep={handleNextStep}
+                        cryptos={MOCK_SELECT_CRYPTO}
+                        balance_usdt={balance_usdt} 
                     />
                 </div>
             )}
