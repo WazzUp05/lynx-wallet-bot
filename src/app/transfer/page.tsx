@@ -8,6 +8,7 @@ import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCrypto, getNetworkType } from "@/lib/redux/selectors/walletSelectors";
 import { NetworkType, setNetwork } from "@/lib/redux/slices/walletSlice";
+import Step3Confirm from "@/components/transfer/Step3Confirm";
 
 const Page = () => {
     const router = useRouter();
@@ -70,7 +71,7 @@ const Page = () => {
     };
 
     return (
-        <div className="p-[1.6rem] min-h-[100dvh] flex flex-col">
+        <div className="p-[1.6rem] h-[100dvh] flex flex-col">
             <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[4rem] font-semibold">
                 <div
                     className="absolute left-[0] top-1/2 translate-y-[-50%] bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
@@ -96,15 +97,22 @@ const Page = () => {
             )}
 
             {step === 2 && (
-                <div>
-                    <Step2EnterData
-                        selectedNetwork={selectedNetwork}
-                        selectedCrypto={selectedCrypto}
-                        handleNextStep={handleNextStep}
-                        cryptos={MOCK_SELECT_CRYPTO}
-                        balance_usdt={balance_usdt}
-                    />
-                </div>
+                <Step2EnterData
+                    selectedNetwork={selectedNetwork}
+                    selectedCrypto={selectedCrypto}
+                    handleNextStep={handleNextStep}
+                    cryptos={MOCK_SELECT_CRYPTO}
+                    balance_usdt={balance_usdt}
+                />
+            )}
+
+            {step === 3 && (
+                <Step3Confirm
+                    cryptos={MOCK_SELECT_CRYPTO}
+                    selectedCrypto={selectedCrypto}
+                    selectedNetwork={selectedNetwork}
+                    handleNextStep={handleNextStep}
+                />
             )}
         </div>
     );

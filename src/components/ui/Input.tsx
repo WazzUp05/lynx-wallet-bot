@@ -95,11 +95,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                                 {buttonText}
                             </button>
                         )}
-                        
+
                         {children}
                     </div>
-
-                  
 
                     {error && (
                         <p className="text-[1.4rem] leading-[130%] mt-[1rem] text-[var(--red-main)]">
