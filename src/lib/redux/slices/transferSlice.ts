@@ -5,8 +5,10 @@ interface TransferState {
     amount: string;
     network: string;
     address: string;
-    sucseccful: boolean | null;
+    isSuccessful: boolean | null;
     isLoading: boolean;
+    transactionId: string;
+    error: string | null;
 }
 
 const initialState: TransferState = {
@@ -14,8 +16,10 @@ const initialState: TransferState = {
     amount: "",
     network: "",
     address: "",
-    sucseccful: null,
+    isSuccessful: null,
     isLoading: false,
+    transactionId: "",
+    error: null,
 };
 
 export const transferSlice = createSlice({
@@ -34,11 +38,17 @@ export const transferSlice = createSlice({
         setTransferCrypto(state, action: PayloadAction<string>) {
             state.crypto = action.payload;
         },
-        setTransferSucseccful(state, action: PayloadAction<boolean | null>) {
-            state.sucseccful = action.payload;
+        setTransferIsSuccessful(state, action: PayloadAction<boolean | null>) {
+            state.isSuccessful = action.payload;
         },
         setTransferIsLoading(state, action: PayloadAction<boolean>) {
             state.isLoading = action.payload;
+        },
+        setTransactionId(state, action: PayloadAction<string>) {
+            state.transactionId = action.payload;
+        },
+        setTransferError(state, action: PayloadAction<string | null>) {
+            state.error = action.payload;
         },
         resetTransfer(state) {
             state = { ...initialState };
@@ -51,8 +61,10 @@ export const {
     setTransferAddress,
     setTransferNetwork,
     setTransferCrypto,
-    setTransferSucseccful,
+    setTransferIsSuccessful,
     setTransferIsLoading,
+    setTransactionId,
+    setTransferError,
     resetTransfer,
 } = transferSlice.actions;
 

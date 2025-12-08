@@ -169,6 +169,19 @@
     );
 }
 
+.transfer-reject-bg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgb(59, 58, 57) 0%,
+        rgba(50, 48, 48, 0.9) 40%,
+        var(--bg-main) 80%,
+        #000 100%
+    );
+}
+
 @keyframes pulse-slow {
     0% {
         transform: scale(1);
@@ -206,11 +219,11 @@
 }
 
 .animate-pulse-slow {
-    animation: pulse-slow 2s 5 ease-in-out;
+    animation: pulse-slow 2s 3 ease-in-out;
     opacity: 0.5;
 }
 .animate-pulse-slower {
-    animation: pulse-slower 2s 5 ease-in-out;
+    animation: pulse-slower 2s 3 ease-in-out;
     opacity: 0.25;
 }
 

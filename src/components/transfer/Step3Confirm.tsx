@@ -1,13 +1,21 @@
 "use client";
 import Image from "next/image";
+import { useEffect } from "react";
 
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks";
 import {
     getTransferAmount,
     getTransferAdress,
     getTransferCrypto,
     getTransferNetwork,
+    getTransferIsLoading,
 } from "@/lib/redux/selectors/transferSelectors";
+import {
+    setTransferIsLoading,
+    setTransactionId,
+    setTransferError,
+    setTransferIsSuccessful,
+} from "@/lib/redux/slices/transferSlice";
 import { Button } from "../ui/Button";
 import CopyButton from "@/components/ui/CopyButton";
 
@@ -24,12 +32,59 @@ type Step3ConfirmProps = {
 };
 
 const Step3Confirm: React.FC<Step3ConfirmProps> = ({ selectedCrypto, cryptos, handleNextStep }) => {
+    const dispatch = useAppDispatch();
     const selected = cryptos.find((crypto) => crypto.id === selectedCrypto);
     const amount = useAppSelector(getTransferAmount);
     const crypto = useAppSelector(getTransferCrypto);
     const network = useAppSelector(getTransferNetwork);
     const address = useAppSelector(getTransferAdress);
+    const isLoading = useAppSelector(getTransferIsLoading);
+
     const addressSliced = `${address.slice(0, 7)}...${address.slice(-8)}`;
+
+    const handleConfirmTransfer = async () => {
+        dispatch(setTransferError(null));
+        dispatch(setTransferIsLoading(true));
+
+        try {
+            const response = await fetch("/api/transfer", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    amount,
+                    crypto,
+                    network,
+                    address,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.ok) {
+                throw new Error(data.error || "Transfer failed");
+            }
+
+            console.log("Transfer successful:", data);
+
+            // Сохраняем успешную транзакцию в transferSlice
+            dispatch(setTransactionId(data.transactionId));
+            dispatch(setTransferIsSuccessful(true));
+
+            // Переход на следующий шаг
+            handleNextStep();
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : "Unknown error";
+            console.error("Transfer error:", errorMessage);
+
+            // Сохраняем ошибку в transferSlice
+            dispatch(setTransferError(errorMessage));
+            dispatch(setTransferIsSuccessful(false));
+        } finally {
+            dispatch(setTransferIsLoading(false));
+        }
+    };
 
     return (
         <div className="flex flex-col gap-[2rem] max-h-[100dvh] mx-[1.6rem] pb-[1rem]">
@@ -81,11 +136,10 @@ const Step3Confirm: React.FC<Step3ConfirmProps> = ({ selectedCrypto, cryptos, ha
             <Button
                 variant="yellow"
                 fullWidth={true}
-                onClick={() => {
-                    handleNextStep();
-                }}
+                onClick={handleConfirmTransfer}
+                disabled={isLoading}
             >
-                Подтвердить перевод
+                {isLoading ? "Отправка..." : "Подтвердить перевод"}
             </Button>
         </div>
     );

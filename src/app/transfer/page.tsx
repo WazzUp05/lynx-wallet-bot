@@ -4,9 +4,10 @@ import Step1SelectCurrency from "@/components/transfer/Step1SelectCurrency";
 import Step2EnterData from "@/components/transfer/Step2EnterData";
 import Step3Confirm from "@/components/transfer/Step3Confirm";
 import Step4Result from "@/components/transfer/Step4Result";
+import Loader from "@/components/ui/Loader";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getWallet } from "@/lib/redux/selectors/userSelectors";
-import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCrypto, getNetworkType } from "@/lib/redux/selectors/walletSelectors";
 import { NetworkType, setNetwork } from "@/lib/redux/slices/walletSlice";
@@ -16,10 +17,10 @@ const Page = () => {
     const [step, setStep] = useState(1);
     const wallet = useAppSelector(getWallet);
 
-    const balance_usdt = useCallback(() => wallet?.balance_usdt, [wallet])();
+    const balance_usdt = wallet?.balance_usdt;
     const crypto = useAppSelector(getCrypto);
     const defaultNetwork = useAppSelector(getNetworkType);
-    const [selectedNetwork, setSelectedNetwork] = useState<string>(defaultNetwork);
+    const [selectedNetwork, setSelectedNetwork] = useState<string>(defaultNetwork || "TRC20");
     const [selectedCrypto, setSelectedCrypto] = useState<string>(crypto?.id || "USDT");
     const dispatch = useAppDispatch();
 
@@ -56,7 +57,7 @@ const Page = () => {
         },
     ];
 
-    const network = crypto.id === "USDT" ? MOCK_SELECT_USDT : MOCK_SELECT_TON;
+    const network = crypto?.id === "USDT" ? MOCK_SELECT_USDT : MOCK_SELECT_TON;
 
     const handlerChangeNetwork = (network: string) => {
         setSelectedNetwork(network);
@@ -65,6 +66,12 @@ const Page = () => {
         //     network,
         //     crypto: crypto?.id || 'USDT',
         // });
+        if (network === "TON" && selectedCrypto !== "TON") {
+            setSelectedCrypto("TON");
+        }
+        if (network === "TRC20" && selectedCrypto !== "USDT") {
+            setSelectedCrypto("USDT");
+        }
     };
 
     const handleNextStep = () => {

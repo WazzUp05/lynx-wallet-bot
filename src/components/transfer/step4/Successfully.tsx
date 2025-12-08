@@ -1,18 +1,21 @@
 import Success from "@/components/icons/success.svg";
-import Modal from "@/components/Modal";
 import { Button } from "@/components/ui/Button";
 import CopyButton from "@/components/ui/CopyButton";
 import { useRouter } from "next/navigation";
+import Details from "./Details";
+import { useState } from "react";
 
 interface SuccessfullyProps {
     crypto: string;
     amount: string;
     transactionId: string;
+    date: string;
 }
 
-const Succsessfully: React.FC<SuccessfullyProps> = ({ crypto, amount, transactionId }) => {
+const Succsessfully: React.FC<SuccessfullyProps> = ({ crypto, amount, transactionId, date }) => {
     const router = useRouter();
     const slisedTransactionId = transactionId.slice(0, 9) + "...";
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
         <div className="transfer-success-bg ">
@@ -43,11 +46,24 @@ const Succsessfully: React.FC<SuccessfullyProps> = ({ crypto, amount, transactio
                     <Button variant="yellow" fullWidth={true} onClick={() => router.push("/")}>
                         На главную
                     </Button>
-                    <Button variant="yellow_secondary" fullWidth={true} onClick={() => {}}>
+                    <Button
+                        variant="yellow_secondary"
+                        fullWidth={true}
+                        onClick={() => setIsModalOpen(true)}
+                    >
                         Детали транзакции
                     </Button>
                 </div>
             </div>
+            <Details
+                isOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                amount={amount}
+                crypto={crypto}
+                isSuccess={true}
+                date={date}
+                transactionId={transactionId}
+            />
         </div>
     );
 };

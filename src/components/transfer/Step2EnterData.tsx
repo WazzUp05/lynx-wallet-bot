@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Input from "@/components/ui/Input";
 import { Button } from "../ui/Button";
-import Exclamation from "@/components/icons/exclamation.svg";
+import Exclamation from "@/components/icons/exclamation-yellow.svg";
 import OpenCamera from "@/components/icons/open-camera.svg";
 import Image from "next/image";
 import Plus from "@/components/icons/plus.svg";
@@ -46,10 +46,13 @@ const Step2EnterData: React.FC<Step2Props> = ({
     const [amountError, setAmountError] = useState("");
 
     const handleClick = () => {
-        dispatch(setTransferAmount(balance_usdt ? balance_usdt.toString() : ""));
+        dispatch(setTransferAmount(balance_usdt ? balance_usdt.toFixed(2) : ""));
     };
 
-    const tronAddressRegex = /^T[a-zA-Z0-9]{33}$/;
+    const tronAddressRegex = /^T[1-9A-HJ-NP-Za-km-z]{33}$/;
+    const COMMISSION_USDT = 2.75;
+    const availableBalance = (balance_usdt || 0) - COMMISSION_USDT;
+
     const validateForm = () => {
         let valid = true;
 
@@ -64,7 +67,7 @@ const Step2EnterData: React.FC<Step2Props> = ({
         if (!numericAmount || numericAmount <= 0) {
             setAmountError("Введите сумму");
             valid = false;
-        } else if (numericAmount > (balance_usdt || 0)) {
+        } else if (numericAmount > availableBalance || availableBalance < 0) {
             setAmountError("На балансе недостаточно средств");
             valid = false;
         } else {
@@ -108,7 +111,8 @@ const Step2EnterData: React.FC<Step2Props> = ({
                             disabledClipboardCheck={true}
                             value={amount}
                             onChange={(e) => {
-                                dispatch(setTransferAmount(e.target.value));
+                                const value = e.target.value.replace(',', '.');
+                                dispatch(setTransferAmount(value));
                                 setAmountError("");
                             }}
                             pattern="[0-9]*[.,]?[0-9]*"
@@ -174,11 +178,11 @@ const Step2EnterData: React.FC<Step2Props> = ({
                     variant="yellow"
                     fullWidth={true}
                     onClick={() => {
-                        // if (validateForm()) {
-                        handleNextStep();
-                        dispatch(setTransferCrypto(selectedCrypto));
-                        dispatch(setTransferNetwork(selectedNetwork));
-                        // }
+                        if (validateForm()) {
+                            dispatch(setTransferCrypto(selectedCrypto));
+                            dispatch(setTransferNetwork(selectedNetwork));
+                            handleNextStep();
+                        }
                     }}
                 >
                     Продолжить
