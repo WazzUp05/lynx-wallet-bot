@@ -2,7 +2,7 @@ import React from "react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
-    variant?: "primary" | "secondary" | "ghost" | "black" | "yellow" | "gray";
+    variant?: "primary" | "secondary" | "ghost" | "black" | "yellow" | "gray" | "yellow_secondary";
     fullWidth?: boolean;
 }
 
@@ -15,6 +15,8 @@ const variants = {
     ghost: "bg-[var(--yellow-secondary)] text-[var(--yellow)] hover:bg-[var(--yellow-secondary)]/80 border border-transparent",
     black: "bg-[var(--bg-secondary)] text-[var(--text-main)] hover:bg-[#1d4ed8] border border-transparent",
     yellow: "bg-[var(--yellow)] text-[var(--bg-secondary)] hover:bg-[var(--yellow)]/80 border border-transparent",
+    yellow_secondary:
+        "bg-[var(--yellow-secondary)] text-[var(--yellow)] hover:bg-[var(--yellow-secondary)]/80 border border-transparent",
 };
 
 export const Button: React.FC<ButtonProps> = ({

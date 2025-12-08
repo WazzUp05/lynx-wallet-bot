@@ -2,10 +2,14 @@
 import Image from "next/image";
 
 import { useAppSelector } from "@/lib/redux/hooks";
-import { getTransferAmount, getTransferAdress } from "@/lib/redux/selectors/transferSelectors";
-import Copy from "@/components/icons/copy-white.svg";
+import {
+    getTransferAmount,
+    getTransferAdress,
+    getTransferCrypto,
+    getTransferNetwork,
+} from "@/lib/redux/selectors/transferSelectors";
 import { Button } from "../ui/Button";
-
+import CopyButton from "@/components/ui/CopyButton";
 
 type Step3ConfirmProps = {
     selectedNetwork: string;
@@ -19,19 +23,16 @@ type Step3ConfirmProps = {
     }[];
 };
 
-const Step3Confirm: React.FC<Step3ConfirmProps> = ({
-    selectedCrypto,
-    selectedNetwork,
-    cryptos,
-    handleNextStep,
-}) => {
+const Step3Confirm: React.FC<Step3ConfirmProps> = ({ selectedCrypto, cryptos, handleNextStep }) => {
     const selected = cryptos.find((crypto) => crypto.id === selectedCrypto);
     const amount = useAppSelector(getTransferAmount);
+    const crypto = useAppSelector(getTransferCrypto);
+    const network = useAppSelector(getTransferNetwork);
     const address = useAppSelector(getTransferAdress);
     const addressSliced = `${address.slice(0, 7)}...${address.slice(-8)}`;
 
     return (
-        <div className="flex flex-col gap-[2rem] max-h-[100dvh]">
+        <div className="flex flex-col gap-[2rem] max-h-[100dvh] mx-[1.6rem] pb-[1rem]">
             <div className="flex flex-col gap-[1rem] items-center py-[1rem] w-full">
                 <Image
                     src={selected?.iconUrl || ""}
@@ -41,7 +42,7 @@ const Step3Confirm: React.FC<Step3ConfirmProps> = ({
                     className="w-[6rem] h-[6rem] rounded-full self-center"
                 />
                 <p className="fs-regular-bold text-[var(--text-main)] self-center">
-                    {amount} {selectedCrypto}
+                    {amount} {crypto}
                 </p>
             </div>
             <div className="flex flex-col gap-[1.6rem]">
@@ -49,33 +50,26 @@ const Step3Confirm: React.FC<Step3ConfirmProps> = ({
                     <div className="flex justify-between items-center">
                         <p className="text-[var(--text-secondary)] fs-small">Будет отправлено</p>
                         <p className="fs-regular text-[var(--text-main)]">
-                            {amount} {selectedCrypto}
+                            {amount} {crypto}
                         </p>
                     </div>
                     <div className="flex justify-between items-center">
                         <p className="text-[var(--text-secondary)] fs-small">Комиссия</p>
                         <p className="fs-regular text-[var(--text-main)]">
-                            {selectedCrypto === "USDT" ? "2.75 USDT" : "0.2 TON"}
+                            {crypto === "USDT" ? "2.75 USDT" : "0.2 TON"}
                         </p>
                     </div>
                 </div>
                 <div className=" bg-[var(--bg-secondary)] rounded-[1rem] p-[1.6rem] flex justify-between items-center">
                     <p className="text-[var(--text-secondary)] fs-small">Сеть</p>
-                    <p className="fs-regular text-[var(--text-main)]">{selectedNetwork}</p>
+                    <p className="fs-regular text-[var(--text-main)]">{network}</p>
                 </div>
                 <div className="bg-[var(--bg-secondary)] rounded-[1rem] p-[1.6rem] flex justify-between items-center">
                     <p className="text-[var(--text-secondary)] fs-small">Получатель</p>
                     <div className="flex gap-[0.8rem]">
                         <p className="fs-regular text-[var(--text-main)]">{addressSliced}</p>
-                        <button 
-                            type="button" 
-                            onClick={() => {}}
-                            className="center"
-                        >
-                            <Copy />
-                        </button>
+                        <CopyButton text={address} />
                     </div>
-                    
                 </div>
             </div>
             <div>

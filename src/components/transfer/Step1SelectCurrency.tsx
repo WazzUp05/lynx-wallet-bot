@@ -4,7 +4,6 @@ import { SelectCustom } from "@/components/ui/SelectCustom";
 import { Button } from "../ui/Button";
 
 type Step1Props = {
-    // balance: number | undefined;
     cryptos: {
         id: string;
         label: string;
@@ -32,7 +31,7 @@ const Step1SelectCurrency: React.FC<Step1Props> = ({
     handleNextStep,
 }) => {
     return (
-        <div className="flex flex-col justify-between min-h-[80dvh]">
+        <div className="flex flex-col justify-between min-h-[80dvh] mx-[1.6rem]">
             <div>
                 <div className="mb-[3rem]">
                     <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">

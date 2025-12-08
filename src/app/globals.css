@@ -7,6 +7,7 @@
     --foreground: #171717;
     --blue: #007aff;
     --gray: #9c9da4;
+    --orange: #ff9000;
     --yellow: #ffbe00;
     --yellow-secondary: #f1b90c26;
     --yellow-optional: #f1b90c0d;
@@ -153,6 +154,80 @@
             color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
         0px 3px 6px 0px
             color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+}
+
+.transfer-success-bg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 60, 0, 1) 0%,
+        rgba(0, 40, 0, 0.9) 40%,
+        rgba(0, 15, 0, 1) 80%,
+        #000 100%
+    );
+}
+
+@keyframes pulse-slow {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+}
+
+@keyframes pulse-slower {
+    0% {
+        transform: scale(1);
+        opacity: 0.25;
+    }
+    50% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.25;
+    }
+}
+
+.animate-pulse {
+    inset: 0;
+    border-radius: 100%;
+    position: absolute;
+}
+
+.animate-pulse-slow {
+    animation: pulse-slow 2s 5 ease-in-out;
+    opacity: 0.5;
+}
+.animate-pulse-slower {
+    animation: pulse-slower 2s 5 ease-in-out;
+    opacity: 0.25;
+}
+
+.animate-pulse-slow {
+    box-shadow: 0 0 0 20px var(--green);
+}
+
+.success-pulse-color-slower {
+    box-shadow: 0 0 0 10px var(--green);
+}
+
+.reject-pulse-color-slow {
+    box-shadow: 0 0 0 20px var(--orange);
+}
+
+.reject-pulse-color-slower {
+    box-shadow: 0 0 0 10px var(--orange);
 }
 
 .link {
@@ -350,6 +425,10 @@ body {
 
 .offer-slider .slick-slide {
     height: auto;
+}
+
+.border-separator {
+    border-top: solid 1px var(--dark-gray-secondary);
 }
 
 /* 
