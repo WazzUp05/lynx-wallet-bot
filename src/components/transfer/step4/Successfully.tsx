@@ -4,6 +4,8 @@ import CopyButton from "@/components/ui/CopyButton";
 import { useRouter } from "next/navigation";
 import Details from "./Details";
 import { useState } from "react";
+import { resetTransfer } from "@/lib/redux/slices/transferSlice";
+import { useAppDispatch } from "@/lib/redux/hooks";
 
 interface SuccessfullyProps {
     crypto: string;
@@ -16,6 +18,7 @@ const Succsessfully: React.FC<SuccessfullyProps> = ({ crypto, amount, transactio
     const router = useRouter();
     const slisedTransactionId = transactionId.slice(0, 9) + "...";
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const dispatch = useAppDispatch();
 
     return (
         <div className="transfer-success-bg ">
@@ -43,7 +46,14 @@ const Succsessfully: React.FC<SuccessfullyProps> = ({ crypto, amount, transactio
                     </div>
                 </div>
                 <div className="flex flex-col gap-[1.5rem] w-full">
-                    <Button variant="yellow" fullWidth={true} onClick={() => router.push("/")}>
+                    <Button
+                        variant="yellow"
+                        fullWidth={true}
+                        onClick={() => {
+                            router.push("/");
+                            dispatch(resetTransfer());
+                        }}
+                    >
                         На главную
                     </Button>
                     <Button

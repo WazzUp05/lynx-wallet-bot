@@ -14,7 +14,6 @@ export async function POST(req: NextRequest) {
 
     console.log("Transfer request:", { amount, crypto, network, address });
 
-    // Валидация
     if (!amount || !crypto || !network || !address) {
         return Response.json({ ok: false, error: "Missing required fields" }, { status: 400 });
     }
@@ -39,7 +38,6 @@ export async function POST(req: NextRequest) {
         );
     }
 
-    // Production: реальный запрос на backend
     try {
         const backendUrl = process.env.API_URL || "http://localhost:3001";
         const res = await fetch(`${backendUrl}/transfer`, {

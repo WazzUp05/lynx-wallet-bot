@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect } from "react";
+import { v1 as uuidv1 } from "uuid";
 
 import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks";
 import {
@@ -18,6 +18,7 @@ import {
 } from "@/lib/redux/slices/transferSlice";
 import { Button } from "../ui/Button";
 import CopyButton from "@/components/ui/CopyButton";
+import { updateBalance } from "@/lib/redux/slices/userSlice";
 
 type Step3ConfirmProps = {
     selectedNetwork: string;
@@ -39,12 +40,13 @@ const Step3Confirm: React.FC<Step3ConfirmProps> = ({ selectedCrypto, cryptos, ha
     const network = useAppSelector(getTransferNetwork);
     const address = useAppSelector(getTransferAdress);
     const isLoading = useAppSelector(getTransferIsLoading);
-
+    const COMMISSION_USDT = 2.75;
     const addressSliced = `${address.slice(0, 7)}...${address.slice(-8)}`;
 
     const handleConfirmTransfer = async () => {
         dispatch(setTransferError(null));
         dispatch(setTransferIsLoading(true));
+        if (isLoading) return;
 
         try {
             const response = await fetch("/api/transfer", {
@@ -66,19 +68,18 @@ const Step3Confirm: React.FC<Step3ConfirmProps> = ({ selectedCrypto, cryptos, ha
                 throw new Error(data.error || "Transfer failed");
             }
 
-            console.log("Transfer successful:", data);
+            dispatch(setTransactionId(data.transactionId) || uuidv1());
+            dispatch(setTransferIsSuccessful(Boolean(data.success)));
 
-            // Сохраняем успешную транзакцию в transferSlice
-            dispatch(setTransactionId(data.transactionId));
-            dispatch(setTransferIsSuccessful(true));
+            // обновляем баланс пользователя до автообновления
+            const totalDeducted = Number(amount) + COMMISSION_USDT;
+            dispatch(updateBalance(-totalDeducted));
 
-            // Переход на следующий шаг
             handleNextStep();
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : "Unknown error";
             console.error("Transfer error:", errorMessage);
 
-            // Сохраняем ошибку в transferSlice
             dispatch(setTransferError(errorMessage));
             dispatch(setTransferIsSuccessful(false));
         } finally {

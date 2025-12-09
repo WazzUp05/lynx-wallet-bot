@@ -8,11 +8,16 @@ import OpenCamera from "@/components/icons/open-camera.svg";
 import Image from "next/image";
 import Plus from "@/components/icons/plus.svg";
 import RefilledModal from "@/components/refilled/RefilledModal";
+import Scanner from "@/components/transfer/Scanner";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getRatesQuoteRub } from "@/lib/redux/selectors/rateSelectors";
 import { getTransferAmount, getTransferAdress } from "@/lib/redux/selectors/transferSelectors";
-import { setTransferAmount, setTransferAddress } from "@/lib/redux/slices/transferSlice";
-import { setTransferCrypto, setTransferNetwork } from "@/lib/redux/slices/transferSlice";
+import {
+    setTransferAmount,
+    setTransferAddress,
+    setTransferCrypto,
+    setTransferNetwork,
+} from "@/lib/redux/slices/transferSlice";
 
 type Step2Props = {
     selectedNetwork: string;
@@ -34,6 +39,7 @@ const Step2EnterData: React.FC<Step2Props> = ({
     cryptos,
     balance_usdt,
 }) => {
+    const COMMISSION_USDT = 2.75;
     const rate = useAppSelector(getRatesQuoteRub);
     const convertedBalance = balance_usdt && rate ? Number((balance_usdt * rate).toFixed(2)) : 0;
     const selected = cryptos.find((crypto) => crypto.id === selectedCrypto);
@@ -41,7 +47,8 @@ const Step2EnterData: React.FC<Step2Props> = ({
     const address = useAppSelector(getTransferAdress);
     const amount = useAppSelector(getTransferAmount);
     const [isTopUpOpen, setTopUpOpen] = useState(false);
-    const isLowBalance = balance_usdt !== undefined && balance_usdt < 1;
+    const [isScannerOpen, setScannerOpen] = useState(false);
+    const isLowBalance = balance_usdt !== undefined && balance_usdt < 1 + COMMISSION_USDT;
     const [addressError, setAddressError] = useState("");
     const [amountError, setAmountError] = useState("");
 
@@ -50,13 +57,13 @@ const Step2EnterData: React.FC<Step2Props> = ({
     };
 
     const tronAddressRegex = /^T[1-9A-HJ-NP-Za-km-z]{33}$/;
-    const COMMISSION_USDT = 2.75;
+
     const availableBalance = (balance_usdt || 0) - COMMISSION_USDT;
 
     const validateForm = () => {
         let valid = true;
 
-        if (!tronAddressRegex.test(address)) {
+        if (!tronAddressRegex.test(address.trim())) {
             setAddressError("Некорректный адрес TRC20");
             valid = false;
         } else {
@@ -64,7 +71,7 @@ const Step2EnterData: React.FC<Step2Props> = ({
         }
 
         const numericAmount = Number(amount);
-        if (!numericAmount || numericAmount <= 0) {
+        if (isNaN(numericAmount) || numericAmount <= 0) {
             setAmountError("Введите сумму");
             valid = false;
         } else if (numericAmount > availableBalance || availableBalance < 0) {
@@ -93,7 +100,7 @@ const Step2EnterData: React.FC<Step2Props> = ({
                         }}
                         error={addressError}
                     >
-                        <button>
+                        <button type="button" onClick={() => setScannerOpen(true)}>
                             <OpenCamera
                                 alt="open camera icon"
                                 width={20}
@@ -111,7 +118,7 @@ const Step2EnterData: React.FC<Step2Props> = ({
                             disabledClipboardCheck={true}
                             value={amount}
                             onChange={(e) => {
-                                const value = e.target.value.replace(',', '.');
+                                const value = e.target.value.replace(",", ".");
                                 dispatch(setTransferAmount(value));
                                 setAmountError("");
                             }}
@@ -205,6 +212,9 @@ const Step2EnterData: React.FC<Step2Props> = ({
                     />
                     Пополнить кошелёк
                 </Button>
+            )}
+            {isScannerOpen && (
+                <Scanner open={isScannerOpen} onClose={() => setScannerOpen(false)} />
             )}
         </div>
     );

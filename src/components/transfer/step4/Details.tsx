@@ -6,7 +6,6 @@ import CheckGreen from "@/components/icons/check-green.svg";
 import CopyButton from "@/components/ui/CopyButton";
 import { getTransferAdress } from "@/lib/redux/selectors/transferSelectors";
 import { useAppSelector } from "@/lib/redux/hooks";
-import { useMemo } from "react";
 
 const COMMISSION = 2.75;
 
@@ -30,10 +29,8 @@ const Details: React.FC<DetailsProps> = ({
     transactionId,
 }) => {
     const address = useAppSelector(getTransferAdress);
-    const addressSliced =  `${address.slice(0, 7)}...${address.slice(-8)}`;
-    const transactionIdSliced = transactionId 
-    ? transactionId.slice(0, 14) + "..." 
-    : "N/A";
+    const addressSliced = `${address.slice(0, 7)}...${address.slice(-8)}`;
+    const transactionIdSliced = transactionId ? transactionId.slice(0, 14) + "..." : "N/A";
 
     return (
         <Modal

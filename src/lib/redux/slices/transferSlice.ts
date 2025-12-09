@@ -51,7 +51,7 @@ export const transferSlice = createSlice({
             state.error = action.payload;
         },
         resetTransfer(state) {
-            state = { ...initialState };
+            Object.assign(state, initialState);
         },
     },
 });

@@ -5,17 +5,19 @@ import Step2EnterData from "@/components/transfer/Step2EnterData";
 import Step3Confirm from "@/components/transfer/Step3Confirm";
 import Step4Result from "@/components/transfer/Step4Result";
 import Loader from "@/components/ui/Loader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { getWallet } from "@/lib/redux/selectors/userSelectors";
+import { getLoading, getWallet } from "@/lib/redux/selectors/userSelectors";
 import { useRouter } from "next/navigation";
 import { getCrypto, getNetworkType } from "@/lib/redux/selectors/walletSelectors";
 import { NetworkType, setNetwork } from "@/lib/redux/slices/walletSlice";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 
 const Page = () => {
     const router = useRouter();
     const [step, setStep] = useState(1);
     const wallet = useAppSelector(getWallet);
+    const { trackEvent } = useMixpanel();
 
     const balance_usdt = wallet?.balance_usdt;
     const crypto = useAppSelector(getCrypto);
@@ -23,6 +25,11 @@ const Page = () => {
     const [selectedNetwork, setSelectedNetwork] = useState<string>(defaultNetwork || "TRC20");
     const [selectedCrypto, setSelectedCrypto] = useState<string>(crypto?.id || "USDT");
     const dispatch = useAppDispatch();
+    const loadingApp = useAppSelector(getLoading);
+
+    useEffect(() => {
+        trackEvent("transfer_page_opened", {});
+    }, []);
 
     const MOCK_SELECT_CRYPTO = [
         {
@@ -62,10 +69,10 @@ const Page = () => {
     const handlerChangeNetwork = (network: string) => {
         setSelectedNetwork(network);
         dispatch(setNetwork(network as NetworkType));
-        // trackEvent('refill_network_selected', {
-        //     network,
-        //     crypto: crypto?.id || 'USDT',
-        // });
+        trackEvent("transfer_network_selected", {
+            network,
+            crypto: crypto?.id || "USDT",
+        });
         if (network === "TON" && selectedCrypto !== "TON") {
             setSelectedCrypto("TON");
         }
@@ -77,6 +84,10 @@ const Page = () => {
     const handleNextStep = () => {
         setStep(step + 1);
     };
+
+    if (loadingApp) {
+        return <Loader className="h-[100dvh]" />;
+    }
 
     return (
         <div className="h-[100dvh] flex flex-col">

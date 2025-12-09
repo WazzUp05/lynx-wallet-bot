@@ -5,6 +5,8 @@ import ArrowRight from "@/components/icons/arrow-right.svg";
 import Exclamation from "@/components/icons/exclamation-yellow.svg";
 import { useState } from "react";
 import Details from "./Details";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { resetTransfer } from "@/lib/redux/slices/transferSlice";
 
 interface RejectProps {
     amount: string;
@@ -17,6 +19,7 @@ interface RejectProps {
 const Reject: React.FC<RejectProps> = ({ crypto, amount, date, transactionId, setStep }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const router = useRouter();
+    const dispatch = useAppDispatch();
 
     return (
         <div className="transfer-reject-bg">
@@ -80,7 +83,10 @@ const Reject: React.FC<RejectProps> = ({ crypto, amount, date, transactionId, se
                     <Button
                         variant="yellow_secondary"
                         fullWidth={true}
-                        onClick={() => router.push("/")}
+                        onClick={() => {
+                            router.push("/");
+                            dispatch(resetTransfer());
+                        }}
                     >
                         На главную
                     </Button>

@@ -1,5 +1,5 @@
 "use client";
-import { useAppSelector } from "@/lib/redux/hooks";
+import {  useAppSelector } from "@/lib/redux/hooks";
 import Succsessfully from "@/components/transfer/step4/Successfully";
 import Rejected from "@/components/transfer/step4/Reject";
 import {
@@ -9,7 +9,6 @@ import {
 } from "@/lib/redux/selectors/transferSelectors";
 import { getTransferIsSuccessful } from "@/lib/redux/selectors/transferSelectors";
 import Loader from "@/components/ui/Loader";
-
 
 interface Step4ResultProps {
     setStep: (step: number) => void;
@@ -36,7 +35,7 @@ const Step4Result: React.FC<Step4ResultProps> = ({ setStep }) => {
     return (
         <>
             {isSuccessful === null && <Loader className="h-[100dvh]" />}
-            {isSuccessful && (
+            {isSuccessful === true && (
                 <Succsessfully
                     amount={amount}
                     crypto={crypto}
@@ -44,7 +43,7 @@ const Step4Result: React.FC<Step4ResultProps> = ({ setStep }) => {
                     date={date}
                 />
             )}
-            {!isSuccessful && (
+            {!isSuccessful === false && (
                 <Rejected
                     amount={amount}
                     setStep={setStep}
