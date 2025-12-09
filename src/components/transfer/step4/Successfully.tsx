@@ -6,6 +6,8 @@ import Details from "./Details";
 import { useState } from "react";
 import { resetTransfer } from "@/lib/redux/slices/transferSlice";
 import { useAppDispatch } from "@/lib/redux/hooks";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
+import { useEffect } from "react";
 
 interface SuccessfullyProps {
     crypto: string;
@@ -19,6 +21,11 @@ const Succsessfully: React.FC<SuccessfullyProps> = ({ crypto, amount, transactio
     const slisedTransactionId = transactionId.slice(0, 9) + "...";
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useAppDispatch();
+    const { trackEvent } = useMixpanel();
+
+    useEffect(() => {
+        trackEvent("transfer_step4_success_opened");
+    }, [trackEvent]);
 
     return (
         <div className="transfer-success-bg ">
@@ -50,8 +57,9 @@ const Succsessfully: React.FC<SuccessfullyProps> = ({ crypto, amount, transactio
                         variant="yellow"
                         fullWidth={true}
                         onClick={() => {
-                            router.push("/");
                             dispatch(resetTransfer());
+                            trackEvent("transfer_step4_success_go_home_clicked");
+                            router.push("/");
                         }}
                     >
                         На главную
@@ -59,7 +67,9 @@ const Succsessfully: React.FC<SuccessfullyProps> = ({ crypto, amount, transactio
                     <Button
                         variant="yellow_secondary"
                         fullWidth={true}
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => {setIsModalOpen(true);
+                            trackEvent("transfer_step4_success_details_clicked");
+                        }}
                     >
                         Детали транзакции
                     </Button>

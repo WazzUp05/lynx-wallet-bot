@@ -9,6 +9,8 @@ import {
 } from "@/lib/redux/selectors/transferSelectors";
 import { getTransferIsSuccessful } from "@/lib/redux/selectors/transferSelectors";
 import Loader from "@/components/ui/Loader";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
+import { useEffect } from "react";
 
 interface Step4ResultProps {
     setStep: (step: number) => void;
@@ -19,6 +21,7 @@ const Step4Result: React.FC<Step4ResultProps> = ({ setStep }) => {
     const amount = useAppSelector(getTransferAmount);
     const crypto = useAppSelector(getTransferCrypto);
     const isSuccessful = useAppSelector(getTransferIsSuccessful);
+    const { trackEvent } = useMixpanel();
 
     const now = new Date();
     const date = now
@@ -31,6 +34,13 @@ const Step4Result: React.FC<Step4ResultProps> = ({ setStep }) => {
             hour12: false,
         })
         .replace(",", "");
+
+        useEffect(() => {
+            trackEvent("transfer_step4_result_opened", {
+                isSuccessful,
+                date,
+            });
+        }, [trackEvent, isSuccessful, date]);
 
     return (
         <>

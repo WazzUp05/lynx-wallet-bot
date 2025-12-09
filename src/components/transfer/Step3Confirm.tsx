@@ -19,6 +19,9 @@ import {
 import { Button } from "../ui/Button";
 import CopyButton from "@/components/ui/CopyButton";
 import { updateBalance } from "@/lib/redux/slices/userSlice";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
+import { useEffect } from "react";
+
 
 type Step3ConfirmProps = {
     selectedNetwork: string;
@@ -42,6 +45,11 @@ const Step3Confirm: React.FC<Step3ConfirmProps> = ({ selectedCrypto, cryptos, ha
     const isLoading = useAppSelector(getTransferIsLoading);
     const COMMISSION_USDT = 2.75;
     const addressSliced = `${address.slice(0, 7)}...${address.slice(-8)}`;
+    const { trackEvent } = useMixpanel();
+
+    useEffect(() => {
+        trackEvent("transfer_step3_confirm_opened");
+    }, [trackEvent]);
 
     const handleConfirmTransfer = async () => {
         dispatch(setTransferError(null));
@@ -74,12 +82,17 @@ const Step3Confirm: React.FC<Step3ConfirmProps> = ({ selectedCrypto, cryptos, ha
             // обновляем баланс пользователя до автообновления
             const totalDeducted = Number(amount) + COMMISSION_USDT;
             dispatch(updateBalance(-totalDeducted));
-
+            trackEvent("transfer_step3_confirm_success_and_continue", {
+                amount,
+                crypto,
+                network,
+                address,
+                transactionId: data.transactionId,
+            });
             handleNextStep();
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : "Unknown error";
-            console.error("Transfer error:", errorMessage);
-
+            trackEvent("transfer_step3_confirm_error", { error: errorMessage });
             dispatch(setTransferError(errorMessage));
             dispatch(setTransferIsSuccessful(false));
         } finally {

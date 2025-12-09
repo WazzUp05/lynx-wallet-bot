@@ -2,6 +2,9 @@
 import SelectCrypto from "@/components/SelectCrypto";
 import { SelectCustom } from "@/components/ui/SelectCustom";
 import { Button } from "../ui/Button";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
+import { useEffect } from "react";
+
 
 type Step1Props = {
     cryptos: {
@@ -30,6 +33,12 @@ const Step1SelectCurrency: React.FC<Step1Props> = ({
     setSelectedCrypto,
     handleNextStep,
 }) => {
+
+    const { trackEvent } = useMixpanel();
+    useEffect(() => {
+        trackEvent("transfer_step1_select_currency_opened");
+    }, [trackEvent]);
+    
     return (
         <div className="flex flex-col justify-between min-h-[80dvh] mx-[1.6rem]">
             <div>
@@ -52,7 +61,10 @@ const Step1SelectCurrency: React.FC<Step1Props> = ({
                 </div>
             </div>
 
-            <Button variant="yellow" fullWidth={true} onClick={handleNextStep}>
+            <Button variant="yellow" fullWidth={true} onClick={() => {
+                handleNextStep();
+                trackEvent("transfer_step1_continue_clicked", {network: selectedNetwork});
+            }}>
                 Продолжить
             </Button>
         </div>

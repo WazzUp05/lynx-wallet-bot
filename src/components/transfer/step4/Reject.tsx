@@ -7,6 +7,8 @@ import { useState } from "react";
 import Details from "./Details";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { resetTransfer } from "@/lib/redux/slices/transferSlice";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
+import { useEffect } from "react";
 
 interface RejectProps {
     amount: string;
@@ -20,6 +22,11 @@ const Reject: React.FC<RejectProps> = ({ crypto, amount, date, transactionId, se
     const [isModalOpen, setIsModalOpen] = useState(false);
     const router = useRouter();
     const dispatch = useAppDispatch();
+    const { trackEvent } = useMixpanel();
+
+    useEffect(() => {
+        trackEvent("transfer_step4_reject_opened");
+    }, [trackEvent]);
 
     return (
         <div className="transfer-reject-bg">
@@ -54,7 +61,9 @@ const Reject: React.FC<RejectProps> = ({ crypto, amount, date, transactionId, se
                         <button
                             type="button"
                             className="w-[3rem] h-[3rem] rounded-full bg-[var(--dark-gray-main)] center"
-                            onClick={() => setIsModalOpen(true)}
+                            onClick={() => {setIsModalOpen(true);
+                                trackEvent("transfer_step4_reject_details_clicked");
+                            }}
                         >
                             <ArrowRight
                                 width={20}
@@ -77,15 +86,18 @@ const Reject: React.FC<RejectProps> = ({ crypto, amount, date, transactionId, se
                     </p>
                 </div>
                 <div className="flex flex-col gap-[1.5rem] w-full">
-                    <Button variant="yellow" fullWidth={true} onClick={() => setStep(1)}>
+                    <Button variant="yellow" fullWidth={true} onClick={() => {setStep(1);
+                        trackEvent("transfer_step4_reject_retry_transfer_clicked");
+                    }}>
                         Повторить перевод
                     </Button>
                     <Button
                         variant="yellow_secondary"
                         fullWidth={true}
                         onClick={() => {
-                            router.push("/");
                             dispatch(resetTransfer());
+                            trackEvent("transfer_step4_reject_go_home_clicked");
+                            router.push("/");
                         }}
                     >
                         На главную

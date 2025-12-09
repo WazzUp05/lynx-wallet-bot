@@ -29,7 +29,7 @@ const Page = () => {
 
     useEffect(() => {
         trackEvent("transfer_page_opened", {});
-    }, []);
+    }, [trackEvent]);
 
     const MOCK_SELECT_CRYPTO = [
         {
@@ -96,8 +96,12 @@ const Page = () => {
                     <div
                         className="absolute left-[0] top-1/2 translate-y-[-50%] bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
                         onClick={() => {
-                            if (step === 1) router.back();
+                            if (step === 1) {
+                                trackEvent("transfer_page_closed");
+                                router.back()
+                            }
                             if (step > 1) setStep(step - 1);
+                            
                         }}
                     >
                         <ArrowLeft />

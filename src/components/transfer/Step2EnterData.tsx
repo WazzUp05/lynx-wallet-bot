@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "@/components/ui/Input";
 import { Button } from "../ui/Button";
 import Exclamation from "@/components/icons/exclamation-yellow.svg";
@@ -9,6 +9,7 @@ import Image from "next/image";
 import Plus from "@/components/icons/plus.svg";
 import RefilledModal from "@/components/refilled/RefilledModal";
 import Scanner from "@/components/transfer/Scanner";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getRatesQuoteRub } from "@/lib/redux/selectors/rateSelectors";
 import { getTransferAmount, getTransferAdress } from "@/lib/redux/selectors/transferSelectors";
@@ -51,6 +52,12 @@ const Step2EnterData: React.FC<Step2Props> = ({
     const isLowBalance = balance_usdt !== undefined && balance_usdt < 1 + COMMISSION_USDT;
     const [addressError, setAddressError] = useState("");
     const [amountError, setAmountError] = useState("");
+    const { trackEvent } = useMixpanel();
+
+    useEffect(() => {
+        trackEvent("transfer_step2_enter_data_opened");
+    }, [trackEvent]);
+
 
     const handleClick = () => {
         dispatch(setTransferAmount(balance_usdt ? balance_usdt.toFixed(2) : ""));
@@ -100,7 +107,12 @@ const Step2EnterData: React.FC<Step2Props> = ({
                         }}
                         error={addressError}
                     >
-                        <button type="button" onClick={() => setScannerOpen(true)}>
+                        <button 
+                            type="button" 
+                            onClick={() =>{ 
+                                setScannerOpen(true); 
+                                trackEvent("transfer_step2_qr_scanner_opened");
+                            }}>
                             <OpenCamera
                                 alt="open camera icon"
                                 width={20}
@@ -186,6 +198,12 @@ const Step2EnterData: React.FC<Step2Props> = ({
                     fullWidth={true}
                     onClick={() => {
                         if (validateForm()) {
+                            trackEvent("transfer_step2_continue_clicked", {
+                                network: selectedNetwork,
+                                crypto: selectedCrypto,
+                                amount: amount,
+                                address: address,
+                            });
                             dispatch(setTransferCrypto(selectedCrypto));
                             dispatch(setTransferNetwork(selectedNetwork));
                             handleNextStep();
@@ -200,6 +218,7 @@ const Step2EnterData: React.FC<Step2Props> = ({
                     variant="yellow"
                     fullWidth={true}
                     onClick={() => {
+                        trackEvent("transfer_step2_refilled_clicked");
                         setTopUpOpen(true);
                     }}
                     className="flex justify-center items-center gap-[1rem]"
