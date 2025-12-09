@@ -2,8 +2,6 @@ import Success from "@/components/icons/success.svg";
 import { Button } from "@/components/ui/Button";
 import CopyButton from "@/components/ui/CopyButton";
 import { useRouter } from "next/navigation";
-import Details from "./Details";
-import { useState } from "react";
 import { resetTransfer } from "@/lib/redux/slices/transferSlice";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { useMixpanel } from "@/lib/providers/MixpanelProvider";
@@ -13,13 +11,17 @@ interface SuccessfullyProps {
     crypto: string;
     amount: string;
     transactionId: string;
-    date: string;
+    setIsOpenedDetails: (isOpen: boolean) => void;
 }
 
-const Succsessfully: React.FC<SuccessfullyProps> = ({ crypto, amount, transactionId, date }) => {
+const Succsessfully: React.FC<SuccessfullyProps> = ({
+    crypto,
+    amount,
+    transactionId,
+    setIsOpenedDetails,
+}) => {
     const router = useRouter();
     const slisedTransactionId = transactionId.slice(0, 9) + "...";
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useAppDispatch();
     const { trackEvent } = useMixpanel();
 
@@ -67,7 +69,8 @@ const Succsessfully: React.FC<SuccessfullyProps> = ({ crypto, amount, transactio
                     <Button
                         variant="yellow_secondary"
                         fullWidth={true}
-                        onClick={() => {setIsModalOpen(true);
+                        onClick={() => {
+                            setIsOpenedDetails(true);
                             trackEvent("transfer_step4_success_details_clicked");
                         }}
                     >
@@ -75,15 +78,6 @@ const Succsessfully: React.FC<SuccessfullyProps> = ({ crypto, amount, transactio
                     </Button>
                 </div>
             </div>
-            <Details
-                isOpen={isModalOpen}
-                setIsModalOpen={setIsModalOpen}
-                amount={amount}
-                crypto={crypto}
-                isSuccess={true}
-                date={date}
-                transactionId={transactionId}
-            />
         </div>
     );
 };

@@ -22,7 +22,6 @@ import { updateBalance } from "@/lib/redux/slices/userSlice";
 import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 import { useEffect } from "react";
 
-
 type Step3ConfirmProps = {
     selectedNetwork: string;
     selectedCrypto: string;

@@ -3,8 +3,6 @@ import { Button } from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
 import ArrowRight from "@/components/icons/arrow-right.svg";
 import Exclamation from "@/components/icons/exclamation-yellow.svg";
-import { useState } from "react";
-import Details from "./Details";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { resetTransfer } from "@/lib/redux/slices/transferSlice";
 import { useMixpanel } from "@/lib/providers/MixpanelProvider";
@@ -14,12 +12,10 @@ interface RejectProps {
     amount: string;
     crypto: string;
     setStep: (step: number) => void;
-    date: string;
-    transactionId: string;
+    setIsOpenedDetails: (isOpen: boolean) => void;
 }
 
-const Reject: React.FC<RejectProps> = ({ crypto, amount, date, transactionId, setStep }) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+const Reject: React.FC<RejectProps> = ({ crypto, amount, setStep, setIsOpenedDetails }) => {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const { trackEvent } = useMixpanel();
@@ -35,7 +31,6 @@ const Reject: React.FC<RejectProps> = ({ crypto, amount, date, transactionId, se
                 <div className="flex flex-col justify-center items-center gap-[2rem] grow">
                     <div className="w-[4rem] h-[4rem] rounded-full bg-[var(--orange)] relative center">
                         <span className="animate-pulse reject-pulse-color-slow animate-pulse-slow "></span>
-
                         <span className="animate-pulse reject-pulse-color-slower animate-pulse-slower "></span>
                         <RejectIcon
                             alt="reject icon"
@@ -61,7 +56,8 @@ const Reject: React.FC<RejectProps> = ({ crypto, amount, date, transactionId, se
                         <button
                             type="button"
                             className="w-[3rem] h-[3rem] rounded-full bg-[var(--dark-gray-main)] center"
-                            onClick={() => {setIsModalOpen(true);
+                            onClick={() => {
+                                setIsOpenedDetails(true);
                                 trackEvent("transfer_step4_reject_details_clicked");
                             }}
                         >
@@ -86,9 +82,14 @@ const Reject: React.FC<RejectProps> = ({ crypto, amount, date, transactionId, se
                     </p>
                 </div>
                 <div className="flex flex-col gap-[1.5rem] w-full">
-                    <Button variant="yellow" fullWidth={true} onClick={() => {setStep(1);
-                        trackEvent("transfer_step4_reject_retry_transfer_clicked");
-                    }}>
+                    <Button
+                        variant="yellow"
+                        fullWidth={true}
+                        onClick={() => {
+                            setStep(1);
+                            trackEvent("transfer_step4_reject_retry_transfer_clicked");
+                        }}
+                    >
                         Повторить перевод
                     </Button>
                     <Button
@@ -104,15 +105,6 @@ const Reject: React.FC<RejectProps> = ({ crypto, amount, date, transactionId, se
                     </Button>
                 </div>
             </div>
-            <Details
-                isOpen={isModalOpen}
-                setIsModalOpen={setIsModalOpen}
-                amount={amount}
-                crypto={crypto}
-                isSuccess={false}
-                date={date}
-                transactionId={transactionId}
-            />
         </div>
     );
 };

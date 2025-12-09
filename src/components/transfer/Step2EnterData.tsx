@@ -58,9 +58,11 @@ const Step2EnterData: React.FC<Step2Props> = ({
         trackEvent("transfer_step2_enter_data_opened");
     }, [trackEvent]);
 
-
-    const handleClick = () => {
-        dispatch(setTransferAmount(balance_usdt ? balance_usdt.toFixed(2) : ""));
+    const handleAddAllAmount = () => {
+        dispatch(
+            setTransferAmount(balance_usdt ? (balance_usdt - COMMISSION_USDT).toFixed(2) : "")
+        );
+        setAmountError("");
     };
 
     const tronAddressRegex = /^T[1-9A-HJ-NP-Za-km-z]{33}$/;
@@ -107,12 +109,13 @@ const Step2EnterData: React.FC<Step2Props> = ({
                         }}
                         error={addressError}
                     >
-                        <button 
-                            type="button" 
-                            onClick={() =>{ 
-                                setScannerOpen(true); 
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setScannerOpen(true);
                                 trackEvent("transfer_step2_qr_scanner_opened");
-                            }}>
+                            }}
+                        >
                             <OpenCamera
                                 alt="open camera icon"
                                 width={20}
@@ -140,7 +143,7 @@ const Step2EnterData: React.FC<Step2Props> = ({
                         >
                             <button
                                 className="flex items-center gap-[0.8rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] bg-transparent hover:bg-[var(--bg-hover)] transition-colors duration-200 text-[#FFD700] text-[1.4rem]"
-                                onClick={handleClick}
+                                onClick={handleAddAllAmount}
                             >
                                 Всё
                             </button>

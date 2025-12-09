@@ -1,4 +1,5 @@
 import Modal from "@/components/Modal";
+import ArrowLeft from "@/components/icons/arrow-left.svg";
 import Arrow from "@/components/icons/arrow-top-right.svg";
 import ExclamationOrange from "@/components/icons/exclamation-orange.svg";
 import ExclamationYellow from "@/components/icons/exclamation-yellow.svg";
@@ -13,20 +14,20 @@ const COMMISSION = 2.75;
 
 interface DetailsProps {
     isOpen: boolean;
-    setIsModalOpen: (isOpen: boolean) => void;
+    setIsOpenedDetails: (isOpen: boolean) => void;
     amount: string;
     crypto: string;
-    isSuccess: boolean;
+    isSuccessful: boolean;
     date: string;
     transactionId: string;
 }
 
 const Details: React.FC<DetailsProps> = ({
     isOpen,
-    setIsModalOpen,
+    setIsOpenedDetails,
     amount,
     crypto,
-    isSuccess,
+    isSuccessful,
     date,
     transactionId,
 }) => {
@@ -36,19 +37,35 @@ const Details: React.FC<DetailsProps> = ({
     const { trackEvent } = useMixpanel();
 
     useEffect(() => {
-        trackEvent("transfer_step4_details_opened", { isSuccess });
-    }, [trackEvent, isSuccess]);
+        trackEvent("transfer_step4_details_opened", { isSuccessful });
+    }, [trackEvent, isSuccessful]);
 
     return (
-        <Modal
-            closable={true}
-            swipeToClose={false}
-            open={isOpen}
-            onClose={() => {setIsModalOpen(false); trackEvent("transfer_step4_details_closed");}}
-            title="Детали транзакции"
-        >
-            {isSuccess && (
-                <div className="flex flex-col gap-[2rem] w-full">
+        // <Modal
+        //     closable={true}
+        //     swipeToClose={false}
+        //     open={isOpen}
+        //     onClose={() => {
+        //         setIsModalOpen(false);
+        //         trackEvent("transfer_step4_details_closed");
+        //     }}
+        //     title="Детали транзакции"
+        // >
+        <div className="flex flex-col gap-[2rem] p-[1.6rem]">
+            <div className="flex h-[3.6rem] items-center justify-center relative fs-regular-bold">
+                <div
+                    className="absolute left-[0] top-1/2 translate-y-[-50%] bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
+                    onClick={() => {
+                        setIsOpenedDetails(false);
+                        trackEvent("transfer_step4_details_closed");
+                    }}
+                >
+                    <ArrowLeft />
+                </div>
+                <span className="text-white">Детали транзакции</span>
+            </div>
+            {isSuccessful && (
+                <div className="flex flex-col gap-[2rem] w-full max-h-[80dvh]">
                     <div className="flex flex-col items-center gap-[1rem] grow ">
                         <div className="rounded-full bg-[var(--yellow-secondary)] center w-[6rem] h-[6rem] ">
                             <Arrow width={30} height={30} className="w-[3rem] h-[3rem]" />
@@ -106,8 +123,8 @@ const Details: React.FC<DetailsProps> = ({
                     </div>
                 </div>
             )}
-            {!isSuccess && (
-                <div className="flex flex-col gap-[2rem] ">
+            {!isSuccessful && (
+                <div className="flex flex-col gap-[2rem]  max-h-[80dvh]">
                     <div className="flex flex-col items-center gap-[1rem] grow ">
                         <div className="rounded-full bg-[var(--yellow-secondary)] center w-[6rem] h-[6rem] ">
                             <Arrow width={30} height={30} className="w-[3rem] h-[3rem]" />
@@ -136,7 +153,7 @@ const Details: React.FC<DetailsProps> = ({
                             в поддержку.
                         </p>
                     </div>
-                    <div className="flex flex-col gap-[1rem] w-full">
+                    <div className="flex flex-col gap-[1rem] w-full ">
                         <p className="text-[var(--text-secondary)] fs-small">Детали</p>
                         <div className="flex flex-col gap-[1.6rem] bg-[var(--bg-secondary)] rounded-[2rem] p-[1.6rem]">
                             <div className="flex justify-between">
@@ -181,7 +198,8 @@ const Details: React.FC<DetailsProps> = ({
                     </div>
                 </div>
             )}
-        </Modal>
+        </div>
+        // </Modal>
     );
 };
 

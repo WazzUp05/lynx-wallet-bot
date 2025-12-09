@@ -98,10 +98,9 @@ const Page = () => {
                         onClick={() => {
                             if (step === 1) {
                                 trackEvent("transfer_page_closed");
-                                router.back()
+                                router.back();
                             }
                             if (step > 1) setStep(step - 1);
-                            
                         }}
                     >
                         <ArrowLeft />

@@ -1,7 +1,8 @@
 "use client";
-import {  useAppSelector } from "@/lib/redux/hooks";
+import { useAppSelector } from "@/lib/redux/hooks";
 import Succsessfully from "@/components/transfer/step4/Successfully";
 import Rejected from "@/components/transfer/step4/Reject";
+import Details from "@/components/transfer/step4/Details";
 import {
     getTransactionId,
     getTransferAmount,
@@ -10,7 +11,7 @@ import {
 import { getTransferIsSuccessful } from "@/lib/redux/selectors/transferSelectors";
 import Loader from "@/components/ui/Loader";
 import { useMixpanel } from "@/lib/providers/MixpanelProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface Step4ResultProps {
     setStep: (step: number) => void;
@@ -22,6 +23,7 @@ const Step4Result: React.FC<Step4ResultProps> = ({ setStep }) => {
     const crypto = useAppSelector(getTransferCrypto);
     const isSuccessful = useAppSelector(getTransferIsSuccessful);
     const { trackEvent } = useMixpanel();
+    const [isOpenedDetails, setIsOpenedDetails] = useState(false);
 
     const now = new Date();
     const date = now
@@ -35,29 +37,39 @@ const Step4Result: React.FC<Step4ResultProps> = ({ setStep }) => {
         })
         .replace(",", "");
 
-        useEffect(() => {
-            trackEvent("transfer_step4_result_opened", {
-                isSuccessful,
-                date,
-            });
-        }, [trackEvent, isSuccessful, date]);
+    useEffect(() => {
+        trackEvent("transfer_step4_result_opened", {
+            isSuccessful,
+            date,
+        });
+    }, [trackEvent, isSuccessful, date]);
 
     return (
         <>
             {isSuccessful === null && <Loader className="h-[100dvh]" />}
-            {isSuccessful === true && (
+            {isSuccessful === true && !isOpenedDetails && (
                 <Succsessfully
                     amount={amount}
                     crypto={crypto}
                     transactionId={transactionId}
-                    date={date}
+                    setIsOpenedDetails={setIsOpenedDetails}
                 />
             )}
-            {!isSuccessful === false && (
+            {isSuccessful === false && !isOpenedDetails && (
                 <Rejected
                     amount={amount}
                     setStep={setStep}
                     crypto={crypto}
+                    setIsOpenedDetails={setIsOpenedDetails}
+                />
+            )}
+            {isOpenedDetails && isSuccessful !== null && (
+                <Details
+                    isOpen={isOpenedDetails}
+                    setIsOpenedDetails={setIsOpenedDetails}
+                    amount={amount}
+                    crypto={crypto}
+                    isSuccessful={isSuccessful}
                     date={date}
                     transactionId={transactionId}
                 />
