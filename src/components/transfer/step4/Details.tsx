@@ -1,4 +1,3 @@
-import Modal from "@/components/Modal";
 import ArrowLeft from "@/components/icons/arrow-left.svg";
 import Arrow from "@/components/icons/arrow-top-right.svg";
 import ExclamationOrange from "@/components/icons/exclamation-orange.svg";
@@ -23,7 +22,6 @@ interface DetailsProps {
 }
 
 const Details: React.FC<DetailsProps> = ({
-    isOpen,
     setIsOpenedDetails,
     amount,
     crypto,
@@ -41,16 +39,6 @@ const Details: React.FC<DetailsProps> = ({
     }, [trackEvent, isSuccessful]);
 
     return (
-        // <Modal
-        //     closable={true}
-        //     swipeToClose={false}
-        //     open={isOpen}
-        //     onClose={() => {
-        //         setIsModalOpen(false);
-        //         trackEvent("transfer_step4_details_closed");
-        //     }}
-        //     title="Детали транзакции"
-        // >
         <div className="flex flex-col gap-[2rem] p-[1.6rem]">
             <div className="flex h-[3.6rem] items-center justify-center relative fs-regular-bold">
                 <div
@@ -199,7 +187,6 @@ const Details: React.FC<DetailsProps> = ({
                 </div>
             )}
         </div>
-        // </Modal>
     );
 };
 
