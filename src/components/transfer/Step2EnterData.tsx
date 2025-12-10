@@ -25,6 +25,7 @@ type Step2Props = {
     selectedCrypto: string;
     handleNextStep: () => void;
     balance_usdt: number | undefined;
+    commissionUsdt: number;
     cryptos: {
         id: string;
         label: string;
@@ -39,8 +40,8 @@ const Step2EnterData: React.FC<Step2Props> = ({
     handleNextStep,
     cryptos,
     balance_usdt,
+    commissionUsdt
 }) => {
-    const COMMISSION_USDT = 2.75;
     const rate = useAppSelector(getRatesQuoteRub);
     const convertedBalance = balance_usdt && rate ? Number((balance_usdt * rate).toFixed(2)) : 0;
     const selected = cryptos.find((crypto) => crypto.id === selectedCrypto);
@@ -49,7 +50,7 @@ const Step2EnterData: React.FC<Step2Props> = ({
     const amount = useAppSelector(getTransferAmount);
     const [isTopUpOpen, setTopUpOpen] = useState(false);
     const [isScannerOpen, setScannerOpen] = useState(false);
-    const isLowBalance = balance_usdt !== undefined && balance_usdt < 1 + COMMISSION_USDT;
+    const isLowBalance = balance_usdt !== undefined && balance_usdt < 1 + commissionUsdt;
     const [addressError, setAddressError] = useState("");
     const [amountError, setAmountError] = useState("");
     const { trackEvent } = useMixpanel();
@@ -60,14 +61,14 @@ const Step2EnterData: React.FC<Step2Props> = ({
 
     const handleAddAllAmount = () => {
         dispatch(
-            setTransferAmount(balance_usdt ? (balance_usdt - COMMISSION_USDT).toFixed(2) : "")
+            setTransferAmount(balance_usdt ? (balance_usdt - commissionUsdt).toFixed(2) : "")
         );
         setAmountError("");
     };
 
     const tronAddressRegex = /^T[1-9A-HJ-NP-Za-km-z]{33}$/;
 
-    const availableBalance = (balance_usdt || 0) - COMMISSION_USDT;
+    const availableBalance = (balance_usdt || 0) - commissionUsdt;
 
     const validateForm = () => {
         let valid = true;
@@ -148,6 +149,9 @@ const Step2EnterData: React.FC<Step2Props> = ({
                                 Всё
                             </button>
                         </Input>
+                    </div>
+                    <div className="my-[0.7rem]">
+                        <p className="text-[var(--text-secondary)] fs-very-small">Комиссия {commissionUsdt} {selectedCrypto}</p>
                     </div>
                     <div className="flex bg-[var(--yellow-optional)] rounded-[1rem] p-[1rem] gap-[0.8rem] mt-[1rem] items-center">
                         <Exclamation

@@ -15,9 +15,10 @@ import { useEffect, useState } from "react";
 
 interface Step4ResultProps {
     setStep: (step: number) => void;
+    commissionUsdt: number;
 }
 
-const Step4Result: React.FC<Step4ResultProps> = ({ setStep }) => {
+const Step4Result: React.FC<Step4ResultProps> = ({ setStep, commissionUsdt }) => {
     const transactionId = useAppSelector(getTransactionId);
     const amount = useAppSelector(getTransferAmount);
     const crypto = useAppSelector(getTransferCrypto);
@@ -41,8 +42,11 @@ const Step4Result: React.FC<Step4ResultProps> = ({ setStep }) => {
         trackEvent("transfer_step4_result_opened", {
             isSuccessful,
             date,
+            transactionId,
+            amount,
+            crypto,
         });
-    }, [trackEvent, isSuccessful, date]);
+    }, [trackEvent, isSuccessful, date, transactionId, amount, crypto]);
 
     return (
         <>
@@ -72,6 +76,7 @@ const Step4Result: React.FC<Step4ResultProps> = ({ setStep }) => {
                     isSuccessful={isSuccessful}
                     date={date}
                     transactionId={transactionId}
+                    commissionUsdt={commissionUsdt}
                 />
             )}
         </>

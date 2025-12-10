@@ -26,6 +26,7 @@ type Step3ConfirmProps = {
     selectedNetwork: string;
     selectedCrypto: string;
     handleNextStep: () => void;
+    commissionUsdt: number;
     cryptos: {
         id: string;
         label: string;
@@ -34,7 +35,7 @@ type Step3ConfirmProps = {
     }[];
 };
 
-const Step3Confirm: React.FC<Step3ConfirmProps> = ({ selectedCrypto, cryptos, handleNextStep }) => {
+const Step3Confirm: React.FC<Step3ConfirmProps> = ({ selectedCrypto, cryptos, handleNextStep, commissionUsdt }) => {
     const dispatch = useAppDispatch();
     const selected = cryptos.find((crypto) => crypto.id === selectedCrypto);
     const amount = useAppSelector(getTransferAmount);
@@ -42,7 +43,6 @@ const Step3Confirm: React.FC<Step3ConfirmProps> = ({ selectedCrypto, cryptos, ha
     const network = useAppSelector(getTransferNetwork);
     const address = useAppSelector(getTransferAdress);
     const isLoading = useAppSelector(getTransferIsLoading);
-    const COMMISSION_USDT = 2.75;
     const addressSliced = `${address.slice(0, 7)}...${address.slice(-8)}`;
     const { trackEvent } = useMixpanel();
 
@@ -79,7 +79,7 @@ const Step3Confirm: React.FC<Step3ConfirmProps> = ({ selectedCrypto, cryptos, ha
             dispatch(setTransferIsSuccessful(Boolean(data.success)));
 
             // обновляем баланс пользователя до автообновления
-            const totalDeducted = Number(amount) + COMMISSION_USDT;
+            const totalDeducted = Number(amount) + commissionUsdt;
             dispatch(updateBalance(-totalDeducted));
             trackEvent("transfer_step3_confirm_success_and_continue", {
                 amount,
@@ -124,7 +124,7 @@ const Step3Confirm: React.FC<Step3ConfirmProps> = ({ selectedCrypto, cryptos, ha
                     <div className="flex justify-between items-center">
                         <p className="text-[var(--text-secondary)] fs-small">Комиссия</p>
                         <p className="fs-regular text-[var(--text-main)]">
-                            {crypto === "USDT" ? "2.75 USDT" : "0.2 TON"}
+                            {crypto === "USDT" ? `${commissionUsdt} USDT` : "0.2 TON"}
                         </p>
                     </div>
                 </div>

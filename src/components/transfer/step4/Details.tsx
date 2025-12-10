@@ -9,7 +9,6 @@ import { useAppSelector } from "@/lib/redux/hooks";
 import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 import { useEffect } from "react";
 
-const COMMISSION = 2.75;
 
 interface DetailsProps {
     isOpen: boolean;
@@ -19,6 +18,7 @@ interface DetailsProps {
     isSuccessful: boolean;
     date: string;
     transactionId: string;
+    commissionUsdt: number;
 }
 
 const Details: React.FC<DetailsProps> = ({
@@ -28,6 +28,7 @@ const Details: React.FC<DetailsProps> = ({
     isSuccessful,
     date,
     transactionId,
+    commissionUsdt,
 }) => {
     const address = useAppSelector(getTransferAdress);
     const addressSliced = `${address.slice(0, 7)}...${address.slice(-8)}`;
@@ -81,7 +82,7 @@ const Details: React.FC<DetailsProps> = ({
                         <div className="flex justify-between">
                             <p className="text-[var(--text-secondary)] fs-small">Комиссия</p>
                             <p className="fs-small text-[var(--text-main)]">
-                                {COMMISSION} {crypto}
+                                {commissionUsdt} {crypto}
                             </p>
                         </div>
                     </div>
@@ -94,7 +95,7 @@ const Details: React.FC<DetailsProps> = ({
                             <p className="text-[var(--text-secondary)] fs-small">ID транзакции</p>
                             <div className="flex gap-[0.8rem]">
                                 <p className="fs-small text-[var(--text-main)]">
-                                    {transactionIdSliced}...
+                                    {transactionIdSliced}
                                 </p>
                                 <CopyButton text={transactionId} />
                             </div>
@@ -156,7 +157,7 @@ const Details: React.FC<DetailsProps> = ({
                                 </p>
                                 <div className="flex gap-[0.8rem]">
                                     <p className="fs-small text-[var(--text-main)]">
-                                        {transactionIdSliced}...
+                                        {transactionIdSliced}
                                     </p>
                                     <CopyButton text={transactionId} />
                                 </div>
@@ -170,7 +171,7 @@ const Details: React.FC<DetailsProps> = ({
                             <div className="flex justify-between">
                                 <p className="text-[var(--text-secondary)] fs-small">Комиссия</p>
                                 <p className="fs-small text-[var(--text-main)]">
-                                    {COMMISSION} {crypto}
+                                    {commissionUsdt} {crypto}
                                 </p>
                             </div>
                             <div className="flex justify-between">

@@ -64,6 +64,8 @@ const Page = () => {
         },
     ];
 
+    const MOCK_COMMISSION_USDT = 2.75;
+
     const network = crypto?.id === "USDT" ? MOCK_SELECT_USDT : MOCK_SELECT_TON;
 
     const handlerChangeNetwork = (network: string) => {
@@ -127,6 +129,7 @@ const Page = () => {
                     handleNextStep={handleNextStep}
                     cryptos={MOCK_SELECT_CRYPTO}
                     balance_usdt={balance_usdt}
+                    commissionUsdt={MOCK_COMMISSION_USDT}
                 />
             )}
 
@@ -136,10 +139,11 @@ const Page = () => {
                     selectedCrypto={selectedCrypto}
                     selectedNetwork={selectedNetwork}
                     handleNextStep={handleNextStep}
+                    commissionUsdt={MOCK_COMMISSION_USDT}
                 />
             )}
 
-            {step === 4 && <Step4Result setStep={setStep} />}
+            {step === 4 && <Step4Result setStep={setStep} commissionUsdt={MOCK_COMMISSION_USDT} />}
         </div>
     );
 };
