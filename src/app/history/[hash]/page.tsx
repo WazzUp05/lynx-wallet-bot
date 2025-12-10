@@ -1,27 +1,27 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/Button';
-import ArrowLeft from '@/components/icons/arrow-left.svg';
-import SendIcon from '@/components/icons/send.svg';
-import QrIcon from '@/components/icons/qr.svg';
-import CardIcon from '@/components/icons/card.svg';
-import PlusIcon from '@/components/icons/plus.svg';
-import ArrowUpIcon from '@/components/icons/arrow-up.svg';
-import CheckIcon from '@/components/icons/check-green.svg';
-import ErrorIcon from '@/components/icons/error.svg';
-import ClockIcon from '@/components/icons/clock-small.svg';
-import CopyIcon from '@/components/icons/copy.svg';
-import QuestionIcon from '@/components/icons/question.svg';
-import { Toast } from '@/components/ui/Toast';
-import TaxModal from '@/components/modals/TaxModal';
-import { getLoading, getUser } from '@/lib/redux/selectors/userSelectors';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { fetchHistory } from '@/lib/redux/thunks/historyThunks';
-import { getHistory } from '@/lib/redux/selectors/historySelectors';
-import Loader from '@/components/ui/Loader';
-import { useCopyWithToast } from '@/hooks/useCopyWithToast';
-import { useMixpanel } from '@/lib/providers/MixpanelProvider';
+"use client";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/Button";
+import ArrowLeft from "@/components/icons/arrow-left.svg";
+import SendIcon from "@/components/icons/send.svg";
+import QrIcon from "@/components/icons/qr.svg";
+import CardIcon from "@/components/icons/card.svg";
+import PlusIcon from "@/components/icons/plus.svg";
+import ArrowUpIcon from "@/components/icons/arrow-up.svg";
+import CheckIcon from "@/components/icons/check-green.svg";
+import ErrorIcon from "@/components/icons/error.svg";
+import ClockIcon from "@/components/icons/clock-small.svg";
+import CopyIcon from "@/components/icons/copy.svg";
+import QuestionIcon from "@/components/icons/question.svg";
+import { Toast } from "@/components/ui/Toast";
+import TaxModal from "@/components/modals/TaxModal";
+import { getLoading, getUser } from "@/lib/redux/selectors/userSelectors";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { fetchHistory } from "@/lib/redux/thunks/historyThunks";
+import { getHistory } from "@/lib/redux/selectors/historySelectors";
+import Loader from "@/components/ui/Loader";
+import { useCopyWithToast } from "@/hooks/useCopyWithToast";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 
 export default function HistoryDetailPage() {
     const params = useParams();
@@ -38,12 +38,12 @@ export default function HistoryDetailPage() {
     // Событие при открытии страницы
     useEffect(() => {
         if (hash) {
-            trackEvent('transaction_detail_page_opened', { transaction_hash: hash });
+            trackEvent("transaction_detail_page_opened", { transaction_hash: hash });
         }
     }, [hash, trackEvent]);
 
     useEffect(() => {
-        console.log(history, hash, 'history');
+        console.log(history, hash, "history");
         if (!history || history.length === 0) {
             dispatch(fetchHistory());
         }
@@ -57,15 +57,15 @@ export default function HistoryDetailPage() {
 
     const getTypeImage = (type: string) => {
         switch (type) {
-            case 'Вывод':
+            case "Вывод":
                 return <ArrowUpIcon width={30} height={30} className="w-[3rem] h-[3rem]" />;
-            case 'Покупка':
+            case "Покупка":
                 return <QrIcon width={30} height={30} className="w-[3rem] h-[3rem]" />;
-            case 'Пополнение':
+            case "Пополнение":
                 return <PlusIcon width={30} height={30} className="w-[3rem] h-[3rem]" />;
-            case 'Продажа':
+            case "Продажа":
                 return <CardIcon width={30} height={30} className="w-[3rem] h-[3rem]" />;
-            case 'Перевод':
+            case "Перевод":
                 return <SendIcon width={30} height={30} className="w-[3rem] h-[3rem]" />;
             default:
                 return null;
@@ -73,11 +73,11 @@ export default function HistoryDetailPage() {
     };
 
     const handleLinkClick = (url: string) => {
-        trackEvent('transaction_link_clicked', {
+        trackEvent("transaction_link_clicked", {
             transaction_hash: hash,
             url,
         });
-        window.open(url, '_blank');
+        window.open(url, "_blank");
     };
 
     if (loadingApp) {
@@ -107,7 +107,7 @@ export default function HistoryDetailPage() {
                 <button
                     className="absolute left-0 top-1/2 -translate-y-1/2"
                     onClick={() => {
-                        trackEvent('transaction_detail_back_clicked', { transaction_hash: hash });
+                        trackEvent("transaction_detail_back_clicked", { transaction_hash: hash });
                         router.back();
                     }}
                 >
@@ -121,15 +121,15 @@ export default function HistoryDetailPage() {
                         {getTypeImage(tx.type)}
                     </div>
                     <div className="text-[2.5rem] font-semibold mb-[0.8rem]">
-                        {tx.type === 'Пополнение' ? '+' : '-'} {tx.amount} USDT
+                        {tx.type === "Пополнение" ? "+" : "-"} {tx.amount} USDT
                     </div>
-                    {tx.status === 'Успешно' ? (
+                    {tx.status === "Успешно" ? (
                         <div className="flex items-center py-[0.55rem] px-[1rem] gap-[0.55rem] box-shadow rounded-[1.5rem] mb-2 bg-[var(--dark-gray-main)]">
                             <div className=" text-[1.2rem] leading-[130%] flex items-center gap-[0.5rem] font-semibold">
                                 <CheckIcon /> Успешно
                             </div>
                         </div>
-                    ) : tx.status === 'В обработке' ? (
+                    ) : tx.status === "В обработке" ? (
                         <div className="flex items-center py-[0.55rem] px-[0.75rem] gap-[0.55rem] box-shadow rounded-[1.5rem] mb-2 bg-[var(--dark-gray-main)]">
                             <div className="text-yellow-600 text-[1.2rem]  flex items-center gap-[0.5rem] font-semibold">
                                 <ClockIcon /> В обработке
@@ -155,18 +155,24 @@ export default function HistoryDetailPage() {
                             <span className="text-[var(--text-secondary)] text-[1.4rem] leading-[130%]">
                                 Отправлено
                             </span>
-                            <span className="font-semibold text-[1.4rem] leading-[130%]">{tx.sent_amount} USDT</span>
+                            <span className="font-semibold text-[1.4rem] leading-[130%]">
+                                {tx.sent_amount} USDT
+                            </span>
                         </div>
                     )}
 
                     {tx.commission !== undefined && (
                         <div className="w-full  flex justify-between text-sm">
-                            <span className="text-[var(--text-secondary)] text-[1.4rem] leading-[130%]">Комиссия</span>
+                            <span className="text-[var(--text-secondary)] text-[1.4rem] leading-[130%]">
+                                Комиссия
+                            </span>
                             <span className="font-semibold text-[1.4rem] leading-[130%] flex items-center gap-[1rem]">
                                 {tx.commission} USDT
                                 <div
                                     onClick={() => {
-                                        trackEvent('transaction_tax_modal_opened', { transaction_hash: hash });
+                                        trackEvent("transaction_tax_modal_opened", {
+                                            transaction_hash: hash,
+                                        });
                                         setShowModal(true);
                                     }}
                                     className="relative top-[-0.2rem]"
@@ -196,12 +202,16 @@ export default function HistoryDetailPage() {
                                 Хэш транзакции
                             </span>
                             <span className="font-semibold text-[1.4rem] leading-[130%] flex items-center gap-[0.5rem]">
-                                <span className="max-w-[14.4rem] truncate">{tx.transaction_hash}</span>
+                                <span className="max-w-[14.4rem] truncate">
+                                    {tx.transaction_hash}
+                                </span>
                                 <button
                                     className="text-[var(--text-secondary)]"
                                     onClick={() => {
-                                        trackEvent('transaction_hash_copied', { transaction_hash: hash });
-                                        copyWithToast(tx.transaction_hash, 'Хэш скопирован');
+                                        trackEvent("transaction_hash_copied", {
+                                            transaction_hash: hash,
+                                        });
+                                        copyWithToast(tx.transaction_hash, "Хэш скопирован");
                                     }}
                                     disabled={isCopying}
                                 >
@@ -216,15 +226,17 @@ export default function HistoryDetailPage() {
                                 ID транзакции
                             </span>
                             <span className="font-semibold text-[1.4rem] leading-[130%] flex items-center gap-[0.5rem]">
-                                <span className="max-w-[14.4rem] truncate">{tx.transaction_id}</span>
+                                <span className="max-w-[14.4rem] truncate">
+                                    {tx.transaction_id}
+                                </span>
                                 <button
                                     className="text-[var(--text-secondary)]"
                                     onClick={() => {
-                                        trackEvent('transaction_id_copied', {
+                                        trackEvent("transaction_id_copied", {
                                             transaction_hash: hash,
                                             transaction_id: tx.transaction_id,
                                         });
-                                        copyWithToast(tx.transaction_id, 'ID скопирован');
+                                        copyWithToast(tx.transaction_id, "ID скопирован");
                                     }}
                                     disabled={isCopying}
                                 >
@@ -245,10 +257,10 @@ export default function HistoryDetailPage() {
                                 <button
                                     className="text-[var(--text-secondary)]"
                                     onClick={() => {
-                                        trackEvent('transaction_address_copied', {
+                                        trackEvent("transaction_address_copied", {
                                             transaction_hash: hash,
                                         });
-                                        copyWithToast(tx.receiver, 'Адрес скопирован');
+                                        copyWithToast(tx.receiver, "Адрес скопирован");
                                     }}
                                     disabled={isCopying}
                                 >
@@ -258,21 +270,25 @@ export default function HistoryDetailPage() {
                         </div>
                     </div>
                 )}
-                {tx?.type === 'withdrawal' && (
+                {tx?.type === "withdrawal" && (
                     <div className="text-[1.2rem] flex items-center rounded-[1.5rem] gap-[1.5rem] leading-[130%] font-medium bg-[var(--green-secondary)] py-[1.4rem] px-[2.6rem] mt-[2rem]">
                         <CheckIcon /> AML проверка успешно завершена
                     </div>
                 )}
             </div>
             {tx.url && (
-                <Button onClick={() => handleLinkClick(tx.url!)} className="w-full mt-[3rem]" variant="yellow">
+                <Button
+                    onClick={() => handleLinkClick(tx.url!)}
+                    className="w-full mt-[3rem]"
+                    variant="yellow"
+                >
                     Открыть в обозревателе
                 </Button>
             )}
             <TaxModal
                 showModal={showModal}
                 onClose={() => {
-                    trackEvent('transaction_tax_modal_closed', { transaction_hash: hash });
+                    trackEvent("transaction_tax_modal_closed", { transaction_hash: hash });
                     setShowModal(false);
                 }}
             />

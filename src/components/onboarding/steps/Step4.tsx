@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React, { useCallback } from 'react';
-import { useAppSelector } from '@/lib/redux/hooks';
-import { getWallet } from '@/lib/redux/selectors/userSelectors';
-import SelectCrypto from '@/components/SelectCrypto';
-import { SelectCustom } from '@/components/ui/SelectCustom';
-import WarrningBlock from '@/components/WarrningBlock';
-import { Button } from '@/components/ui/Button';
-import { useMixpanel } from '@/lib/providers/MixpanelProvider';
+import React, { useCallback } from "react";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { getWallet } from "@/lib/redux/selectors/userSelectors";
+import SelectCrypto from "@/components/SelectCrypto";
+import { SelectCustom } from "@/components/ui/SelectCustom";
+import WarrningBlock from "@/components/WarrningBlock";
+import { Button } from "@/components/ui/Button";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 
 interface Step4Props {
     onNext: () => void;
@@ -20,18 +20,18 @@ const Step4: React.FC<Step4Props> = ({ onNext }) => {
 
     const MOCK_SELECT_CRYPTO = [
         {
-            id: 'USDT',
-            label: 'USDT',
-            description: balance_usdt ? `${balance_usdt} USDT` : '0.00 USDT',
-            iconUrl: '/icons/usdt.svg',
+            id: "USDT",
+            label: "USDT",
+            description: balance_usdt ? `${balance_usdt} USDT` : "0.00 USDT",
+            iconUrl: "/icons/usdt.svg",
         },
     ];
     const network = [
         {
-            id: 'TRC20',
-            label: 'TRC20',
-            description: 'Комиссия 2.75 USDT',
-            iconUrl: '/icons/trc20.svg',
+            id: "TRC20",
+            label: "TRC20",
+            description: "Комиссия 2.75 USDT",
+            iconUrl: "/icons/trc20.svg",
         },
     ];
 
@@ -41,7 +41,7 @@ const Step4: React.FC<Step4Props> = ({ onNext }) => {
                 Пополнение кошелька
             </h2>
             <p className="text-[1.5rem] leading-[130%] text-[var(--text-secondary)] mb-[2.4rem]">
-                {' '}
+                {" "}
                 Адрес для перевода появится на следующем экране.
             </p>
             <div className="mb-[3rem]">
@@ -51,8 +51,10 @@ const Step4: React.FC<Step4Props> = ({ onNext }) => {
                 <SelectCrypto cryptos={MOCK_SELECT_CRYPTO} />
             </div>
             <div className="mb-[1.2rem]">
-                <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">Сеть</p>
-                <SelectCustom options={network} value={'TRC20'} onChange={() => {}} />
+                <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">
+                    Сеть
+                </p>
+                <SelectCustom options={network} value={"TRC20"} onChange={() => {}} />
             </div>
             <WarrningBlock
                 className="mb-[1.6rem]"
@@ -63,7 +65,7 @@ const Step4: React.FC<Step4Props> = ({ onNext }) => {
                 variant="yellow"
                 className="w-full mt-auto "
                 onClick={() => {
-                    trackEvent('onboarding_step_passed', { step_number: 4 });
+                    trackEvent("onboarding_step_passed", { step_number: 4 });
                     onNext();
                 }}
             >

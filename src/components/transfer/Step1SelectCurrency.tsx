@@ -1,0 +1,76 @@
+"use client";
+import SelectCrypto from "@/components/SelectCrypto";
+import { SelectCustom } from "@/components/ui/SelectCustom";
+import { Button } from "../ui/Button";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
+import { useEffect } from "react";
+
+type Step1Props = {
+    cryptos: {
+        id: string;
+        label: string;
+        description: string;
+        iconUrl: string;
+    }[];
+    network: {
+        id: string;
+        label: string;
+        description: string;
+        iconUrl: string;
+    }[];
+    selectedNetwork: string;
+    handlerChangeNetwork: (network: string) => void;
+    setSelectedCrypto?: (crypto: string) => void;
+    handleNextStep: () => void;
+};
+
+const Step1SelectCurrency: React.FC<Step1Props> = ({
+    cryptos,
+    network,
+    selectedNetwork,
+    handlerChangeNetwork,
+    setSelectedCrypto,
+    handleNextStep,
+}) => {
+    const { trackEvent } = useMixpanel();
+    useEffect(() => {
+        trackEvent("transfer_step1_select_currency_opened");
+    }, [trackEvent]);
+
+    return (
+        <div className="flex flex-col justify-between min-h-[80dvh] mx-[1.6rem]">
+            <div>
+                <div className="mb-[3rem]">
+                    <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">
+                        Криптовалюта
+                    </p>
+                    <SelectCrypto cryptos={cryptos} setSelectedCrypto={setSelectedCrypto} />
+                </div>
+                <div className="mb-[3rem]">
+                    <p className="text-[1.4rem] leading-[130%] font-medium mb-[1rem] text-[var(--text-secondary)]">
+                        Сеть
+                    </p>
+                    <SelectCustom
+                        options={network}
+                        value={selectedNetwork}
+                        onChange={handlerChangeNetwork}
+                        className="mb-[3rem]"
+                    />
+                </div>
+            </div>
+
+            <Button
+                variant="yellow"
+                fullWidth={true}
+                onClick={() => {
+                    handleNextStep();
+                    trackEvent("transfer_step1_continue_clicked", { network: selectedNetwork });
+                }}
+            >
+                Продолжить
+            </Button>
+        </div>
+    );
+};
+
+export default Step1SelectCurrency;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface Tab {
     label: string;
@@ -12,7 +12,7 @@ interface TabsProps {
     className?: string;
 }
 
-export const Tabs: React.FC<TabsProps> = ({ tabs, value, onChange, className = '' }) => {
+export const Tabs: React.FC<TabsProps> = ({ tabs, value, onChange, className = "" }) => {
     return (
         <div className={`flex gap-[1.6rem] overflow-auto py-[0.5rem] ${className}`}>
             {tabs.map((tab) => (
@@ -22,8 +22,8 @@ export const Tabs: React.FC<TabsProps> = ({ tabs, value, onChange, className = '
                     onClick={() => onChange(tab.value)}
                     className={`text-[1.4rem] leading-[130$] px-[1rem] py-[0.7rem] rounded-full ${
                         value === tab.value
-                            ? 'bg-[var(--yellow)] text-[var(--bg-secondary)]'
-                            : 'glass text-[var(--text-secondary)] '
+                            ? "bg-[var(--yellow)] text-[var(--bg-secondary)]"
+                            : "glass text-[var(--text-secondary)] "
                     }
                     `}
                 >

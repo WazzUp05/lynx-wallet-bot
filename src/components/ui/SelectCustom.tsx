@@ -1,6 +1,6 @@
-'use client';
-import Image from 'next/image';
-import React from 'react';
+"use client";
+import Image from "next/image";
+import React from "react";
 
 interface SelectCustomOption {
     id: string;
@@ -16,7 +16,12 @@ interface SelectCustomProps {
     className?: string;
 }
 
-export const SelectCustom: React.FC<SelectCustomProps> = ({ options, value, onChange, className = '' }) => {
+export const SelectCustom: React.FC<SelectCustomProps> = ({
+    options,
+    value,
+    onChange,
+    className = "",
+}) => {
     return (
         <div className={`flex flex-col gap-[1rem] w-full ${className}`}>
             {options.map((option) => (

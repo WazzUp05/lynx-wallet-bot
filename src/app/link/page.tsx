@@ -1,36 +1,38 @@
-'use client';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import ArrowLeft from '@/components/icons/arrow-left.svg';
-import { Button } from '@/components/ui/Button';
-import { Toast } from '@/components/ui/Toast';
-import WarrningLeftIcon from '@/components/icons/warrning-mark.svg';
-import Modal from '@/components/Modal';
-import RubleIcon from '@/components/icons/ruble.svg';
-import UsdtIcon from '@/components/icons/usdt.svg';
-import ArrowRightIcon from '@/components/icons/right-arrow.svg';
-import SelectCrypto from '@/components/SelectCrypto';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { getRatesQuoteRub } from '@/lib/redux/selectors/rateSelectors';
-import { fetchRates } from '@/lib/redux/thunks/rateThunks';
-import { useRouter } from 'next/navigation';
-import Loader from '@/components/ui/Loader';
-import { getLoading, getUser, getWallet } from '@/lib/redux/selectors/userSelectors';
-import { apiFetch } from '@/lib/helpers/url';
-import Input from '@/components/ui/Input';
-import { useMixpanel } from '@/lib/providers/MixpanelProvider';
+"use client";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import ArrowLeft from "@/components/icons/arrow-left.svg";
+import { Button } from "@/components/ui/Button";
+import { Toast } from "@/components/ui/Toast";
+import WarrningLeftIcon from "@/components/icons/warrning-mark.svg";
+import Modal from "@/components/Modal";
+import RubleIcon from "@/components/icons/ruble.svg";
+import UsdtIcon from "@/components/icons/usdt.svg";
+import ArrowRightIcon from "@/components/icons/right-arrow.svg";
+import SelectCrypto from "@/components/SelectCrypto";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { getRatesQuoteRub } from "@/lib/redux/selectors/rateSelectors";
+import { fetchRates } from "@/lib/redux/thunks/rateThunks";
+import { useRouter } from "next/navigation";
+import Loader from "@/components/ui/Loader";
+import { getLoading, getUser, getWallet } from "@/lib/redux/selectors/userSelectors";
+import { apiFetch } from "@/lib/helpers/url";
+import Input from "@/components/ui/Input";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 
 export default function LinkPage() {
-    const [link, setLink] = useState<string>('');
+    const [link, setLink] = useState<string>("");
     const [toast, setToast] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [timer, setTimer] = useState(30);
     const [loadingLink, setLoadingLink] = useState(false);
-    const [linkInfo, setLinkInfo] = useState<{ rubAmount: number; usdtAmount: number } | null>(null);
-    const [error, setError] = useState('');
+    const [linkInfo, setLinkInfo] = useState<{ rubAmount: number; usdtAmount: number } | null>(
+        null
+    );
+    const [error, setError] = useState("");
     const [isPaying, setIsPaying] = useState(false);
     const loadingApp = useAppSelector(getLoading);
     const user = useAppSelector(getUser);
-    const [toastMsg, setToastMsg] = useState('');
+    const [toastMsg, setToastMsg] = useState("");
     const dispatch = useAppDispatch();
     const router = useRouter();
     const wallet = useAppSelector(getWallet);
@@ -42,15 +44,15 @@ export default function LinkPage() {
 
     // Событие при открытии страницы
     useEffect(() => {
-        trackEvent('link_payment_page_opened');
+        trackEvent("link_payment_page_opened");
     }, [trackEvent]);
 
     const MOCK_SELECT_CRYPTO = [
         {
-            id: 'USDT',
-            label: 'USDT',
-            description: balance_usdt ? `${balance_usdt} USDT` : '0.00 USDT',
-            iconUrl: '/icons/usdt.svg',
+            id: "USDT",
+            label: "USDT",
+            description: balance_usdt ? `${balance_usdt} USDT` : "0.00 USDT",
+            iconUrl: "/icons/usdt.svg",
         },
         // {
         //     id: "TON",
@@ -80,18 +82,18 @@ export default function LinkPage() {
     // Валидация ссылки
     const validateLink = (url: string) => {
         if (!url.trim()) {
-            setError('Вставьте ссылку для перехода к оплате');
-            trackEvent('link_validation_error', { error: 'empty_link' });
+            setError("Вставьте ссылку для перехода к оплате");
+            trackEvent("link_validation_error", { error: "empty_link" });
             return false;
         }
 
-        if (!url.startsWith('https://qr.nspk.ru/')) {
-            setError('Неверный формат ссылки. Ссылка должна начинаться: https://qr.nspk...');
-            trackEvent('link_validation_error', { error: 'invalid_format' });
+        if (!url.startsWith("https://qr.nspk.ru/")) {
+            setError("Неверный формат ссылки. Ссылка должна начинаться: https://qr.nspk...");
+            trackEvent("link_validation_error", { error: "invalid_format" });
             return false;
         }
 
-        setError('');
+        setError("");
         return true;
     };
 
@@ -99,9 +101,9 @@ export default function LinkPage() {
     const handleLinkSubmit = async () => {
         if (!validateLink(link)) return;
 
-        trackEvent('link_submitted', { has_url: !!link });
+        trackEvent("link_submitted", { has_url: !!link });
         setLoadingLink(true);
-        setError('');
+        setError("");
 
         // Проверяем sum (в копейках) или amount (в рублях)
         const sumMatch = link.match(/sum=(\d+)/);
@@ -137,29 +139,29 @@ export default function LinkPage() {
                         setLinkInfo({ rubAmount: rub, usdtAmount: usdt });
                         setModalOpen(true);
                     } else {
-                        setToastMsg('Не удалось получить сумму по ссылке');
+                        setToastMsg("Не удалось получить сумму по ссылке");
                         setToast(true);
                         setTimeout(() => setToast(false), 2000);
-                        trackEvent('link_prepare_error', { code, error: 'invalid_response' });
+                        trackEvent("link_prepare_error", { code, error: "invalid_response" });
                     }
                 } catch (e) {
-                    let errorMsg = 'Ошибка запроса prepare';
+                    let errorMsg = "Ошибка запроса prepare";
                     if (e instanceof Error && e.message) {
                         errorMsg += `: ${e.message}`;
                     }
                     setToastMsg(errorMsg);
                     setToast(true);
                     setTimeout(() => setToast(false), 2000);
-                    trackEvent('link_prepare_error', {
+                    trackEvent("link_prepare_error", {
                         code,
-                        error: e instanceof Error ? e.message : 'unknown_error',
+                        error: e instanceof Error ? e.message : "unknown_error",
                     });
                 }
             } else {
-                setToastMsg('Некорректная ссылка');
+                setToastMsg("Некорректная ссылка");
                 setToast(true);
                 setTimeout(() => setToast(false), 2000);
-                trackEvent('link_validation_error', { error: 'invalid_link_format' });
+                trackEvent("link_validation_error", { error: "invalid_link_format" });
             }
             setLoadingLink(false);
         }
@@ -183,7 +185,7 @@ export default function LinkPage() {
     useEffect(() => {
         if (modalOpen && linkInfo) {
             setTimer(30);
-            trackEvent('link_payment_modal_opened', {
+            trackEvent("link_payment_modal_opened", {
                 rub_amount: linkInfo.rubAmount,
                 usdt_amount: linkInfo.usdtAmount,
             });
@@ -194,26 +196,26 @@ export default function LinkPage() {
         if (!linkInfo) return;
 
         setIsPaying(true);
-        trackEvent('link_payment_initiated', {
+        trackEvent("link_payment_initiated", {
             rub_amount: linkInfo.rubAmount,
             usdt_amount: linkInfo.usdtAmount,
-            rate: usdtRate ? usdtRate.toFixed(2) : '0.00',
+            rate: usdtRate ? usdtRate.toFixed(2) : "0.00",
         });
 
         const order = {
             amount: linkInfo.rubAmount,
             amount_usdt: linkInfo.usdtAmount,
             merchant_id,
-            rate: usdtRate ? usdtRate.toFixed(2) : '0.00',
+            rate: usdtRate ? usdtRate.toFixed(2) : "0.00",
             url: link,
         };
 
         // alert(JSON.stringify(order, null, 2));
 
         try {
-            const res = await apiFetch('/orders', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            const res = await apiFetch("/orders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", Accept: "application/json" },
                 body: JSON.stringify(order),
             });
             const data = await res.json();
@@ -222,18 +224,18 @@ export default function LinkPage() {
                 setToast(true);
                 setTimeout(() => setToast(false), 2000);
                 // Можно сохранить текст сообщения для Toast:
-                setToastMsg(data.message || 'Ошибка при создании заявки');
-                trackEvent('link_payment_order_error', {
+                setToastMsg(data.message || "Ошибка при создании заявки");
+                trackEvent("link_payment_order_error", {
                     rub_amount: linkInfo.rubAmount,
                     usdt_amount: linkInfo.usdtAmount,
-                    error: data.message || 'unknown_error',
+                    error: data.message || "unknown_error",
                 });
                 setIsPaying(false);
                 return;
             }
 
             if (data.success && data.data?.uuid) {
-                trackEvent('link_payment_order_created', {
+                trackEvent("link_payment_order_created", {
                     order_uuid: data.data.uuid,
                     rub_amount: linkInfo.rubAmount,
                     usdt_amount: linkInfo.usdtAmount,
@@ -241,11 +243,11 @@ export default function LinkPage() {
                 router.push(`/status/${data.data.uuid}`);
             }
         } catch (e) {
-            console.error('Order error:', e);
-            trackEvent('link_payment_order_error', {
+            console.error("Order error:", e);
+            trackEvent("link_payment_order_error", {
                 rub_amount: linkInfo.rubAmount,
                 usdt_amount: linkInfo.usdtAmount,
-                error: e instanceof Error ? e.message : 'network_error',
+                error: e instanceof Error ? e.message : "network_error",
             });
             setIsPaying(false);
         }
@@ -257,12 +259,19 @@ export default function LinkPage() {
 
     return (
         <div className="p-[1.6rem] pb-[calc(var(--safe-bottom)+1.6rem)] flex flex-col min-h-[100dvh]">
-            {toast && <Toast open={toast} message={toastMsg} type="error" onClose={() => setToast(false)} />}
+            {toast && (
+                <Toast
+                    open={toast}
+                    message={toastMsg}
+                    type="error"
+                    onClose={() => setToast(false)}
+                />
+            )}
             <div className="flex h-[3.6rem] items-center justify-center relative text-[1.8rem] leading-[130%] mb-[3.2rem] font-semibold">
                 <div
                     className="absolute left-[0] top-1/2 translate-y-[-50%] bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
                     onClick={() => {
-                        trackEvent('link_payment_page_closed');
+                        trackEvent("link_payment_page_closed");
                         router.back();
                     }}
                 >
@@ -287,7 +296,8 @@ export default function LinkPage() {
                         2
                     </span>
                     <p className="text-[1.3rem] leading-[130%]  text-[var(--text-main)]">
-                        Когда появится QR-код, наведите на него камеру телефона и откройте ссылку в браузере.
+                        Когда появится QR-код, наведите на него камеру телефона и откройте ссылку в
+                        браузере.
                     </p>
                 </div>
                 <div className="flex items-start gap-[0.6rem]">
@@ -295,7 +305,8 @@ export default function LinkPage() {
                         3
                     </span>
                     <p className="text-[1.3rem] leading-[130%]  text-[var(--text-main)]">
-                        Откроется страница оплаты. Скопируйте ссылку (URL) из адресной строки — она должна начинаться с{' '}
+                        Откроется страница оплаты. Скопируйте ссылку (URL) из адресной строки — она
+                        должна начинаться с{" "}
                         <span className="text-[var(--yellow)]">https://qr.nspk.ru/.</span>
                     </p>
                 </div>
@@ -313,7 +324,8 @@ export default function LinkPage() {
                     <WarrningLeftIcon width={20} height={20} />
                 </div>
                 <span className="text-[var(--text-main)]">
-                    Этот способ работает только через QR-код, отсканированный с компьютера или другого устройства.
+                    Этот способ работает только через QR-код, отсканированный с компьютера или
+                    другого устройства.
                 </span>
             </div>
             <div className=" bg-[var(--bg-secondary)] px-[1.6rem] py-[2rem] rounded-[2rem]">
@@ -324,9 +336,9 @@ export default function LinkPage() {
                     onChange={(e) => {
                         const newLink = e.target.value;
                         setLink(newLink);
-                        setError('');
+                        setError("");
                         if (newLink.trim()) {
-                            trackEvent('link_pasted', { has_url: !!newLink });
+                            trackEvent("link_pasted", { has_url: !!newLink });
                         }
                     }}
                     error={error}
@@ -338,7 +350,7 @@ export default function LinkPage() {
                 onClick={handleLinkSubmit}
                 disabled={loadingLink || !link.trim()}
             >
-                {loadingLink ? 'Обработка...' : 'Продолжить'}
+                {loadingLink ? "Обработка..." : "Продолжить"}
             </Button>
             <Modal
                 title="Оплатить"
@@ -347,7 +359,7 @@ export default function LinkPage() {
                 open={modalOpen}
                 onClose={() => {
                     setModalOpen(false);
-                    trackEvent('link_payment_modal_closed', {
+                    trackEvent("link_payment_modal_closed", {
                         rub_amount: linkInfo?.rubAmount || 0,
                         usdt_amount: linkInfo?.usdtAmount || 0,
                     });
@@ -364,7 +376,8 @@ export default function LinkPage() {
                                         Сумма
                                     </p>
                                     <p className="text-[1.4rem] font-semibold leading-[130%]">
-                                        {linkInfo.rubAmount ? linkInfo.rubAmount.toFixed(2) : '--'} RUB
+                                        {linkInfo.rubAmount ? linkInfo.rubAmount.toFixed(2) : "--"}{" "}
+                                        RUB
                                     </p>
                                 </div>
                                 <div className="flex items-center justify-between w-full">
@@ -377,7 +390,8 @@ export default function LinkPage() {
                                         </span>
                                         <ArrowRightIcon className="text-[var(--text-secondary)]" />
                                         <span className="flex items-center gap-[0.4rem] text-[var(--text-main)]">
-                                            <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : '--'} RUB
+                                            <RubleIcon /> {usdtRate ? usdtRate.toFixed(2) : "--"}{" "}
+                                            RUB
                                         </span>
                                     </p>
                                 </div>
@@ -386,16 +400,21 @@ export default function LinkPage() {
                             <div className="flex items-center justify-between w-full mt-[2rem] mb-[3rem]">
                                 <div className="flex flex-col text-[1.5rem] leading-[130%]">
                                     <p className="font-semibold text-[var(--text-main)]">Итого:</p>
-                                    <p className="text-[var(--[var(--text-secondary)])]">Комиссия 0%</p>
+                                    <p className="text-[var(--[var(--text-secondary)])]">
+                                        Комиссия 0%
+                                    </p>
                                 </div>
                                 <p className="text-[2.5rem] font-semibold leading-[130%] text-[var(--text-main)]">
-                                    {linkInfo.usdtAmount ? linkInfo.usdtAmount : '--'} USDT
+                                    {linkInfo.usdtAmount ? linkInfo.usdtAmount : "--"} USDT
                                 </p>
                             </div>
                             <Button
                                 variant="yellow"
                                 onClick={handlePay}
-                                disabled={isPaying || (balance_usdt ? balance_usdt < linkInfo.usdtAmount : true)}
+                                disabled={
+                                    isPaying ||
+                                    (balance_usdt ? balance_usdt < linkInfo.usdtAmount : true)
+                                }
                                 className="mb-2"
                             >
                                 {isPaying ? (
@@ -404,7 +423,7 @@ export default function LinkPage() {
                                         <span>Обработка...</span>
                                     </div>
                                 ) : (
-                                    'Оплатить'
+                                    "Оплатить"
                                 )}
                             </Button>
                         </>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 interface UseCopyToClipboardReturn {
     copyToClipboard: (text: string) => Promise<boolean>;
@@ -21,22 +21,22 @@ export const useCopyToClipboard = (): UseCopyToClipboardReturn => {
                 return true;
             } else {
                 // Fallback для Safari/WebView и HTTP
-                const textarea = document.createElement('textarea');
+                const textarea = document.createElement("textarea");
                 textarea.value = text;
-                textarea.style.position = 'fixed';
-                textarea.style.opacity = '0';
-                textarea.style.left = '-999999px';
-                textarea.style.top = '-999999px';
+                textarea.style.position = "fixed";
+                textarea.style.opacity = "0";
+                textarea.style.left = "-999999px";
+                textarea.style.top = "-999999px";
                 document.body.appendChild(textarea);
                 textarea.focus();
                 textarea.select();
 
-                const success = document.execCommand('copy');
+                const success = document.execCommand("copy");
                 document.body.removeChild(textarea);
                 return success;
             }
         } catch (error) {
-            console.error('Ошибка копирования:', error);
+            console.error("Ошибка копирования:", error);
             return false;
         } finally {
             setIsCopying(false);

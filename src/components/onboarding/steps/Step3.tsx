@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { Button } from '../../ui/Button';
-import { useMixpanel } from '@/lib/providers/MixpanelProvider';
+import React from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { Button } from "../../ui/Button";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 
 interface Step3Props {
     onNext: () => void;
@@ -32,7 +32,9 @@ const Step3: React.FC<Step3Props> = ({ onNext }) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="fs-bold text-center mb-[0.8rem]"
-                        dangerouslySetInnerHTML={{ __html: 'Пополните кошелёк и начните покупки в&nbsp;Lynx' }}
+                        dangerouslySetInnerHTML={{
+                            __html: "Пополните кошелёк и начните покупки в&nbsp;Lynx",
+                        }}
                     />
                     <motion.p
                         initial={{ opacity: 0, y: 0 }}
@@ -42,7 +44,7 @@ const Step3: React.FC<Step3Props> = ({ onNext }) => {
                     >
                         <span
                             dangerouslySetInnerHTML={{
-                                __html: 'Без регистрации и KYC просто переведите&nbsp;USDT на свой адрес.',
+                                __html: "Без регистрации и KYC просто переведите&nbsp;USDT на свой адрес.",
                             }}
                         />
                     </motion.p>
@@ -55,7 +57,7 @@ const Step3: React.FC<Step3Props> = ({ onNext }) => {
                         <Button
                             variant="yellow"
                             onClick={() => {
-                                trackEvent('onboarding_step_passed', { step_number: 3 });
+                                trackEvent("onboarding_step_passed", { step_number: 3 });
                                 onNext();
                             }}
                         >

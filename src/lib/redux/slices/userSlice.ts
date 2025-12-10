@@ -47,8 +47,13 @@ const userSlice = createSlice({
         setLoading: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload;
         },
+        updateBalance: (state, action: PayloadAction<number>) => {
+            if (state.data?.wallet) {
+                state.data.wallet.balance_usdt += action.payload;
+            }
+        },
     },
 });
 
-export const { setUser, clearUser, setLoading } = userSlice.actions;
+export const { setUser, clearUser, setLoading, updateBalance } = userSlice.actions;
 export default userSlice.reducer;

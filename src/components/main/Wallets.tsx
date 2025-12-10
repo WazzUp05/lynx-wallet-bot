@@ -1,14 +1,14 @@
-import React from 'react';
-import Navigation from './Navigation';
-import WalletItem from './WalletItem';
-import Offer from './Offer';
-import RefilledModal from '../refilled/RefilledModal';
-import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
-import { getHistory } from '@/lib/redux/selectors/historySelectors';
-import { getWallet } from '@/lib/redux/selectors/userSelectors';
-import { setOnboardingToStep5 } from '@/lib/redux/slices/appSlice';
-import { useMixpanel } from '@/lib/providers/MixpanelProvider';
-import mixpanel from 'mixpanel-browser';
+import React from "react";
+import Navigation from "./Navigation";
+import WalletItem from "./WalletItem";
+import Offer from "./Offer";
+import RefilledModal from "../refilled/RefilledModal";
+import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks";
+import { getHistory } from "@/lib/redux/selectors/historySelectors";
+import { getWallet } from "@/lib/redux/selectors/userSelectors";
+import { setOnboardingToStep5 } from "@/lib/redux/slices/appSlice";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
+import mixpanel from "mixpanel-browser";
 interface WalletItemDataProps {
     walletName?: string;
     walletIcon?: string;
@@ -38,13 +38,13 @@ const Wallets = ({ wallets }: WalletsProps) => {
 
     // Обработчик клика на кнопку "Пополнить"
     const handleTopUp = () => {
-        trackEvent('button_clicked', {
-            label: 'Top Up Button',
-            category: 'Wallet',
+        trackEvent("button_clicked", {
+            label: "Top Up Button",
+            category: "Wallet",
         });
-        mixpanel.track('Button Clicked Wallets Up', {
-            label: 'Top Up Button',
-            category: 'Wallet',
+        mixpanel.track("Button Clicked Wallets Up", {
+            label: "Top Up Button",
+            category: "Wallet",
         });
         if (shouldShowOnboarding()) {
             // Если нет истории и баланс 0 - открываем онбординг на 5-м шаге

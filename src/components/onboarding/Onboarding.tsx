@@ -1,23 +1,23 @@
-'use client';
-import React from 'react';
-import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+"use client";
+import React from "react";
+import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {
     setOnboardingCompleted,
     setOnboardingStep,
     setWaitingForDeposit,
     setNeedDeposit,
     setIsFirstTime,
-} from '@/lib/redux/slices/appSlice';
-import { getOnboardingStep } from '@/lib/redux/selectors/appSelectors';
-import Step1 from './steps/Step1';
-import Step2 from './steps/Step2';
-import Step3 from './steps/Step3';
-import Step4 from './steps/Step4';
-import Step5 from './steps/Step5';
-import Step6 from './steps/Step6';
-import CloseIcon from '@/components/icons/close.svg';
-import ArrowLeftIcon from '@/components/icons/arrow-left.svg';
+} from "@/lib/redux/slices/appSlice";
+import { getOnboardingStep } from "@/lib/redux/selectors/appSelectors";
+import Step1 from "./steps/Step1";
+import Step2 from "./steps/Step2";
+import Step3 from "./steps/Step3";
+import Step4 from "./steps/Step4";
+import Step5 from "./steps/Step5";
+import Step6 from "./steps/Step6";
+import CloseIcon from "@/components/icons/close.svg";
+import ArrowLeftIcon from "@/components/icons/arrow-left.svg";
 
 const Onboarding: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -46,7 +46,7 @@ const Onboarding: React.FC = () => {
     };
 
     const handleSkip = () => {
-        console.log('close');
+        console.log("close");
 
         dispatch(setOnboardingCompleted(true));
         dispatch(setIsFirstTime(false)); // Устанавливаем что больше не первый раз
@@ -68,14 +68,14 @@ const Onboarding: React.FC = () => {
         <div
             className="flex z-[1000] relative flex-col pt-[2.4rem] not-first:overflow-hidden"
             style={{
-                minHeight: 'calc(100dvh)',
+                minHeight: "calc(100dvh)",
             }}
         >
             {/* Progress */}
             <div className="flex w-full justify-between items-center px-[1.6rem] mb-2 relative z-[1000]">
                 <button
                     className={`bg-[var(--bg-secondary)]  rounded-[1rem] w-[3.5rem] h-[3.5rem] center  text-[var(--text-secondary)] ${
-                        step === 0 ? 'opacity-0 pointer-events-none' : ''
+                        step === 0 ? "opacity-0 pointer-events-none" : ""
                     }`}
                     onClick={handlePrev}
                     aria-label="Назад"
@@ -91,7 +91,7 @@ const Onboarding: React.FC = () => {
                                     key={i}
                                     onClick={() => setStep(i)}
                                     className={`h-[0.3rem] w-[2rem] rounded-full transition-all duration-200 ${
-                                        i === step ? 'bg-[var(--yellow)]' : 'bg-[var(--text-main)]'
+                                        i === step ? "bg-[var(--yellow)]" : "bg-[var(--text-main)]"
                                     }`}
                                 />
                             ))}
@@ -99,7 +99,7 @@ const Onboarding: React.FC = () => {
                 )}
                 <button
                     className={`bg-[var(--bg-secondary)]  rounded-[1rem] w-[3.5rem] h-[3.5rem] center text-[var(--text-secondary)] ${
-                        step > 1 ? '' : 'opacity-0 pointer-events-none'
+                        step > 1 ? "" : "opacity-0 pointer-events-none"
                     }`}
                     onClick={handleSkip}
                     aria-label="Закрыть"

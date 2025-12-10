@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { Button } from '../../ui/Button';
-import { useMixpanel } from '@/lib/providers/MixpanelProvider';
+import React from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { Button } from "../../ui/Button";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 
 interface Step2Props {
     onNext: () => void;
@@ -32,7 +32,7 @@ const Step2: React.FC<Step2Props> = ({ onNext }) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="fs-bold text-center mb-[0.8rem]"
-                        dangerouslySetInnerHTML={{ __html: 'Платите криптой<br>по QR или ссылке' }}
+                        dangerouslySetInnerHTML={{ __html: "Платите криптой<br>по QR или ссылке" }}
                     />
                     <motion.p
                         initial={{ opacity: 0, y: 0 }}
@@ -42,7 +42,7 @@ const Step2: React.FC<Step2Props> = ({ onNext }) => {
                     >
                         <span
                             dangerouslySetInnerHTML={{
-                                __html: 'Совершайте покупки криптой по&nbsp;СБП&nbsp;быстро и безопасно.',
+                                __html: "Совершайте покупки криптой по&nbsp;СБП&nbsp;быстро и безопасно.",
                             }}
                         />
                     </motion.p>
@@ -55,7 +55,7 @@ const Step2: React.FC<Step2Props> = ({ onNext }) => {
                         <Button
                             variant="yellow"
                             onClick={() => {
-                                trackEvent('onboarding_step_passed', { step_number: 2 });
+                                trackEvent("onboarding_step_passed", { step_number: 2 });
                                 onNext();
                             }}
                         >

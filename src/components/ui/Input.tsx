@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useState } from "react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -9,6 +9,8 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     className?: string;
     inputClassName?: string;
     buttonClassName?: string;
+    disabledClipboardCheck?: boolean;
+    children?: React.ReactNode;
 }
 
 /**
@@ -18,18 +20,20 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     (
         {
             label,
-            placeholder = 'Вставьте ссылку',
-            buttonText = 'Вставить',
+            placeholder = "Вставьте ссылку",
+            buttonText = "Вставить",
             onButtonClick,
             error,
-            className = '',
-            inputClassName = '',
-            buttonClassName = '',
+            className = "",
+            inputClassName = "",
+            buttonClassName = "",
+            disabledClipboardCheck = false,
+            children,
             ...props
         },
         ref
     ) => {
-        const [value, setValue] = useState(props.value || props.defaultValue || '');
+        const [value, setValue] = useState(props.value || props.defaultValue || "");
         const [clipboardText, setClipboardText] = useState<string | null>(null);
 
         const handleCheckClipboard = async () => {
@@ -37,7 +41,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 const text = await navigator.clipboard.readText();
                 if (text.trim().length > 0) setClipboardText(text);
             } catch (err) {
-                console.warn('Буфер недоступен:', err);
+                console.warn("Буфер недоступен:", err);
             }
         };
 
@@ -53,15 +57,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         return (
             <div className={`flex flex-col gap-[0.8rem] ${className}`}>
                 {label && (
-                    <label className="text-[1.4rem] leading-[130%] text-[var(--text-main)] font-medium">{label}</label>
+                    <label className="text-[1.4rem] leading-[130%] text-[var(--text-main)] font-medium">
+                        {label}
+                    </label>
                 )}
 
                 <div className="relative">
                     <div
                         className={`flex items-center w-full h-[4.8rem] px-[1.6rem] rounded-[1.5rem] border transition-all duration-200 ${
                             error
-                                ? 'border-[var(--red-main)] bg-[var(--red-secondary)]'
-                                : 'border-[var(--bg-secondary)] bg-[var(--dark-gray-secondary)]'
+                                ? "border-[var(--red-main)] bg-[var(--red-secondary)]"
+                                : "border-[var(--bg-secondary)] bg-[var(--dark-gray-secondary)]"
                         }`}
                     >
                         <input
@@ -75,12 +81,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                             placeholder={placeholder}
                             onClick={handleCheckClipboard} // 👈 важно — только по клику
                             className={`flex-1 bg-transparent text-[1.4rem] ${
-                                error ? 'text-[var(--red-main)]' : 'text-[var(--text-main)]'
+                                error ? "text-[var(--red-main)]" : "text-[var(--text-main)]"
                             } placeholder:text-[var(--text-secondary)] outline-none ${inputClassName}`}
                             {...props}
                         />
 
-                        {clipboardText && (
+                        {!disabledClipboardCheck && clipboardText && (
                             <button
                                 type="button"
                                 onClick={handlePaste}
@@ -89,15 +95,21 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                                 {buttonText}
                             </button>
                         )}
+
+                        {children}
                     </div>
 
-                    {error && <p className="text-[1.4rem] leading-[130%] mt-[1rem] text-[var(--red-main)]">{error}</p>}
+                    {error && (
+                        <p className="text-[1.4rem] leading-[130%] mt-[1rem] text-[var(--red-main)]">
+                            {error}
+                        </p>
+                    )}
                 </div>
             </div>
         );
     }
 );
 
-Input.displayName = 'Input';
+Input.displayName = "Input";
 
 export default Input;

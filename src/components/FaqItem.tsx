@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import ArrowDownIcon from '@/components/icons/arrow-down.svg';
-import { useMixpanel } from '@/lib/providers/MixpanelProvider';
+import React, { useState } from "react";
+import ArrowDownIcon from "@/components/icons/arrow-down.svg";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 
 interface FaqItemProps {
     question: string;
@@ -18,9 +18,9 @@ const FaqItem: React.FC<FaqItemProps> = ({ question, answer, defaultOpen = false
         const newIsOpen = !isOpen;
         setIsOpen(newIsOpen);
         if (newIsOpen) {
-            trackEvent('faq_question_opened', { question });
+            trackEvent("faq_question_opened", { question });
         } else {
-            trackEvent('faq_question_closed', { question });
+            trackEvent("faq_question_closed", { question });
         }
     };
 
@@ -35,13 +35,19 @@ const FaqItem: React.FC<FaqItemProps> = ({ question, answer, defaultOpen = false
                 </span>
                 <div
                     className={`w-[2.4rem] h-[2.4rem] center transition-transform duration-300 flex-shrink-0 ${
-                        isOpen ? 'rotate-180' : ''
+                        isOpen ? "rotate-180" : ""
                     }`}
                 >
-                    <ArrowDownIcon width={24} height={24} className="w-[2.4rem] h-[2.4rem] text-[var(--text-main)]" />
+                    <ArrowDownIcon
+                        width={24}
+                        height={24}
+                        className="w-[2.4rem] h-[2.4rem] text-[var(--text-main)]"
+                    />
                 </div>
             </button>
-            <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[500rem]' : 'max-h-0'}`}>
+            <div
+                className={`overflow-hidden transition-all duration-300 ${isOpen ? "max-h-[500rem]" : "max-h-0"}`}
+            >
                 <div
                     className="mt-[3rem] text-[1.4rem] leading-[130%] text-[var(--text-secondary)]"
                     dangerouslySetInnerHTML={{ __html: answer }}

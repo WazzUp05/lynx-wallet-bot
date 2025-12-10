@@ -1,21 +1,21 @@
-'use client';
-import { useParams, useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { Button } from '@/components/ui/Button';
-import ArrowLeft from '@/components/icons/arrow-left.svg';
-import WarrningLeftIcon from '@/components/icons/warrning-mark.svg';
-import RightIcon from '@/components/icons/right-arrow.svg';
-import { QRCodeSVG } from 'qrcode.react';
-import { useState } from 'react';
-import TaxModal from '@/components/modals/TaxModal';
-import { Toast } from '@/components/ui/Toast';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { getLoading, getWallet } from '@/lib/redux/selectors/userSelectors';
-import Loader from '@/components/ui/Loader';
-import MinAmountModal from '@/components/modals/MinAmountModal';
-import { useCopyWithToast } from '@/hooks/useCopyWithToast';
-import { useMixpanel } from '@/lib/providers/MixpanelProvider';
-import { useEffect } from 'react';
+"use client";
+import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
+import { Button } from "@/components/ui/Button";
+import ArrowLeft from "@/components/icons/arrow-left.svg";
+import WarrningLeftIcon from "@/components/icons/warrning-mark.svg";
+import RightIcon from "@/components/icons/right-arrow.svg";
+import { QRCodeSVG } from "qrcode.react";
+import { useState } from "react";
+import TaxModal from "@/components/modals/TaxModal";
+import { Toast } from "@/components/ui/Toast";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { getLoading, getWallet } from "@/lib/redux/selectors/userSelectors";
+import Loader from "@/components/ui/Loader";
+import MinAmountModal from "@/components/modals/MinAmountModal";
+import { useCopyWithToast } from "@/hooks/useCopyWithToast";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
+import { useEffect } from "react";
 
 // Типизация для адресов
 type NetworkData = {
@@ -46,7 +46,7 @@ export default function RefilledQrPage() {
 
     // Событие при открытии страницы
     useEffect(() => {
-        trackEvent('refill_qr_page_opened', {
+        trackEvent("refill_qr_page_opened", {
             crypto,
             network,
         });
@@ -60,33 +60,37 @@ export default function RefilledQrPage() {
     const ADDRESSES: Addresses = {
         USDT: {
             TRC20: {
-                address: wallet?.address || '',
-                fee: '2.75 USDT',
-                min: '5 USDT',
-                networkLabel: 'TRC20',
-                icon: '/icons/usdt.svg',
+                address: wallet?.address || "",
+                fee: "2.75 USDT",
+                min: "5 USDT",
+                networkLabel: "TRC20",
+                icon: "/icons/usdt.svg",
             },
             TON: {
-                address: 'UQ...TONADDRESS',
-                fee: '2.75 USDT',
-                min: '1 USDT',
-                networkLabel: 'TON',
-                icon: '/icons/ton.svg',
+                address: "UQ...TONADDRESS",
+                fee: "2.75 USDT",
+                min: "1 USDT",
+                networkLabel: "TON",
+                icon: "/icons/ton.svg",
             },
         },
         TON: {
             TON: {
-                address: 'UQ...TONADDRESS',
-                fee: '0.2 TON',
-                min: '1 TON',
-                networkLabel: 'TON',
-                icon: '/icons/ton.svg',
+                address: "UQ...TONADDRESS",
+                fee: "0.2 TON",
+                min: "1 TON",
+                networkLabel: "TON",
+                icon: "/icons/ton.svg",
             },
         },
     };
 
     const srcQr =
-        network === 'TRC20' ? '/icons/USDT-TRC20.svg' : network === 'TON' ? '/icons/TON-TON.svg' : '/qr-demo.png';
+        network === "TRC20"
+            ? "/icons/USDT-TRC20.svg"
+            : network === "TON"
+              ? "/icons/TON-TON.svg"
+              : "/qr-demo.png";
 
     const upperCrypto = crypto?.toUpperCase();
     const upperNetwork = network?.toUpperCase();
@@ -110,7 +114,7 @@ export default function RefilledQrPage() {
                 <button
                     className="absolute left-0 top-1/2 -translate-y-1/2 bg-[var(--bg-secondary)] rounded-[1rem] w-[3.5rem] h-[3.5rem] center ml-auto text-[var(--text-secondary)]"
                     onClick={() => {
-                        trackEvent('refill_qr_page_closed', { crypto, network });
+                        trackEvent("refill_qr_page_closed", { crypto, network });
                         router.back();
                     }}
                 >
@@ -147,12 +151,12 @@ export default function RefilledQrPage() {
                     {data.address}
                 </div>
                 <div className="text-[1.2rem] max-w-[23.3rem] mx-auto leading-[130%] text-[var(--gray)] text-center mb-[1.6rem]">
-                    Адрес принимает только <b>USDT в сети TRC20</b>. Отправка через другие сети{' '}
+                    Адрес принимает только <b>USDT в сети TRC20</b>. Отправка через другие сети{" "}
                     <b>приведёт к потере средств!</b>
                 </div>
                 <div
                     onClick={() => {
-                        trackEvent('refill_min_amount_modal_opened', { crypto, network });
+                        trackEvent("refill_min_amount_modal_opened", { crypto, network });
                         setShowMinAmountModal(true);
                     }}
                     className="w-full flex gap-[0.5rem] bg-[var(--yellow-optional)]  py-[1.6rem] px-[1.6rem] rounded-[1.5rem] mb-[1.2rem] text-[1.2rem] leading-[130%] "
@@ -169,7 +173,7 @@ export default function RefilledQrPage() {
                 </div>
                 <div
                     onClick={() => {
-                        trackEvent('refill_tax_modal_opened', { crypto, network });
+                        trackEvent("refill_tax_modal_opened", { crypto, network });
                         setShowTaxModal(true);
                     }}
                     className="w-full bg-[var(--yellow-optional)]  py-[1.6rem] px-[1.6rem] rounded-[1.5rem] text-[1.2rem] leading-[130%]  flex items-center gap-2"
@@ -189,23 +193,23 @@ export default function RefilledQrPage() {
                 className="w-full mt-auto mb-[1rem]"
                 variant="yellow"
                 onClick={() => {
-                    trackEvent('refill_address_copied', {
+                    trackEvent("refill_address_copied", {
                         crypto,
                         network,
                         address: data.address,
                     });
-                    copyWithToast(data.address, 'Адрес скопирован');
+                    copyWithToast(data.address, "Адрес скопирован");
                 }}
                 disabled={isCopying}
             >
-                {isCopying ? 'Копирование...' : 'Копировать адрес'}
+                {isCopying ? "Копирование..." : "Копировать адрес"}
             </Button>
             <Button
                 className="w-full"
                 variant="ghost"
                 onClick={() => {
-                    trackEvent('refill_home_clicked', { crypto, network });
-                    router.push('/');
+                    trackEvent("refill_home_clicked", { crypto, network });
+                    router.push("/");
                 }}
             >
                 Вернуться на главную
@@ -213,14 +217,14 @@ export default function RefilledQrPage() {
             <TaxModal
                 showModal={showTaxModal}
                 onClose={() => {
-                    trackEvent('refill_tax_modal_closed', { crypto, network });
+                    trackEvent("refill_tax_modal_closed", { crypto, network });
                     setShowTaxModal(false);
                 }}
             />
             <MinAmountModal
                 showModal={showMinAmountModal}
                 onClose={() => {
-                    trackEvent('refill_min_amount_modal_closed', { crypto, network });
+                    trackEvent("refill_min_amount_modal_closed", { crypto, network });
                     setShowMinAmountModal(false);
                 }}
             />

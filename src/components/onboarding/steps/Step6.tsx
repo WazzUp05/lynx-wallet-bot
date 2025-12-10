@@ -1,18 +1,22 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
-import { getHistory } from '@/lib/redux/selectors/historySelectors';
-import { fetchHistory } from '@/lib/redux/thunks/historyThunks';
-import { setWaitingForDeposit, setOnboardingCompleted, setIsFirstTime } from '@/lib/redux/slices/appSlice';
-import { Button } from '@/components/ui/Button';
+import React, { useState, useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks";
+import { getHistory } from "@/lib/redux/selectors/historySelectors";
+import { fetchHistory } from "@/lib/redux/thunks/historyThunks";
+import {
+    setWaitingForDeposit,
+    setOnboardingCompleted,
+    setIsFirstTime,
+} from "@/lib/redux/slices/appSlice";
+import { Button } from "@/components/ui/Button";
 
-import WarrningBlock from '@/components/WarrningBlock';
-import Image from 'next/image';
-import Loader from '@/components/ui/Loader';
-import { HistoryItemType } from '@/components/history/HistoryDay';
-import { Toast } from '@/components/ui/Toast';
-import { useMixpanel } from '@/lib/providers/MixpanelProvider';
+import WarrningBlock from "@/components/WarrningBlock";
+import Image from "next/image";
+import Loader from "@/components/ui/Loader";
+import { HistoryItemType } from "@/components/history/HistoryDay";
+import { Toast } from "@/components/ui/Toast";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 interface Step6Props {
     onNext: () => void;
 }
@@ -37,7 +41,7 @@ const Step6: React.FC<Step6Props> = ({ onNext }) => {
             try {
                 await dispatch(fetchHistory()).unwrap();
             } catch (error) {
-                console.error('Ошибка при проверке истории:', error);
+                console.error("Ошибка при проверке истории:", error);
             }
         };
 
@@ -56,7 +60,7 @@ const Step6: React.FC<Step6Props> = ({ onNext }) => {
     useEffect(() => {
         if (history && history.length > 0) {
             const latestTransaction = history[0]; // Предполагаем, что транзакции отсортированы по дате
-            if (latestTransaction && latestTransaction.status === 'completed') {
+            if (latestTransaction && latestTransaction.status === "completed") {
                 setIsSuccess(true);
                 setLastTransaction(latestTransaction);
                 // Устанавливаем состояние успешного пополнения
@@ -67,7 +71,7 @@ const Step6: React.FC<Step6Props> = ({ onNext }) => {
 
     React.useEffect(() => {
         if (isSuccess && lastTransaction) {
-            trackEvent('wallet_deposit_success', { amount: lastTransaction.amount });
+            trackEvent("wallet_deposit_success", { amount: lastTransaction.amount });
         }
     }, [isSuccess, lastTransaction]);
 
@@ -103,12 +107,12 @@ const Step6: React.FC<Step6Props> = ({ onNext }) => {
 
             <div
                 className={`w-[60rem] h-[60rem] absolute top-[7.4rem] left-[-43.4rem] ${
-                    isSuccess ? 'bg-[#34C85A4D]' : 'bg-[#007AFF4D]'
+                    isSuccess ? "bg-[#34C85A4D]" : "bg-[#007AFF4D]"
                 } blur-[12rem] rounded-[50%] `}
             />
             <div
                 className={`w-[60rem] h-[50rem] absolute top-[7.4rem] right-[-43.4rem] ${
-                    isSuccess ? 'bg-[#34C85A4D]' : 'bg-[#007AFF4D]'
+                    isSuccess ? "bg-[#34C85A4D]" : "bg-[#007AFF4D]"
                 } blur-[12rem] rounded-[50%] `}
             />
             <div className="w-full flex-1 relative flex flex-col items-center">
@@ -130,7 +134,11 @@ const Step6: React.FC<Step6Props> = ({ onNext }) => {
                                 Отлично! Теперь вы можете совершить свою первую покупку.
                             </p>
                         )}
-                        <Button variant="yellow" className="w-full mt-auto" onClick={handleGoToWallet}>
+                        <Button
+                            variant="yellow"
+                            className="w-full mt-auto"
+                            onClick={handleGoToWallet}
+                        >
                             Перейти в кошелёк
                         </Button>
                     </>

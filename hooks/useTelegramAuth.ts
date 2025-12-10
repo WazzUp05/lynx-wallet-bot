@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { clearUser, setLoading, setUser } from '@/lib/redux/slices/userSlice';
-import { useEffect } from 'react';
-import { parse } from '@telegram-apps/init-data-node/web';
-import { checkAndSyncMerchant } from '@/lib/api/merchant';
-import { useRawInitData } from '@telegram-apps/sdk-react';
-import { fetchUser } from '@/lib/redux/thunks/UserThunks';
-import mixpanel from 'mixpanel-browser';
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { clearUser, setLoading, setUser } from "@/lib/redux/slices/userSlice";
+import { useEffect } from "react";
+import { parse } from "@telegram-apps/init-data-node/web";
+import { checkAndSyncMerchant } from "@/lib/api/merchant";
+import { useRawInitData } from "@telegram-apps/sdk-react";
+import { fetchUser } from "@/lib/redux/thunks/UserThunks";
+import mixpanel from "mixpanel-browser";
 
-mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN || '', { debug: true }); // 👈 только один раз при старте
+mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN || "", { debug: true }); // 👈 только один раз при старте
 
 export function useTelegramAuth() {
     const dispatch = useAppDispatch();
@@ -17,9 +17,9 @@ export function useTelegramAuth() {
 
     try {
         const initData = useRawInitData();
-        rawInitData = typeof initData === 'undefined' ? null : initData;
+        rawInitData = typeof initData === "undefined" ? null : initData;
     } catch (e) {
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === "development") {
             rawInitData = null;
         } else {
             throw e;
@@ -28,10 +28,10 @@ export function useTelegramAuth() {
 
     useEffect(() => {
         const devInitData =
-            'user=%7B%22id%22%3A123456%2C%22first_name%22%3A%22Dev%22%2C%22last_name%22%3A%22User%22%2C%22username%22%3A%22devuser%22%7D';
-        const isDev = process.env.NODE_ENV === 'development';
-        const actualInitData = rawInitData || (isDev ? devInitData : '');
-        console.log('actualInitData:', actualInitData);
+            "user=%7B%22id%22%3A123456%2C%22first_name%22%3A%22Dev%22%2C%22last_name%22%3A%22User%22%2C%22username%22%3A%22devuser%22%7D";
+        const isDev = process.env.NODE_ENV === "development";
+        const actualInitData = rawInitData || (isDev ? devInitData : "");
+        console.log("actualInitData:", actualInitData);
         if (!actualInitData) {
             dispatch(setLoading(false));
             dispatch(clearUser());
@@ -45,16 +45,16 @@ export function useTelegramAuth() {
             const parsed = parse(actualInitData);
             telegramUser = parsed.user || null;
             startParam = parsed.start_param || null;
-            console.log('Telegram user:', telegramUser, 'start_param:', startParam);
+            console.log("Telegram user:", telegramUser, "start_param:", startParam);
         } catch (e) {
-            console.error('Failed to parse Telegram user:', e);
+            console.error("Failed to parse Telegram user:", e);
         }
 
         dispatch(setLoading(true));
 
-        fetch('/api/auth/telegram', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        fetch("/api/auth/telegram", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ initData: actualInitData }),
         })
             .then((res) => res.json())
@@ -69,7 +69,7 @@ export function useTelegramAuth() {
 
                         // === 🔹 Mixpanel интеграция ===
                         const mpId = String(user.id);
-                        const alreadyIdentified = localStorage.getItem('mp_identified');
+                        const alreadyIdentified = localStorage.getItem("mp_identified");
 
                         if (!alreadyIdentified) {
                             mixpanel.identify(mpId);
@@ -80,17 +80,17 @@ export function useTelegramAuth() {
                                 telegram_id: user.id,
                                 avatar_url: user.photo_url,
                                 joined_at: new Date().toISOString(),
-                                source: startParam || 'unknown', // 👈 добавляем источник
+                                source: startParam || "unknown", // 👈 добавляем источник
                             });
-                            mixpanel.track('User Authenticated', {
+                            mixpanel.track("User Authenticated", {
                                 telegram_id: user.id,
                                 username: user.username,
-                                source: startParam || 'unknown', // 👈 фиксируем событие с источником
+                                source: startParam || "unknown", // 👈 фиксируем событие с источником
                             });
-                            localStorage.setItem('mp_identified', mpId);
+                            localStorage.setItem("mp_identified", mpId);
                         }
                     } catch (err) {
-                        console.error('Merchant sync error:', err);
+                        console.error("Merchant sync error:", err);
                     }
                 } else {
                     dispatch(clearUser());

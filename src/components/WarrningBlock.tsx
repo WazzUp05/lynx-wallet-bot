@@ -1,6 +1,6 @@
-import React from 'react';
-import WarrningLeftIcon from '@/components/icons/warrning-mark.svg';
-import RightIcon from '@/components/icons/right-arrow.svg';
+import React from "react";
+import WarrningLeftIcon from "@/components/icons/warrning-mark.svg";
+import RightIcon from "@/components/icons/right-arrow.svg";
 
 interface WarrningBlockProps {
     onClick?: () => void;
@@ -19,7 +19,7 @@ const WarrningBlock = ({ onClick, text, className, classNameIcon }: WarrningBloc
                 <WarrningLeftIcon width={20} height={20} />
             </div>
             <span className="text-[var(--text-main)]">{text}</span>
-            {onClick && typeof onClick === 'function' && (
+            {onClick && typeof onClick === "function" && (
                 <div className="text-[var(--yellow)] ml-auto bg-[var(--yellow-secondary)] rounded-[1rem] min-w-[2.5rem] h-[2.5rem] center ">
                     <RightIcon width={16} height={16} />
                 </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 interface UseCopyWithToastReturn {
     copyWithToast: (text: string, successMessage?: string, errorMessage?: string) => Promise<void>;
@@ -11,12 +11,12 @@ interface UseCopyWithToastReturn {
 export const useCopyWithToast = (): UseCopyWithToastReturn => {
     const [isCopying, setIsCopying] = useState(false);
     const [toastOpen, setToastOpen] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
+    const [toastMessage, setToastMessage] = useState("");
 
     const copyWithToast = async (
         text: string,
-        successMessage: string = 'Скопировано в буфер обмена',
-        errorMessage: string = 'Не удалось скопировать'
+        successMessage: string = "Скопировано в буфер обмена",
+        errorMessage: string = "Не удалось скопировать"
     ): Promise<void> => {
         setIsCopying(true);
 
@@ -27,17 +27,17 @@ export const useCopyWithToast = (): UseCopyWithToastReturn => {
                 setToastMessage(successMessage);
             } else {
                 // Fallback для Safari/WebView и HTTP
-                const textarea = document.createElement('textarea');
+                const textarea = document.createElement("textarea");
                 textarea.value = text;
-                textarea.style.position = 'fixed';
-                textarea.style.opacity = '0';
-                textarea.style.left = '-999999px';
-                textarea.style.top = '-999999px';
+                textarea.style.position = "fixed";
+                textarea.style.opacity = "0";
+                textarea.style.left = "-999999px";
+                textarea.style.top = "-999999px";
                 document.body.appendChild(textarea);
                 textarea.focus();
                 textarea.select();
 
-                const success = document.execCommand('copy');
+                const success = document.execCommand("copy");
                 document.body.removeChild(textarea);
 
                 if (success) {
@@ -47,7 +47,7 @@ export const useCopyWithToast = (): UseCopyWithToastReturn => {
                 }
             }
         } catch (error) {
-            console.error('Ошибка копирования:', error);
+            console.error("Ошибка копирования:", error);
             setToastMessage(errorMessage);
         } finally {
             setIsCopying(false);

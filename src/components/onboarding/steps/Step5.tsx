@@ -1,18 +1,22 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { getWallet } from '@/lib/redux/selectors/userSelectors';
-import { Button } from '@/components/ui/Button';
-import { QRCodeSVG } from 'qrcode.react';
-import { useCopyWithToast } from '@/hooks/useCopyWithToast';
-import { Toast } from '@/components/ui/Toast';
-import WarrningLeftIcon from '@/components/icons/warrning-mark.svg';
-import RightIcon from '@/components/icons/right-arrow.svg';
-import MinAmountModal from '@/components/modals/MinAmountModal';
-import TaxModal from '@/components/modals/TaxModal';
-import { setOnboardingCompleted, setWaitingForDeposit, setNeedDeposit } from '@/lib/redux/slices/appSlice';
-import { useMixpanel } from '@/lib/providers/MixpanelProvider';
+import React, { useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { getWallet } from "@/lib/redux/selectors/userSelectors";
+import { Button } from "@/components/ui/Button";
+import { QRCodeSVG } from "qrcode.react";
+import { useCopyWithToast } from "@/hooks/useCopyWithToast";
+import { Toast } from "@/components/ui/Toast";
+import WarrningLeftIcon from "@/components/icons/warrning-mark.svg";
+import RightIcon from "@/components/icons/right-arrow.svg";
+import MinAmountModal from "@/components/modals/MinAmountModal";
+import TaxModal from "@/components/modals/TaxModal";
+import {
+    setOnboardingCompleted,
+    setWaitingForDeposit,
+    setNeedDeposit,
+} from "@/lib/redux/slices/appSlice";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 
 interface Step5Props {
     onNext: () => void;
@@ -22,14 +26,14 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
     const dispatch = useAppDispatch();
     const { copyWithToast, isCopying, toastOpen, toastMessage, closeToast } = useCopyWithToast();
     const wallet = useAppSelector(getWallet);
-    const srcQr = '/icons/USDT-TRC20.svg';
-    const address = wallet?.address || '';
+    const srcQr = "/icons/USDT-TRC20.svg";
+    const address = wallet?.address || "";
     const [showTaxModal, setShowTaxModal] = useState(false);
     const [showMinAmountModal, setShowMinAmountModal] = useState(false);
     const { trackEvent } = useMixpanel();
 
     React.useEffect(() => {
-        trackEvent('wallet_deposit_screen_opened');
+        trackEvent("wallet_deposit_screen_opened");
     }, []);
 
     const handleIDeposited = () => {
@@ -85,8 +89,8 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                     <button
                         className="border border-[var(--text-main)] rounded-[1.5rem] px-[2.2rem] py-[1.2rem] text-[1.4rem] leading-[130%] text-[var(--text-main)]"
                         onClick={() => {
-                            trackEvent('wallet_deposit_address_copied');
-                            copyWithToast(address, 'Адрес скопирован');
+                            trackEvent("wallet_deposit_address_copied");
+                            copyWithToast(address, "Адрес скопирован");
                         }}
                         disabled={isCopying}
                     >
@@ -101,7 +105,8 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                         <WarrningLeftIcon width={20} height={20} />
                     </div>
                     <span className="text-[var(--text-main)]">
-                        Адрес принимает только USDT (сеть TRC20). Отправка через другие сети приведёт к потере средств.
+                        Адрес принимает только USDT (сеть TRC20). Отправка через другие сети
+                        приведёт к потере средств.
                     </span>
                 </div>
                 <div
@@ -136,12 +141,15 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                 </div>
             </div>
             <TaxModal showModal={showTaxModal} onClose={() => setShowTaxModal(false)} />
-            <MinAmountModal showModal={showMinAmountModal} onClose={() => setShowMinAmountModal(false)} />
+            <MinAmountModal
+                showModal={showMinAmountModal}
+                onClose={() => setShowMinAmountModal(false)}
+            />
             <Button
                 variant="yellow"
                 className="w-full mt-auto mb-[1.2rem]"
                 onClick={() => {
-                    trackEvent('wallet_deposit_confirmed');
+                    trackEvent("wallet_deposit_confirmed");
                     handleIDeposited();
                 }}
             >
@@ -151,7 +159,7 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                 variant="ghost"
                 className="w-full"
                 onClick={() => {
-                    trackEvent('wallet_deposit_later');
+                    trackEvent("wallet_deposit_later");
                     handleLater();
                 }}
             >

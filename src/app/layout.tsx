@@ -1,37 +1,37 @@
-import './globals.css';
-import { Inter } from 'next/font/google';
-import ClientComponents from '@/components/ClientComponents';
-import type { Metadata, Viewport } from 'next';
+import "./globals.css";
+import { Inter } from "next/font/google";
+import ClientComponents from "@/components/ClientComponents";
+import type { Metadata, Viewport } from "next";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const viewport: Viewport = {
-    width: 'device-width',
+    width: "device-width",
     initialScale: 1,
-    viewportFit: 'cover',
+    viewportFit: "cover",
     userScalable: false,
     maximumScale: 1,
     minimumScale: 1,
 };
 
 export const metadata: Metadata = {
-    title: 'Lynx Wallet Bot',
-    description: 'Современный Telegram кошелек с поддержкой криптовалют',
+    title: "Lynx Wallet Bot",
+    description: "Современный Telegram кошелек с поддержкой криптовалют",
     appleWebApp: {
         capable: true,
-        statusBarStyle: 'default',
-        title: 'Lynx Wallet',
+        statusBarStyle: "default",
+        title: "Lynx Wallet",
     },
-    manifest: '/manifest.json',
+    manifest: "/manifest.json",
     icons: {
-        icon: '/logo_yellow.png',
-        apple: '/logo_yellow.png',
+        icon: "/logo_yellow.png",
+        apple: "/logo_yellow.png",
     },
     other: {
-        'mobile-web-app-capable': 'yes',
-        'application-name': 'Lynx Wallet',
-        'msapplication-TileColor': '#8B5CF6',
-        'msapplication-tap-highlight': 'no',
+        "mobile-web-app-capable": "yes",
+        "application-name": "Lynx Wallet",
+        "msapplication-TileColor": "#8B5CF6",
+        "msapplication-tap-highlight": "no",
     },
 };
 

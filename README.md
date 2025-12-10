@@ -24,17 +24,20 @@ A modern Telegram wallet bot built with Next.js, TypeScript, Tailwind CSS, and R
 ## 📦 Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/WazzUp05/lynx-wallet-bot.git
 cd lynx-wallet-bot
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -114,6 +117,7 @@ The app is ready for Telegram WebApp deployment with:
 ### For Telegram Bot
 
 1. Build the application:
+
 ```bash
 npm run build
 ```
