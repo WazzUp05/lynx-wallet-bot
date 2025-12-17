@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ArrowRightIcon from '@/components/icons/right-arrow.svg';
 import QuestionIcon from '@/components/icons/message-question.svg';
+import Profile2UserIcon from '@/components/icons/profile-2user.svg';
 import PhoneScreenIcon from '@/components/icons/phone-screen.svg';
 // import KeyIcon from '@/components/icons/key.svg';
 import PinCodeScreen from '@/components/pin/PinCodeScreen';
@@ -129,6 +130,21 @@ const Page = () => {
                     </button>
                 </div>
             </div>
+            {/* <Link
+                href="/refferal"
+                className="flex items-center gap-[1rem] bg-[var(--bg-secondary)] rounded-[2rem] p-[1.6rem] mb-[2.4rem]"
+                onClick={() => trackEvent('profile_refferal_program_clicked')}
+            >
+                <div className="w-[3.5rem] h-[3.5rem] bg-[var(--yellow-secondary)] text-[var(--yellow)] rounded-[1rem] center">
+                    <Profile2UserIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
+                </div>
+                <p className="text-[1.5rem] leading-[130%] font-medium text-[var(--text-main)]">
+                    Реферальная программа
+                </p>
+                <span className="ml-auto text-[var(--text-secondary)]">
+                    <ArrowRightIcon width={16} height={16} className="w-[1.6rem] h-[1.6rem]" />
+                </span>
+            </Link> */}
             {/* PIN-код секция */}
             {/* <div className="mb-[2.4rem]">
                 <p className="text-[1.4rem] leading-[130%] font-medium text-[var(--text-secondary)] mb-[0.8rem]">
