@@ -5,7 +5,10 @@ type DragIndicatorProps = {
 };
 
 const DragIndicator = ({ className }: DragIndicatorProps) => (
-    <div className={`mx-auto w-[5rem] h-[0.4rem] rounded-full bg-[#D9D9DD] ${className}`} aria-label="drag indicator" />
+    <div
+        className={`mx-auto w-[5rem] h-[0.4rem] rounded-full bg-[#D9D9DD] ${className}`}
+        aria-label="drag indicator"
+    />
 );
 
 export default DragIndicator;

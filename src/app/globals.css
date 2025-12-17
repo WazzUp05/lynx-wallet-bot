@@ -1,12 +1,13 @@
-@import 'tailwindcss';
-@import 'slick-carousel/slick/slick.css';
-@import 'slick-carousel/slick/slick-theme.css';
+@import "tailwindcss";
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
 
 :root {
     --background: #ffffff;
     --foreground: #171717;
     --blue: #007aff;
     --gray: #9c9da4;
+    --orange: #ff9000;
     --yellow: #ffbe00;
     --yellow-secondary: #f1b90c26;
     --yellow-optional: #f1b90c0d;
@@ -94,16 +95,27 @@
     -webkit-backdrop-filter: blur(8px) saturate(150%);
     /* cssnano keep */
     backdrop-filter: blur(8px) saturate(150%);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
-        inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
-        inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
-        inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
-        inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
-        inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
-        inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
-        inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
-        0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
-        0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+    box-shadow:
+        inset 0 0 0 1px
+            color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+        inset 1.8px 3px 0px -2px
+            color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+        inset -2px -2px 0px -2px
+            color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+        inset -3px -8px 1px -6px
+            color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+        inset -0.3px -1px 4px 0px
+            color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
+        inset -1.5px 2.5px 0px -2px
+            color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+        inset 0px 3px 4px -2px
+            color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+        inset 2px -6.5px 1px -4px
+            color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+        0px 1px 5px 0px
+            color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+        0px 6px 16px 0px
+            color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
 }
 
 @supports (backdrop-filter: blur(1px)) {
@@ -116,7 +128,7 @@
 }
 
 .glass-active:after {
-    content: '';
+    content: "";
     position: absolute;
     left: 50%;
     top: 50%;
@@ -127,13 +139,108 @@
     border-radius: 99em;
     background-color: color-mix(in srgb, var(--c-glass) 36%, transparent);
     z-index: -1;
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
-        inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
-        inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
-        inset -2px -6px 1px -5px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
-        inset -1px 2px 3px -1px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
-        inset 0px -4px 1px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
-        0px 3px 6px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+    box-shadow:
+        inset 0 0 0 1px
+            color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+        inset 2px 1px 0px -1px
+            color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+        inset -1.5px -1px 0px -1px
+            color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+        inset -2px -6px 1px -5px
+            color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+        inset -1px 2px 3px -1px
+            color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+        inset 0px -4px 1px -2px
+            color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+        0px 3px 6px 0px
+            color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+}
+
+.transfer-success-bg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 60, 0, 1) 0%,
+        rgba(0, 40, 0, 0.9) 40%,
+        rgba(0, 15, 0, 1) 80%,
+        #000 100%
+    );
+}
+
+.transfer-reject-bg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgb(59, 58, 57) 0%,
+        rgba(50, 48, 48, 0.9) 40%,
+        var(--bg-main) 80%,
+        #000 100%
+    );
+}
+
+@keyframes pulse-slow {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+}
+
+@keyframes pulse-slower {
+    0% {
+        transform: scale(1);
+        opacity: 0.25;
+    }
+    50% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.25;
+    }
+}
+
+.animate-pulse {
+    inset: 0;
+    border-radius: 100%;
+    position: absolute;
+}
+
+.animate-pulse-slow {
+    animation: pulse-slow 2s 3 ease-in-out;
+    opacity: 0.5;
+}
+.animate-pulse-slower {
+    animation: pulse-slower 2s 3 ease-in-out;
+    opacity: 0.25;
+}
+
+.animate-pulse-slow {
+    box-shadow: 0 0 0 20px var(--green);
+}
+
+.success-pulse-color-slower {
+    box-shadow: 0 0 0 10px var(--green);
+}
+
+.reject-pulse-color-slow {
+    box-shadow: 0 0 0 20px var(--orange);
+}
+
+.reject-pulse-color-slower {
+    box-shadow: 0 0 0 10px var(--orange);
 }
 
 .link {
@@ -157,6 +264,12 @@
     font-size: 1.6rem;
     line-height: 130%;
     font-weight: 400;
+}
+
+.fs-regular-bold {
+    font-size: 1.6rem;
+    line-height: 130%;
+    font-weight: 700;
 }
 
 .fs-small {
@@ -325,6 +438,10 @@ body {
 
 .offer-slider .slick-slide {
     height: auto;
+}
+
+.border-separator {
+    border-top: solid 1px var(--dark-gray-secondary);
 }
 
 /* 

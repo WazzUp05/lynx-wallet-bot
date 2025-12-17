@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AppState {
     onboardingCompleted: boolean;
@@ -12,15 +12,15 @@ interface AppState {
 
 // Функция для загрузки состояния из localStorage
 const loadStateFromStorage = (): Partial<AppState> => {
-    if (typeof window === 'undefined') return {};
+    if (typeof window === "undefined") return {};
 
     try {
-        const savedState = localStorage.getItem('appState');
+        const savedState = localStorage.getItem("appState");
         if (savedState) {
             return JSON.parse(savedState);
         }
     } catch (error) {
-        console.error('Ошибка при загрузке состояния из localStorage:', error);
+        console.error("Ошибка при загрузке состояния из localStorage:", error);
     }
     return {};
 };
@@ -36,7 +36,7 @@ const initialState: AppState = {
 };
 
 const appSlice = createSlice({
-    name: 'app',
+    name: "app",
     initialState,
     reducers: {
         setOnboardingCompleted(state, action: PayloadAction<boolean>) {
@@ -66,12 +66,12 @@ const appSlice = createSlice({
     extraReducers: (builder) => {
         // Middleware для сохранения состояния в localStorage
         builder.addMatcher(
-            (action) => action.type.startsWith('app/'),
+            (action) => action.type.startsWith("app/"),
             (state) => {
-                if (typeof window !== 'undefined') {
+                if (typeof window !== "undefined") {
                     try {
                         localStorage.setItem(
-                            'appState',
+                            "appState",
                             JSON.stringify({
                                 onboardingCompleted: state.onboardingCompleted,
                                 hideBalance: state.hideBalance,
@@ -82,7 +82,7 @@ const appSlice = createSlice({
                             })
                         );
                     } catch (error) {
-                        console.error('Ошибка при сохранении состояния в localStorage:', error);
+                        console.error("Ошибка при сохранении состояния в localStorage:", error);
                     }
                 }
             }

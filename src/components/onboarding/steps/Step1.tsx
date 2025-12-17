@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { Button } from '../../ui/Button';
-import { useMixpanel } from '@/lib/providers/MixpanelProvider';
+import React from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { Button } from "../../ui/Button";
+import { useMixpanel } from "@/lib/providers/MixpanelProvider";
 
 interface Step1Props {
     onNext: () => void;
@@ -13,7 +13,7 @@ interface Step1Props {
 const Step1: React.FC<Step1Props> = ({ onNext }) => {
     const { trackEvent } = useMixpanel();
     React.useEffect(() => {
-        trackEvent('onboarding_started');
+        trackEvent("onboarding_started");
     }, []);
     return (
         <div className="flex-1 flex flex-col items-center bg-[url('/onboarding/bg.png')] bg-cover bg-center justify-end">
@@ -35,7 +35,9 @@ const Step1: React.FC<Step1Props> = ({ onNext }) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="fs-bold text-center mb-[0.8rem]"
-                        dangerouslySetInnerHTML={{ __html: 'Lynx ваш криптокошелёк в&nbsp;Telegram' }}
+                        dangerouslySetInnerHTML={{
+                            __html: "Lynx ваш криптокошелёк в&nbsp;Telegram",
+                        }}
                     />
                     <motion.p
                         initial={{ opacity: 0, y: 0 }}
@@ -45,7 +47,7 @@ const Step1: React.FC<Step1Props> = ({ onNext }) => {
                     >
                         <span
                             dangerouslySetInnerHTML={{
-                                __html: 'Храни и трать криптовалюту в России без лишних приложений и сложностей.',
+                                __html: "Храни и трать криптовалюту в России без лишних приложений и сложностей.",
                             }}
                         />
                     </motion.p>
@@ -58,7 +60,7 @@ const Step1: React.FC<Step1Props> = ({ onNext }) => {
                         <Button
                             variant="yellow"
                             onClick={() => {
-                                trackEvent('onboarding_step_passed', { step_number: 1 });
+                                trackEvent("onboarding_step_passed", { step_number: 1 });
                                 onNext();
                             }}
                         >

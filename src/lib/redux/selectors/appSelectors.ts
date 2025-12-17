@@ -1,4 +1,4 @@
-import { RootState } from '../store';
+import { RootState } from "../store";
 
 const getOnboardingCompleted = (state: RootState): boolean => state.app.onboardingCompleted;
 const getHideBalance = (state: RootState): boolean => state.app.hideBalance;

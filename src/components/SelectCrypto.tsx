@@ -1,10 +1,10 @@
-import Image from 'next/image';
-import Modal from './Modal';
-import { useState } from 'react';
-import { SelectCustom } from './ui/SelectCustom';
-import { CryptoItem, setCrypto } from '@/lib/redux/slices/walletSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { getCrypto } from '@/lib/redux/selectors/walletSelectors';
+import Image from "next/image";
+import Modal from "./Modal";
+import { useState } from "react";
+import { SelectCustom } from "./ui/SelectCustom";
+import { CryptoItem, setCrypto } from "@/lib/redux/slices/walletSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { getCrypto } from "@/lib/redux/selectors/walletSelectors";
 
 interface TypeCryptoProps {
     cryptos: {
@@ -13,9 +13,10 @@ interface TypeCryptoProps {
         description: string;
         iconUrl: string;
     }[];
+    setSelectedCrypto?: (crypto: string) => void;
 }
 
-const SelectCrypto = ({ cryptos }: TypeCryptoProps) => {
+const SelectCrypto = ({ cryptos, setSelectedCrypto }: TypeCryptoProps) => {
     const dispatch = useAppDispatch();
     const crypto = useAppSelector(getCrypto);
     const [modalOpen, setModalOpen] = useState(false);
@@ -27,6 +28,7 @@ const SelectCrypto = ({ cryptos }: TypeCryptoProps) => {
         const found = cryptos.find((opt) => opt.id === id);
         if (found) {
             dispatch(setCrypto(found as CryptoItem));
+            if (setSelectedCrypto) setSelectedCrypto(found.id);
             setModalOpen(false);
         }
     };

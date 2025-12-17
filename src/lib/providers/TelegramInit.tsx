@@ -14,7 +14,9 @@ export default function TelegramInit({ children }: { children: React.ReactNode }
                         bg_color: "#ffffff",
                         text_color: "#000000",
                     },
-                    tgWebAppData: new URLSearchParams("user=%7B%22id%22%3A12345%2C%22first_name%22%3A%22DevUser%22%7D"),
+                    tgWebAppData: new URLSearchParams(
+                        "user=%7B%22id%22%3A12345%2C%22first_name%22%3A%22DevUser%22%7D"
+                    ),
                 },
             });
         }

@@ -1,21 +1,21 @@
-'use client';
-import Main from '@/components/main/Main';
-import Onboarding from '@/components/onboarding/Onboarding';
-import Loader from '@/components/ui/Loader';
-import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
-import { getOnboardingCompleted, getWaitingForDeposit } from '@/lib/redux/selectors/appSelectors';
-import { getHistory } from '@/lib/redux/selectors/historySelectors';
-import { getWallet } from '@/lib/redux/selectors/userSelectors';
+"use client";
+import Main from "@/components/main/Main";
+import Onboarding from "@/components/onboarding/Onboarding";
+import Loader from "@/components/ui/Loader";
+import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks";
+import { getOnboardingCompleted, getWaitingForDeposit } from "@/lib/redux/selectors/appSelectors";
+import { getHistory } from "@/lib/redux/selectors/historySelectors";
+import { getWallet } from "@/lib/redux/selectors/userSelectors";
 import {
     setIsFirstTime,
     setNeedDeposit,
     setWaitingForDeposit,
     setOnboardingCompleted,
     setOnboardingStep,
-} from '@/lib/redux/slices/appSlice';
-import { fetchHistory } from '@/lib/redux/thunks/historyThunks';
-import { useEffect } from 'react';
-import { getLoading, getUser } from '@/lib/redux/selectors/userSelectors';
+} from "@/lib/redux/slices/appSlice";
+import { fetchHistory } from "@/lib/redux/thunks/historyThunks";
+import { useEffect } from "react";
+import { getLoading, getUser } from "@/lib/redux/selectors/userSelectors";
 
 export default function Home() {
     const dispatch = useAppDispatch();
@@ -52,7 +52,7 @@ export default function Home() {
                 try {
                     await dispatch(fetchHistory()).unwrap();
                 } catch (error) {
-                    console.error('Ошибка при проверке истории:', error);
+                    console.error("Ошибка при проверке истории:", error);
                 }
             };
 
@@ -72,7 +72,7 @@ export default function Home() {
     useEffect(() => {
         if (history && history.length > 0 && isWaitingForDeposit) {
             const latestTransaction = history[0];
-            if (latestTransaction && latestTransaction.status === 'completed') {
+            if (latestTransaction && latestTransaction.status === "completed") {
                 // Пополнение успешно - раздизейбливаем все
                 dispatch(setNeedDeposit(false));
                 dispatch(setWaitingForDeposit(false));

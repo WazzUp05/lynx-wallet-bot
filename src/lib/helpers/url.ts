@@ -1,5 +1,5 @@
-const PRIMARY_API_URL = 'https://stage-proxy.lynxrussia.ru/api';
-const FALLBACK_API_URL = 'https://stage-proxy.lynxrussia.ru/api';
+const PRIMARY_API_URL = "https://stage-proxy.lynxrussia.ru/api";
+const FALLBACK_API_URL = "https://stage-proxy.lynxrussia.ru/api";
 const DEFAULT_TIMEOUT_MS = 7000;
 
 let fallbackActivated = false;
@@ -16,17 +16,17 @@ function buildUrl(path: string, baseUrl: string) {
         return path;
     }
 
-    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+    const normalizedPath = path.startsWith("/") ? path : `/${path}`;
     return `${baseUrl}${normalizedPath}`;
 }
 
 function isAbortError(error: unknown): boolean {
-    if (!error || typeof error !== 'object') {
+    if (!error || typeof error !== "object") {
         return false;
     }
 
     const name = (error as { name?: string }).name;
-    return name === 'AbortError';
+    return name === "AbortError";
 }
 
 function isNetworkError(error: unknown): boolean {
@@ -53,8 +53,8 @@ async function fetchWithTimeout(url: string, init: RequestInit, timeoutMs: numbe
             controller.abort();
         } else {
             const onAbort = () => controller.abort();
-            originalSignal.addEventListener('abort', onAbort);
-            removeAbortListener = () => originalSignal.removeEventListener('abort', onAbort);
+            originalSignal.addEventListener("abort", onAbort);
+            removeAbortListener = () => originalSignal.removeEventListener("abort", onAbort);
         }
     }
 
@@ -80,8 +80,10 @@ export async function apiFetch(path: string, init: ApiFetchInit = {}) {
         } catch (error) {
             if (shouldActivateFallback(error)) {
                 fallbackActivated = true;
-                if (process.env.NODE_ENV !== 'production') {
-                    console.warn('[apiFetch] Switching to fallback API URL due to primary request failure.');
+                if (process.env.NODE_ENV !== "production") {
+                    console.warn(
+                        "[apiFetch] Switching to fallback API URL due to primary request failure."
+                    );
                 }
                 return fetch(buildUrl(path, FALLBACK_API_URL), requestInit);
             }

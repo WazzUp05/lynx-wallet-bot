@@ -1,10 +1,10 @@
-'use client';
-import Image from 'next/image';
-import React from 'react';
-import ExportIcon from '@/components/icons/export.svg';
-import { useCopyWithToast } from '@/hooks/useCopyWithToast';
-import { useAppSelector } from '@/lib/redux/hooks';
-import { getNeedDeposit, getWaitingForDeposit } from '@/lib/redux/selectors/appSelectors';
+"use client";
+import Image from "next/image";
+import React from "react";
+import ExportIcon from "@/components/icons/export.svg";
+import { useCopyWithToast } from "@/hooks/useCopyWithToast";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { getNeedDeposit, getWaitingForDeposit } from "@/lib/redux/selectors/appSelectors";
 
 const Offer = () => {
     const { copyWithToast, isCopying } = useCopyWithToast();
@@ -12,12 +12,12 @@ const Offer = () => {
     const waitingDeposit = useAppSelector(getWaitingForDeposit);
 
     const handleShare = async () => {
-        const shareText = 'Пригласи своих друзей в Lynx Wallet Bot!';
-        const shareUrl = 'https://t.me/lynx_wallet_bot';
+        const shareText = "Пригласи своих друзей в Lynx Wallet Bot!";
+        const shareUrl = "https://t.me/lynx_wallet_bot";
 
         try {
             // Проверяем, находимся ли мы в Telegram Web App
-            if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
+            if (typeof window !== "undefined" && window.Telegram?.WebApp) {
                 const webApp = window.Telegram.WebApp;
 
                 // Используем нативный Telegram Share через t.me/share/url
@@ -29,19 +29,19 @@ const Offer = () => {
 
                 // Используем встроенный метод Telegram Web App API openLink
                 // Это откроет нативное окно шаринга Telegram, как при нажатии родной кнопки
-                if (typeof webApp.openLink === 'function') {
+                if (typeof webApp.openLink === "function") {
                     webApp.openLink(telegramShareUrl, { try_instant_view: false });
                 } else {
                     // Fallback только для старых версий: используем window.open
                     // НЕ используем window.location.href, так как это закроет Web App
-                    window.open(telegramShareUrl, '_blank');
+                    window.open(telegramShareUrl, "_blank");
                 }
                 return;
             }
 
             // Если не в Telegram, пробуем Web Share API
             const shareData = {
-                title: 'Lynx Wallet Bot',
+                title: "Lynx Wallet Bot",
                 text: shareText,
                 url: shareUrl,
             };
@@ -50,12 +50,12 @@ const Offer = () => {
                 await navigator.share(shareData);
             } else {
                 // Fallback: копируем ссылку в буфер обмена
-                await copyWithToast(shareUrl, 'Ссылка скопирована в буфер обмена!');
+                await copyWithToast(shareUrl, "Ссылка скопирована в буфер обмена!");
             }
         } catch (error) {
-            console.error('Ошибка при попытке поделиться:', error);
+            console.error("Ошибка при попытке поделиться:", error);
             // Fallback: копируем ссылку в буфер обмена
-            await copyWithToast(shareUrl, 'Ссылка скопирована в буфер обмена!');
+            await copyWithToast(shareUrl, "Ссылка скопирована в буфер обмена!");
         }
     };
 
