@@ -18,7 +18,7 @@ import {
     setNeedDeposit,
     setWaitingForDeposit,
     setOnboardingCompleted,
-    setOnboardingStep,
+    // setOnboardingStep,
     setShowPinOfferModal,
 } from '@/lib/redux/slices/appSlice';
 import { fetchHistory } from '@/lib/redux/thunks/historyThunks';
@@ -29,8 +29,8 @@ export default function Home() {
     const dispatch = useAppDispatch();
     const onboardingCompleted = useAppSelector(getOnboardingCompleted);
     const isWaitingForDeposit = useAppSelector(getWaitingForDeposit);
-    const hasPin = useAppSelector(getHasPin);
-    const showPinOfferModal = useAppSelector(getShowPinOfferModal);
+    // const hasPin = useAppSelector(getHasPin);
+    // const showPinOfferModal = useAppSelector(getShowPinOfferModal);
 
     const history = useAppSelector(getHistory);
     const wallet = useAppSelector(getWallet);
@@ -121,24 +121,24 @@ export default function Home() {
     }
 
     // Проверяем, нужно ли показать модалку предложения PIN после онбординга
-    const shouldShowPinModal = !hasPin && showPinOfferModal && onboardingCompleted;
+    // const shouldShowPinModal = !hasPin && showPinOfferModal && onboardingCompleted;
 
-    const handleClosePinModal = () => {
-        dispatch(setShowPinOfferModal(false));
-    };
+    // const handleClosePinModal = () => {
+    //     dispatch(setShowPinOfferModal(false));
+    // };
 
-    const handleCreatePin = () => {
-        setShowPinSetup(true);
-    };
+    // const handleCreatePin = () => {
+    //     setShowPinSetup(true);
+    // };
 
     return (
         <>
             <main>
                 <Main />
             </main>
-            {shouldShowPinModal && (
+            {/* {shouldShowPinModal && (
                 <SettingPinModal showModal={true} onClose={handleClosePinModal} onCreatePin={handleCreatePin} />
-            )}
+            )} */}
         </>
     );
 }

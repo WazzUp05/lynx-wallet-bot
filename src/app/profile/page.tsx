@@ -2,7 +2,7 @@
 import Loader from '@/components/ui/Loader';
 import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
 import { getLoading, getUser } from '@/lib/redux/selectors/userSelectors';
-import { getHasPin, getPinChangeFlow } from '@/lib/redux/selectors/appSelectors';
+import { getPinChangeFlow } from '@/lib/redux/selectors/appSelectors';
 import { clearPin, setPinChangeFlow } from '@/lib/redux/slices/appSlice';
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
@@ -10,17 +10,16 @@ import Link from 'next/link';
 import ArrowRightIcon from '@/components/icons/right-arrow.svg';
 import QuestionIcon from '@/components/icons/message-question.svg';
 import PhoneScreenIcon from '@/components/icons/phone-screen.svg';
-import KeyIcon from '@/components/icons/key.svg';
-// import FaceIdIcon from '@/components/icons/face-id.svg';
+// import KeyIcon from '@/components/icons/key.svg';
 import PinCodeScreen from '@/components/pin/PinCodeScreen';
-import { Switch } from '@/components/ui/Switch';
+// import { Switch } from '@/components/ui/Switch';
 import AddToHome from '@/components/AddToHome';
 import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 const Page = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(getUser);
     const loadingApp = useAppSelector(getLoading);
-    const hasPin = useAppSelector(getHasPin);
+    // const hasPin = useAppSelector(getHasPin);
     const pinChangeFlow = useAppSelector(getPinChangeFlow);
     const { trackEvent } = useMixpanel();
     const [isOpen, setIsOpen] = useState(false);
@@ -64,20 +63,20 @@ const Page = () => {
         dispatch(setPinChangeFlow(false));
     };
 
-    const handleTogglePin = (checked: boolean) => {
-        if (checked) {
-            // Если переключаем в ON (PIN не установлен), открываем экран создания
-            setShowPinSetup(true);
-        } else {
-            // Если переключаем в OFF (PIN установлен), сначала требуем авторизацию PIN
-            setIsDeletingPin(true);
-            setShowPinAuth(true);
-        }
-    };
+    // const handleTogglePin = (checked: boolean) => {
+    //     if (checked) {
+    //         // Если переключаем в ON (PIN не установлен), открываем экран создания
+    //         setShowPinSetup(true);
+    //     } else {
+    //         // Если переключаем в OFF (PIN установлен), сначала требуем авторизацию PIN
+    //         setIsDeletingPin(true);
+    //         setShowPinAuth(true);
+    //     }
+    // };
 
-    const handleChangePin = () => {
-        dispatch(setPinChangeFlow(true));
-    };
+    // const handleChangePin = () => {
+    //     dispatch(setPinChangeFlow(true));
+    // };
 
     if (loadingApp) {
         return <Loader className="h-[100dvh]" />;
@@ -131,7 +130,7 @@ const Page = () => {
                 </div>
             </div>
             {/* PIN-код секция */}
-            <div className="mb-[2.4rem]">
+            {/* <div className="mb-[2.4rem]">
                 <p className="text-[1.4rem] leading-[130%] font-medium text-[var(--text-secondary)] mb-[0.8rem]">
                     Вход в приложение
                 </p>
@@ -153,21 +152,8 @@ const Page = () => {
                             ariaLabel={hasPin ? 'Выключить PIN-код' : 'Включить PIN-код'}
                         />
                     </div>
-                    {/* <div className="flex items-center">
-                        <div
-                            className={`w-[3.5rem] h-[3.5rem] mr-[1rem] rounded-[1rem] center ${
-                                hasPin ? 'bg-[var(--yellow-secondary)]' : 'bg-[var(--dark-gray-secondary)]'
-                            }`}
-                        >
-                            <FaceIdIcon width={20} height={20} className="w-[2rem] h-[2rem]" />
-                        </div>
-                        <div className="flex-1 flex flex-col gap-[0.5rem]">
-                            <p className="text-[1.5rem] leading-[130%] font-medium text-[var(--text-main)]">Face ID</p>
-                        </div>
-                        <Switch checked={false} onChange={handleTogglePin} disabled />
-                    </div> */}
                 </div>
-            </div>
+            </div> */}
 
             <div className="mb-[3.2rem]">
                 <p className="text-[1.4rem] leading-[130%] font-medium text-[var(--text-secondary)] mb-[0.8rem]">
