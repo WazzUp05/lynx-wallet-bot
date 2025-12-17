@@ -19,7 +19,7 @@
         "framer-motion": "^12.23.12",
         "html5-qrcode": "^2.3.8",
         "mixpanel-browser": "^2.71.1",
-        "next": "15.5.2",
+        "next": "15.5.9",
         "qrcode.react": "^4.2.0",
         "react": "19.1.0",
         "react-dom": "19.1.0",
