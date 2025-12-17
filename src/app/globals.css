@@ -47,6 +47,7 @@
     --ios-safe-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
     --ios-safe-top: max(0px, env(safe-area-inset-top, 0px));
 }
+
 .no-scrollbar {
     scrollbar-width: none !important;
     &::-webkit-scrollbar {
@@ -167,13 +168,13 @@
 
 .fs-very-small {
     font-size: 1.2rem;
-    line-height: 1.3rem;
+    line-height: 130%;
     font-weight: 400;
 }
 
 .fs-very-small-bold {
     font-size: 1.2rem;
-    line-height: 1.3rem;
+    line-height: 130%;
     font-weight: 600;
 }
 
@@ -327,43 +328,6 @@ body {
     height: auto;
 }
 
-/* 
-Универсальные классы для центрирования
-
-ИСПОЛЬЗОВАНИЕ:
-
-1. Flexbox центрирование:
-   .center - центрирует по горизонтали и вертикали
-   .center-h - только горизонтальное центрирование  
-   .center-v - только вертикальное центрирование
-   .center-column - центрирование в колонку
-   .center-row - центрирование в ряд
-
-2. Абсолютное позиционирование:
-   .center-absolute - центрирует абсолютно позиционированный элемент
-   .center-absolute-h - только горизонтальное абсолютное центрирование
-   .center-absolute-v - только вертикальное абсолютное центрирование
-
-3. Grid центрирование:
-   .center-grid - центрирует с помощью CSS Grid
-   .center-grid-h - горизонтальное grid центрирование
-   .center-grid-v - вертикальное grid центрирование
-
-4. Margin центрирование:
-   .center-margin - центрирует блочные элементы по горизонтали
-   .center-margin-v - центрирует по вертикали
-   .center-margin-both - центрирует по обеим осям
-
-5. Text центрирование:
-   .center-text - центрирует текст
-   .center-inline - центрирует inline элементы
-   .center-inline-block - центрирует inline-block элементы
-
-ПРИМЕРЫ:
-<div className="center">Центрированный контент</div>
-<div className="center-h">Только горизонтально</div>
-<div className="center-absolute">Абсолютно центрированный</div>
-*/
 .center {
     display: flex;
     justify-content: center;
@@ -512,6 +476,80 @@ body {
         -webkit-align-items: center;
         align-items: center;
     }
+}
+
+/* Rotate animation */
+@keyframes rotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes orbit {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes counter-rotate-slow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+@keyframes counter-rotate-medium {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+@keyframes counter-rotate-fast {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+.animate-rotate {
+    animation: rotate 20s linear infinite;
+}
+
+.animate-orbit-slow {
+    animation: orbit 15s linear infinite;
+}
+
+.animate-orbit-medium {
+    animation: orbit 10s linear infinite;
+}
+
+.animate-orbit-fast {
+    animation: orbit 7s linear infinite;
+}
+
+.animate-counter-slow {
+    animation: counter-rotate-slow 15s linear infinite;
+}
+
+.animate-counter-medium {
+    animation: counter-rotate-medium 10s linear infinite;
+}
+
+.animate-counter-fast {
+    animation: counter-rotate-fast 7s linear infinite;
 }
 
 /* iOS specific fixes */
