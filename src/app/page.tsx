@@ -2,8 +2,15 @@
 import Main from '@/components/main/Main';
 import Onboarding from '@/components/onboarding/Onboarding';
 import Loader from '@/components/ui/Loader';
+import PinCodeScreen from '@/components/pin/PinCodeScreen';
+import SettingPinModal from '@/components/modals/SettingPinModal';
 import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
-import { getOnboardingCompleted, getWaitingForDeposit } from '@/lib/redux/selectors/appSelectors';
+import {
+    getHasPin,
+    getOnboardingCompleted,
+    getWaitingForDeposit,
+    getShowPinOfferModal,
+} from '@/lib/redux/selectors/appSelectors';
 import { getHistory } from '@/lib/redux/selectors/historySelectors';
 import { getWallet } from '@/lib/redux/selectors/userSelectors';
 import {
@@ -11,21 +18,26 @@ import {
     setNeedDeposit,
     setWaitingForDeposit,
     setOnboardingCompleted,
-    setOnboardingStep,
+    // setOnboardingStep,
+    setShowPinOfferModal,
 } from '@/lib/redux/slices/appSlice';
 import { fetchHistory } from '@/lib/redux/thunks/historyThunks';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getLoading, getUser } from '@/lib/redux/selectors/userSelectors';
 
 export default function Home() {
     const dispatch = useAppDispatch();
     const onboardingCompleted = useAppSelector(getOnboardingCompleted);
     const isWaitingForDeposit = useAppSelector(getWaitingForDeposit);
+    // const hasPin = useAppSelector(getHasPin);
+    // const showPinOfferModal = useAppSelector(getShowPinOfferModal);
 
     const history = useAppSelector(getHistory);
     const wallet = useAppSelector(getWallet);
     const loadingApp = useAppSelector(getLoading);
     const user = useAppSelector(getUser);
+
+    const [showPinSetup, setShowPinSetup] = useState(false);
 
     // Проверяем, первый ли раз зашел пользователь
     useEffect(() => {
@@ -41,6 +53,7 @@ export default function Home() {
                 dispatch(setIsFirstTime(false));
                 dispatch(setNeedDeposit(false));
                 dispatch(setWaitingForDeposit(false));
+                dispatch(setOnboardingCompleted(true));
             }
         }
     }, [user, wallet, history, dispatch]);
@@ -90,11 +103,42 @@ export default function Home() {
         return <Onboarding />;
     }
 
+    // Показываем экран создания PIN, если пользователь выбрал его создать
+    if (showPinSetup) {
+        return (
+            <PinCodeScreen
+                mode="setup"
+                onCancel={() => {
+                    setShowPinSetup(false);
+                    dispatch(setShowPinOfferModal(false));
+                }}
+                onSuccess={() => {
+                    setShowPinSetup(false);
+                    dispatch(setShowPinOfferModal(false));
+                }}
+            />
+        );
+    }
+
+    // Проверяем, нужно ли показать модалку предложения PIN после онбординга
+    // const shouldShowPinModal = !hasPin && showPinOfferModal && onboardingCompleted;
+
+    // const handleClosePinModal = () => {
+    //     dispatch(setShowPinOfferModal(false));
+    // };
+
+    // const handleCreatePin = () => {
+    //     setShowPinSetup(true);
+    // };
+
     return (
         <>
             <main>
                 <Main />
             </main>
+            {/* {shouldShowPinModal && (
+                <SettingPinModal showModal={true} onClose={handleClosePinModal} onCreatePin={handleCreatePin} />
+            )} */}
         </>
     );
 }

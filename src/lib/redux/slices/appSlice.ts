@@ -7,6 +7,11 @@ interface AppState {
     needDeposit: boolean; // необходимо пополнить счет
     onboardingStep: number;
     isFirstTime: boolean; // первый раз зашел
+    pinHash: string | null;
+    pinSalt: string | null;
+    pinAuthRequired: boolean;
+    showPinOfferModal: boolean; // показана ли модалка предложения PIN после онбординга
+    pinChangeFlow: boolean; // флаг для потока изменения PIN (сначала auth, потом setup)
     // Добавляй сюда другие глобальные состояния приложения
 }
 
@@ -25,6 +30,8 @@ const loadStateFromStorage = (): Partial<AppState> => {
     return {};
 };
 
+const persistedState = loadStateFromStorage();
+
 const initialState: AppState = {
     onboardingCompleted: false,
     hideBalance: false,
@@ -32,8 +39,19 @@ const initialState: AppState = {
     needDeposit: false,
     onboardingStep: 0,
     isFirstTime: true,
-    ...loadStateFromStorage(), // Загружаем сохранённое состояние
+    pinHash: null,
+    pinSalt: null,
+    pinAuthRequired: false,
+    showPinOfferModal: persistedState.showPinOfferModal ?? true, // по умолчанию показываем
+    pinChangeFlow: false,
+    ...persistedState, // Загружаем сохранённое состояние
 };
+
+// Важно: pinAuthRequired всегда должен быть true при перезагрузке, если есть pinHash (для безопасности)
+// Это гарантирует, что даже если в persistedState был pinAuthRequired: false, мы всё равно потребуем авторизацию
+if (initialState.pinHash) {
+    initialState.pinAuthRequired = true;
+}
 
 const appSlice = createSlice({
     name: 'app',
@@ -61,6 +79,25 @@ const appSlice = createSlice({
             state.onboardingStep = 4; // Step5 имеет индекс 4
             state.onboardingCompleted = false;
         },
+        setPinData(state, action: PayloadAction<{ hash: string; salt: string }>) {
+            state.pinHash = action.payload.hash;
+            state.pinSalt = action.payload.salt;
+            state.pinAuthRequired = false;
+        },
+        clearPin(state) {
+            state.pinHash = null;
+            state.pinSalt = null;
+            state.pinAuthRequired = false;
+        },
+        setPinAuthRequired(state, action: PayloadAction<boolean>) {
+            state.pinAuthRequired = action.payload;
+        },
+        setShowPinOfferModal(state, action: PayloadAction<boolean>) {
+            state.showPinOfferModal = action.payload;
+        },
+        setPinChangeFlow(state, action: PayloadAction<boolean>) {
+            state.pinChangeFlow = action.payload;
+        },
         // Добавляй другие редьюсеры по мере необходимости
     },
     extraReducers: (builder) => {
@@ -79,6 +116,9 @@ const appSlice = createSlice({
                                 needDeposit: state.needDeposit,
                                 onboardingStep: state.onboardingStep,
                                 isFirstTime: state.isFirstTime,
+                                pinHash: state.pinHash,
+                                pinSalt: state.pinSalt,
+                                showPinOfferModal: state.showPinOfferModal,
                             })
                         );
                     } catch (error) {
@@ -98,5 +138,10 @@ export const {
     setNeedDeposit,
     setIsFirstTime,
     setOnboardingToStep5,
+    setPinData,
+    clearPin,
+    setPinAuthRequired,
+    setShowPinOfferModal,
+    setPinChangeFlow,
 } = appSlice.actions;
 export default appSlice.reducer;
