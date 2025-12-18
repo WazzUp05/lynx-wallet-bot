@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useState, useEffect, useCallback } from 'react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -29,8 +29,18 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         },
         ref
     ) => {
-        const [value, setValue] = useState(props.value || props.defaultValue || '');
+        const [localValue, setLocalValue] = useState(props.value || props.defaultValue || '');
         const [clipboardText, setClipboardText] = useState<string | null>(null);
+
+        // Синхронизация локального состояния с props.value
+        useEffect(() => {
+            if (props.value !== undefined) {
+                setLocalValue(props.value);
+            }
+        }, [props.value]);
+
+        // Используем значение из props если оно контролируемое, иначе локальное
+        const displayValue = props.value !== undefined ? props.value : localValue;
 
         const handleCheckClipboard = async () => {
             try {
@@ -41,14 +51,44 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             }
         };
 
-        const handlePaste = async () => {
+        const handleButtonPaste = async () => {
             if (!clipboardText) return;
-            setValue(clipboardText);
+            setLocalValue(clipboardText);
             props.onChange?.({
                 target: { value: clipboardText },
             } as React.ChangeEvent<HTMLInputElement>);
             onButtonClick?.();
         };
+
+        // Обработчик нативной вставки (контекстное меню iOS)
+        const handleNativePaste = useCallback(
+            (e: React.ClipboardEvent<HTMLInputElement>) => {
+                const pastedText = e.clipboardData?.getData('text');
+                if (pastedText) {
+                    // Предотвращаем стандартное поведение и обрабатываем сами
+                    e.preventDefault();
+
+                    const input = e.target as HTMLInputElement;
+                    const start = input.selectionStart || 0;
+                    const end = input.selectionEnd || 0;
+                    const currentValue = String(displayValue);
+
+                    // Вставляем текст в позицию курсора
+                    const newValue = currentValue.slice(0, start) + pastedText + currentValue.slice(end);
+
+                    setLocalValue(newValue);
+                    props.onChange?.({
+                        target: { value: newValue },
+                    } as React.ChangeEvent<HTMLInputElement>);
+
+                    // Устанавливаем курсор после вставленного текста
+                    setTimeout(() => {
+                        input.setSelectionRange(start + pastedText.length, start + pastedText.length);
+                    }, 0);
+                }
+            },
+            [displayValue, props]
+        );
 
         return (
             <div className={`flex flex-col gap-[0.8rem] ${className}`}>
@@ -67,13 +107,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                         <input
                             ref={ref}
                             type="text"
-                            value={value}
+                            value={displayValue}
                             onChange={(e) => {
-                                setValue(e.target.value);
+                                setLocalValue(e.target.value);
                                 props.onChange?.(e);
                             }}
+                            onPaste={handleNativePaste}
                             placeholder={placeholder}
-                            onClick={handleCheckClipboard} // 👈 важно — только по клику
+                            onClick={handleCheckClipboard}
                             className={`flex-1 bg-transparent text-[1.4rem] ${
                                 error ? 'text-[var(--red-main)]' : 'text-[var(--text-main)]'
                             } placeholder:text-[var(--text-secondary)] outline-none ${inputClassName}`}
@@ -83,7 +124,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                         {clipboardText && (
                             <button
                                 type="button"
-                                onClick={handlePaste}
+                                onClick={handleButtonPaste}
                                 className={`flex items-center gap-[0.8rem] px-[1.2rem] py-[0.8rem] rounded-[0.8rem] bg-transparent hover:bg-[var(--bg-hover)] transition-colors duration-200 text-[#FFD700] text-[1.4rem] ${buttonClassName}`}
                             >
                                 {buttonText}
