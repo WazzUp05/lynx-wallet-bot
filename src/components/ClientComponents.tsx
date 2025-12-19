@@ -5,6 +5,7 @@ import { ReduxProvider } from '@/lib/providers/ReduxProvider';
 import NavBottom from '@/components/NavBottom';
 import UserAutoUpdater from '@/components/UserAutoUpdater';
 import ServiceWorker from '@/components/ServiceWorker';
+// import PinAuthGuard from '@/components/PinAuthGuard';
 
 import { initMixpanel } from '@/lib/api/mixpanelClient';
 import { MixpanelProvider } from '@/lib/providers/MixpanelProvider';
@@ -49,9 +50,10 @@ export default function ClientComponents({ children }: ClientComponentsProps) {
                 <MixpanelProvider>
                     <TelegramAuthClient />
                     <UserAutoUpdater />
-
+                    {/* <PinAuthGuard> */}
                     {children}
                     <NavBottom />
+                    {/* </PinAuthGuard> */}
                 </MixpanelProvider>
             </ReduxProvider>
         </>
