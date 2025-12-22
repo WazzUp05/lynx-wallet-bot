@@ -16,7 +16,7 @@ const MOCK_SELECT_USDT = [
     {
         id: 'TRC20',
         label: 'TRC20',
-        description: 'Комиссия 2.75 USDT',
+        description: 'Комиссия 0 USDT',
         iconUrl: '/icons/trc20.svg',
     },
     // {
@@ -31,7 +31,7 @@ const MOCK_SELECT_TON = [
     {
         id: 'TON',
         label: 'TON',
-        description: 'Комиссия 0.2 TON',
+        description: 'Комиссия 0 TON',
         iconUrl: '/icons/ton.svg',
     },
 ];
