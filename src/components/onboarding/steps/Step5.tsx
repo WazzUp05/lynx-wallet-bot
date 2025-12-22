@@ -127,7 +127,7 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                         <WarrningLeftIcon width={20} height={20} />
                     </div>
                     <span className="text-[var(--text-main)]">
-                        Комиссия — <b>2.75 USDT</b>
+                        Комиссия — <b>0 USDT</b>
                     </span>
 
                     <div className="text-[var(--yellow)] ml-auto bg-[var(--yellow-secondary)] rounded-[1rem] min-w-[2.5rem] h-[2.5rem] center ">
