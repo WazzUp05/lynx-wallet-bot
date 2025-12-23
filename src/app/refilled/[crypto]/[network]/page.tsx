@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/Button';
 import ArrowLeft from '@/components/icons/arrow-left.svg';
 import WarrningLeftIcon from '@/components/icons/warrning-mark.svg';
 import RightIcon from '@/components/icons/right-arrow.svg';
-import { QRCodeSVG } from 'qrcode.react';
 import { useState } from 'react';
 import TaxModal from '@/components/modals/TaxModal';
 import { Toast } from '@/components/ui/Toast';
