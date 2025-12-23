@@ -61,14 +61,14 @@ export default function RefilledQrPage() {
         USDT: {
             TRC20: {
                 address: wallet?.address || '',
-                fee: '2.75 USDT',
+                fee: '0 USDT',
                 min: '5 USDT',
                 networkLabel: 'TRC20',
                 icon: '/icons/usdt.svg',
             },
             TON: {
                 address: 'UQ...TONADDRESS',
-                fee: '2.75 USDT',
+                fee: '0 USDT',
                 min: '1 USDT',
                 networkLabel: 'TON',
                 icon: '/icons/ton.svg',
@@ -77,7 +77,7 @@ export default function RefilledQrPage() {
         TON: {
             TON: {
                 address: 'UQ...TONADDRESS',
-                fee: '0.2 TON',
+                fee: '0 TON',
                 min: '1 TON',
                 networkLabel: 'TON',
                 icon: '/icons/ton.svg',
@@ -170,7 +170,7 @@ export default function RefilledQrPage() {
                 <div
                     onClick={() => {
                         trackEvent('refill_tax_modal_opened', { crypto, network });
-                        setShowTaxModal(true);
+                        // setShowTaxModal(true);
                     }}
                     className="w-full bg-[var(--yellow-optional)]  py-[1.6rem] px-[1.6rem] rounded-[1.5rem] text-[1.2rem] leading-[130%]  flex items-center gap-2"
                 >
@@ -180,9 +180,9 @@ export default function RefilledQrPage() {
                     <span className="text-[var(--text-main)]">
                         Комиссия — <b>{data.fee}</b>
                     </span>
-                    <div className="text-[var(--yellow)] ml-auto bg-[var(--yellow-secondary)]  rounded-[1rem] w-[2.5rem] h-[2.5rem] center ">
+                    {/* <div className="text-[var(--yellow)] ml-auto bg-[var(--yellow-secondary)]  rounded-[1rem] w-[2.5rem] h-[2.5rem] center ">
                         <RightIcon width={16} height={16} />
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <Button
