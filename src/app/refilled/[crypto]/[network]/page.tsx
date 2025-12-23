@@ -16,6 +16,7 @@ import MinAmountModal from '@/components/modals/MinAmountModal';
 import { useCopyWithToast } from '@/hooks/useCopyWithToast';
 import { useMixpanel } from '@/lib/providers/MixpanelProvider';
 import { useEffect } from 'react';
+import QRCode from '@/components/QrCode';
 
 // Типизация для адресов
 type NetworkData = {
@@ -123,22 +124,7 @@ export default function RefilledQrPage() {
             </div>
             <div className="bg-[var(--bg-secondary)] rounded-[1.5rem] box-shadow py-[1.6rem] px-[1.6rem] w-full  flex flex-col items-center mb-[2.5rem]">
                 <div className="mb-[2rem]">
-                    <QRCodeSVG
-                        value={data.address}
-                        size={150}
-                        bgColor="#EBECEF"
-                        fgColor="#1C1C1E"
-                        radius="50"
-                        imageSettings={{
-                            src: srcQr,
-                            x: undefined,
-                            y: undefined,
-
-                            height: 35,
-                            width: 35,
-                            excavate: true,
-                        }}
-                    />
+                    <QRCode data={data.address} size={150} image={srcQr} />
                 </div>
                 <p className="mb-[0.5rem] text-[var(--gray)] fs-very-small">
                     Ваш адрес <span className="uppercase">{crypto}</span> в сети {data.networkLabel}
