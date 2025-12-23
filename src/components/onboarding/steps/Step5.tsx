@@ -120,7 +120,7 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                     </div>
                 </div>
                 <div
-                    onClick={() => setShowTaxModal(true)}
+                    // onClick={() => setShowTaxModal(true)}
                     className="w-full flex items-center gap-[0.5rem] py-[1.4rem]   text-[1.2rem] leading-[130%] "
                 >
                     <div className="text-[var(--yellow)]">
@@ -130,9 +130,9 @@ const Step5: React.FC<Step5Props> = ({ onNext }) => {
                         Комиссия — <b>0 USDT</b>
                     </span>
 
-                    <div className="text-[var(--yellow)] ml-auto bg-[var(--yellow-secondary)] rounded-[1rem] min-w-[2.5rem] h-[2.5rem] center ">
+                    {/* <div className="text-[var(--yellow)] ml-auto bg-[var(--yellow-secondary)] rounded-[1rem] min-w-[2.5rem] h-[2.5rem] center ">
                         <RightIcon width={16} height={16} />
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <TaxModal showModal={showTaxModal} onClose={() => setShowTaxModal(false)} />
